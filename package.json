@@ -1,0 +1,20 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "concurrently \"php artisan serve\" \"vite\" --names=server,vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.11",
+        "@tailwindcss/postcss": "^4.2.1",
+        "alpinejs": "^3.17.5",
+        "autoprefixer": "^10.6.1",
+        "axios": "^1.20.0",
+        "concurrently": "^10.0.6",
+        "laravel-vite-plugin": "^3.2.0",
+        "postcss": "^8.5.31",
+        "tailwindcss": "^4.2.1",
+        "vite": "^8.3.5"
+    }
+}
