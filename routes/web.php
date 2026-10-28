@@ -241,3 +241,4 @@ Route::middleware(['auth'])->group(function () {
 }); // ← akhir middleware(['auth'])
 
 require __DIR__.'/auth.php';
+require __DIR__.'/external.php';

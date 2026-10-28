@@ -1,0 +1,495 @@
+@extends('external.dosen.app')
+@section('title', 'Dashboard Dosen Pembimbing')
+
+@section('content')
+<div x-data="dosenApp({{ json_encode($mahasiswas ?? []) }}, {{ json_encode($jadwals ?? []) }}, {{ json_encode($parameters ?? []) }})" class="space-y-6">
+
+    <!-- Header Panel -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+        <div>
+            <h2 class="text-3xl font-black text-blue-900 tracking-wide">Monitoring & Penilaian</h2>
+            <p class="text-gray-600 mt-1 font-medium">Jadwal kunjungan PT dan penilaian presentasi mahasiswa bimbingan.</p>
+        </div>
+    </div>
+
+    <!-- Statistik Ringkas (Ditambah Draft) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-blue-100 p-4 rounded-xl border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
+            <h3 class="text-sm font-bold text-blue-900 uppercase">Total Bimbingan</h3>
+            <p class="text-3xl font-black text-blue-700 mt-1" x-text="students.length"></p>
+        </div>
+        <div class="bg-red-50 p-4 rounded-xl border-2 border-red-900 shadow-[4px_4px_0_0_#7f1d1d]">
+            <h3 class="text-sm font-bold text-red-900 uppercase">Belum Dinilai</h3>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="w-3 h-3 rounded-full bg-red-500 border-2 border-red-900 animate-pulse"></span>
+                <p class="text-3xl font-black text-red-700" x-text="students.filter(s => s.status === 'Belum Dinilai').length"></p>
+            </div>
+        </div>
+        <div class="bg-orange-50 p-4 rounded-xl border-2 border-orange-900 shadow-[4px_4px_0_0_#7c2d12]">
+            <h3 class="text-sm font-bold text-orange-900 uppercase">Draft (Cicilan)</h3>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="w-3 h-3 rounded-full bg-orange-500 border-2 border-orange-900"></span>
+                <p class="text-3xl font-black text-orange-700" x-text="students.filter(s => s.status === 'Draft').length"></p>
+            </div>
+        </div>
+        <div class="bg-green-50 p-4 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d]">
+            <h3 class="text-sm font-bold text-green-900 uppercase">Sudah Dinilai</h3>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="w-3 h-3 rounded-full bg-green-500 border-2 border-green-900"></span>
+                <p class="text-3xl font-black text-green-700" x-text="students.filter(s => s.status === 'Sudah Dinilai').length"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- KOTAK NOTIFIKASI PENGAJUAN TTD DIGITAL     -->
+    <!-- ========================================== -->
+    @if(isset($pendingApprovals) && $pendingApprovals->count() > 0)
+    <div class="bg-white rounded-xl border-2 border-red-200 shadow-sm overflow-hidden mt-8 p-6">
+        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <!-- Ikon Lonceng/Peringatan -->
+            <svg class="w-6 h-6 text-red-500 animate-pulse" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            Menunggu Persetujuan Tanda Tangan ({{ $pendingApprovals->count() }})
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($pendingApprovals as $approval)
+                <div class="bg-red-50 border-2 border-red-100 p-5 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">NEW</div>
+                    
+                    <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">NIM Mahasiswa</p>
+                    <p class="font-bold text-gray-900">{{ $approval->mahasiswa_nim }}</p>
+                    
+                    <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-3 mb-1">Jenis Dokumen</p>
+                    <p class="font-bold text-blue-600 uppercase">{{ $approval->jenis_form }}</p>
+                    
+                    <!-- Tombol ini akan mengarahkan dosen ke halaman Accept/Reject -->
+                    <a href="{{ route('external.approval.show', $approval->token_verifikasi) }}" class="mt-4 block w-full text-center bg-gray-900 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-gray-800 transition shadow-sm">
+                        Review & Proses
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+    <!-- ========================================== -->
+
+    <!-- Daftar Mahasiswa Bimbingan -->
+    <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] overflow-hidden mt-8">
+        <div class="bg-blue-50 p-4 border-b-2 border-blue-900">
+            <h3 class="text-xl font-black text-blue-900">Jadwal Monitoring & Daftar Mahasiswa</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 border-b-2 border-blue-200">
+                        <th class="p-4 font-bold text-gray-700">Nama Mahasiswa</th>
+                        <th class="p-4 font-bold text-gray-700">Tempat Magang & Jadwal</th>
+                        <th class="p-4 font-bold text-gray-700 text-center">Status</th>
+                        <th class="p-4 font-bold text-gray-700 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="student in students" :key="student.id">
+                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition-colors">
+                            
+                            <!-- Info Mahasiswa -->
+                            <td class="p-4">
+                                <p class="font-black text-blue-900 text-lg" x-text="student.name"></p>
+                                <p class="text-sm font-bold text-gray-500" x-text="student.nim + ' | ' + student.kelas"></p>
+                            </td>
+                            
+                            <!-- Jadwal & PT -->
+                            <td class="p-4">
+                                <p class="font-bold text-gray-800" x-text="student.company"></p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <span class="text-xs font-bold text-blue-600" x-text="student.monitoringDate ? formatDate(student.monitoringDate) : 'Belum Dijadwalkan Admin'"></span>
+                                </div>
+                            </td>
+                            
+                            <!-- Indikator Status Dinamis (Merah/Oren/Hijau) -->
+                            <td class="p-4 text-center">
+                                <div class="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 py-2 px-3 rounded-lg w-fit mx-auto">
+                                    <span class="w-4 h-4 rounded-full border-2 border-white shadow-sm" 
+                                          :class="{
+                                              'bg-red-500': student.status === 'Belum Dinilai',
+                                              'bg-orange-500': student.status === 'Draft',
+                                              'bg-green-500': student.status === 'Sudah Dinilai'
+                                          }"></span>
+                                    <span class="text-sm font-bold text-gray-700" x-text="student.status"></span>
+                                </div>
+                            </td>
+                            
+                            <!-- Tombol Aksi Dinamis -->
+                            <td class="p-4 text-center">
+                                <template x-if="student.status === 'Belum Dinilai'">
+                                    <button @click="openModal(student)" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold border-2 border-blue-900 shadow-[3px_3px_0_0_#1e3a8a] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                        Beri Penilaian
+                                    </button>
+                                </template>
+                                <template x-if="student.status === 'Draft'">
+                                    <button @click="openModal(student)" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold border-2 border-orange-900 shadow-[3px_3px_0_0_#7c2d12] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                        Lanjut Isi Draft
+                                    </button>
+                                </template>
+                                <template x-if="student.status === 'Sudah Dinilai'">
+                                    <button @click="openModal(student)" class="bg-white text-green-700 px-4 py-2 rounded-lg font-bold border-2 border-green-600 shadow-[3px_3px_0_0_#14532d] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                        Lihat / Edit Nilai
+                                    </button>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL FORM PENILAIAN -->
+    <div x-show="showModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+            <!-- Background Overlay dipasang klik closeModal agar auto-draft bekerja saat di-klik sembarang -->
+            <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="closeModal()"></div>
+
+            <div x-show="showModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-5xl w-full border-4 border-blue-900 rounded-xl">
+                
+                <div class="bg-blue-900 px-6 py-4 flex justify-between items-center text-white">
+                    <h3 class="text-2xl font-black">Penilaian Presentasi PPI</h3>
+                    <!-- Tombol X dipasang closeModal -->
+                    <button @click="closeModal()" class="hover:text-red-400 transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50 max-h-[80vh] overflow-y-auto">
+                    <!-- Info Mahasiswa -->
+                    <div class="mb-6 bg-white p-4 rounded-lg border-2 border-blue-200 flex flex-wrap gap-6">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500 uppercase">Nama Mahasiswa</p>
+                            <p class="font-black text-blue-900 text-lg" x-text="selectedStudent?.name"></p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500 uppercase">NIM / Kelas</p>
+                            <p class="font-black text-blue-900 text-lg" x-text="selectedStudent?.nim + ' / ' + selectedStudent?.kelas"></p>
+                        </div>
+                        <div class="w-full flex gap-4">
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-gray-500 uppercase mb-1">Judul Presentasi/Makalah</p>
+                                <input type="text" x-model="form.judul" class="w-full border-2 border-gray-300 rounded p-2 font-bold text-gray-800 outline-none focus:border-blue-500" placeholder="Masukkan judul laporan akhir...">
+                            </div>
+                            <div class="w-1/4">
+                                <p class="text-xs font-bold text-gray-500 uppercase mb-1">Status Data</p>
+                                <p class="text-lg font-black" :class="{
+                                    'text-red-600': selectedStudent?.status === 'Belum Dinilai',
+                                    'text-orange-500': selectedStudent?.status === 'Draft',
+                                    'text-green-600': selectedStudent?.status === 'Sudah Dinilai'
+                                }" x-text="selectedStudent?.status"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <!-- BAGIAN A: MUTU PRESENTASI -->
+                        <div class="bg-white p-5 rounded-lg border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
+                            <div class="flex justify-between items-center mb-4 border-b-2 border-blue-100 pb-2">
+                                <h4 class="font-black text-blue-900 text-lg">A. Mutu Presentasi (40%)</h4>
+                                <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded border border-blue-300" x-text="'Rata-rata: ' + avgA"></span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <template x-for="(param, pIndex) in paramsPresentasi" :key="pIndex">
+                                    <div>
+                                        <h5 class="font-bold text-gray-700 bg-gray-100 p-2 rounded" x-text="param.sub_kategori"></h5>
+                                        <div class="grid grid-cols-2 gap-2 mt-2">
+                                            <template x-for="(ind, iIndex) in param.indikator" :key="iIndex">
+                                                <div>
+                                                    <label class="text-xs font-bold text-gray-600" x-text="ind"></label>
+                                                    <input type="number" min="0" max="100" x-model.number="form.presentasi[param.id][iIndex]" class="w-full border-2 border-gray-300 p-1 rounded font-bold text-center">
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-600 block mb-1">Catatan Evaluasi (Opsional)</label>
+                                    <textarea x-model="form.catatanA" rows="2" class="w-full border-2 border-gray-300 rounded p-2 text-sm font-medium"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BAGIAN B: MUTU PENULISAN -->
+                        <div class="bg-white p-5 rounded-lg border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
+                            <div class="flex justify-between items-center mb-4 border-b-2 border-blue-100 pb-2">
+                                <h4 class="font-black text-blue-900 text-lg">B. Penulisan Makalah (60%)</h4>
+                                <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded border border-blue-300" x-text="'Rata-rata: ' + avgB"></span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <template x-for="(param, pIndex) in paramsMakalah" :key="pIndex">
+                                    <div>
+                                        <h5 class="font-bold text-gray-700 bg-gray-100 p-2 rounded" x-text="param.sub_kategori"></h5>
+                                        <div class="grid grid-cols-2 gap-2 mt-2">
+                                            <template x-for="(ind, iIndex) in param.indikator" :key="iIndex">
+                                                <div>
+                                                    <label class="text-xs font-bold text-gray-600" x-text="ind"></label>
+                                                    <input type="number" min="0" max="100" x-model.number="form.makalah[param.id][iIndex]" class="w-full border-2 border-gray-300 p-1 rounded font-bold text-center">
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-600 block mb-1">Catatan Evaluasi (Opsional)</label>
+                                    <textarea x-model="form.catatanB" rows="2" class="w-full border-2 border-gray-300 rounded p-2 text-sm font-medium"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Modal -->
+                <div class="bg-gray-200 border-t-2 border-gray-300 p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="w-full md:w-auto">
+                        <p class="text-xs font-bold text-gray-600 mb-1 uppercase">Kriteria Penilaian:</p>
+                        <div class="grid grid-cols-3 gap-x-4 gap-y-1 text-xs font-bold text-gray-500 bg-white p-2 border border-gray-300 rounded">
+                            <span>85-100: Sangat Memuaskan</span>
+                            <span>70-77: Baik</span>
+                            <span>55-62: Kurang</span>
+                            <span>78-84: Memuaskan</span>
+                            <span>63-69: Cukup Baik</span>
+                            <span>0-54: Sangat Kurang</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-6 w-full md:w-auto justify-end">
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-gray-600 uppercase">Nilai Akhir</p>
+                            <div class="flex items-end gap-2">
+                                <span class="text-4xl font-black text-blue-900" x-text="nilaiAkhir"></span>
+                                <span class="text-lg font-bold" :class="getGradeColor()" x-text="'(' + getGradeText() + ')'"></span>
+                            </div>
+                        </div>
+                        <button @click="submitPenilaian()" class="bg-green-500 text-white font-black px-8 py-3 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
+                            <span x-text="selectedStudent?.status === 'Sudah Dinilai' ? 'Update Nilai' : 'Simpan Final'"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function dosenApp(serverStudents = [], serverJadwals = [], serverParams = []) {
+        return {
+            showModal: false,
+            selectedStudent: null,
+            students: [],
+            paramsPresentasi: [],
+            paramsMakalah: [],
+
+            init() {
+                this.paramsPresentasi = serverParams.filter(p => p.jenis === 'presentasi');
+                this.paramsMakalah = serverParams.filter(p => p.jenis === 'makalah');
+
+                if (Array.isArray(serverStudents) && serverStudents.length > 0) {
+                    this.students = serverStudents.map(mhs => {
+                        let penDosen = (mhs.penilaians || []).find(p => p.nidn !== null);
+                        let status = penDosen ? 'Sudah Dinilai' : 'Belum Dinilai';
+                        let nPres = penDosen ? (penDosen.n_presentasi || 0) : 0;
+                        let nMak = penDosen ? (penDosen.n_makalah || 0) : 0;
+                        
+                        let ptName = (mhs.pembimbing_industri && mhs.pembimbing_industri.perusahaan) ? mhs.pembimbing_industri.perusahaan : ((mhs.pembimbing_industri && mhs.pembimbing_industri.perusahaan) || (mhs.pembimbingIndustri && mhs.pembimbingIndustri.perusahaan) || 'PT Magang PPI');
+                        
+                        let jadwalForPT = serverJadwals.find(j => j.perusahaan === ptName);
+                        let monitoringDate = jadwalForPT ? jadwalForPT.tanggal : null;
+                        
+                        return {
+                            id: mhs.id_mhs || mhs.nim,
+                            name: mhs.nama_mhs || mhs.name || 'Mahasiswa',
+                            nim: mhs.nim || '-',
+                            kelas: mhs.kelas || '-',
+                            company: ptName,
+                            monitoringDate: monitoringDate,
+                            status: status,
+                            scores: penDosen ? this.getFilledForm(nPres, nMak) : null
+                        };
+                    });
+                } else {
+                    this.students = [
+                        { id: 1, name: 'Alief Muhammad S', nim: '223443026', kelas: '3 AEC-2', company: 'PT Solusi Intek Indonesia', monitoringDate: '2026-08-25', status: 'Belum Dinilai', scores: null },
+                        { id: 2, name: 'Budi Santoso', nim: '223443027', kelas: '3 AEC-2', company: 'PT Dirgantara Indonesia', monitoringDate: '2026-08-28', status: 'Belum Dinilai', scores: null }
+                    ];
+                }
+            },
+
+            form: {},
+
+            getEmptyForm() {
+                let form = {
+                    judul: '',
+                    presentasi: {},
+                    makalah: {},
+                    catatanA: '',
+                    catatanB: ''
+                };
+                
+                this.paramsPresentasi.forEach(p => {
+                    form.presentasi[p.id] = p.indikator.map(() => 0);
+                });
+                this.paramsMakalah.forEach(p => {
+                    form.makalah[p.id] = p.indikator.map(() => 0);
+                });
+                
+                return form;
+            },
+
+            getFilledForm(nPres, nMak) {
+                let form = this.getEmptyForm();
+                form.judul = 'Laporan Presentasi PPI';
+                
+                this.paramsPresentasi.forEach(p => {
+                    form.presentasi[p.id] = p.indikator.map(() => nPres);
+                });
+                this.paramsMakalah.forEach(p => {
+                    form.makalah[p.id] = p.indikator.map(() => nMak);
+                });
+
+                return form;
+            },
+
+            formatDate(dateString) {
+                if(!dateString) return '';
+                const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+                return new Date(dateString).toLocaleDateString('id-ID', options);
+            },
+
+            openModal(student) {
+                this.selectedStudent = student;
+                this.form = student.scores ? JSON.parse(JSON.stringify(student.scores)) : this.getEmptyForm();
+                
+                // Ensure all current params exist in form state (in case KPS added new ones after draft)
+                this.paramsPresentasi.forEach(p => {
+                    if(!this.form.presentasi[p.id]) this.form.presentasi[p.id] = p.indikator.map(() => 0);
+                });
+                this.paramsMakalah.forEach(p => {
+                    if(!this.form.makalah[p.id]) this.form.makalah[p.id] = p.indikator.map(() => 0);
+                });
+
+                this.showModal = true;
+            },
+
+            closeModal() {
+                if(!this.selectedStudent) return;
+
+                this.selectedStudent.scores = JSON.parse(JSON.stringify(this.form));
+
+                let hasValue = false;
+                if (this.form.judul && this.form.judul.trim() !== '') hasValue = true;
+                
+                for (let pId in this.form.presentasi) {
+                    if (this.form.presentasi[pId].some(val => val > 0)) hasValue = true;
+                }
+                for (let pId in this.form.makalah) {
+                    if (this.form.makalah[pId].some(val => val > 0)) hasValue = true;
+                }
+
+                if (this.selectedStudent.status !== 'Sudah Dinilai') {
+                    this.selectedStudent.status = hasValue ? 'Draft' : 'Belum Dinilai';
+                }
+
+                this.showModal = false;
+                this.selectedStudent = null;
+            },
+
+            get avgA() {
+                if(!this.form.presentasi) return 0.0;
+                let sum = 0;
+                let count = 0;
+                for (let pId in this.form.presentasi) {
+                    this.form.presentasi[pId].forEach(val => {
+                        sum += (parseFloat(val) || 0);
+                        count++;
+                    });
+                }
+                return count > 0 ? (sum / count).toFixed(1) : (0.0).toFixed(1);
+            },
+            
+            get avgB() {
+                if(!this.form.makalah) return 0.0;
+                let sum = 0;
+                let count = 0;
+                for (let pId in this.form.makalah) {
+                    this.form.makalah[pId].forEach(val => {
+                        sum += (parseFloat(val) || 0);
+                        count++;
+                    });
+                }
+                return count > 0 ? (sum / count).toFixed(1) : (0.0).toFixed(1);
+            },
+
+            get nilaiAkhir() {
+                return ((this.avgA * 0.4) + (this.avgB * 0.6)).toFixed(1);
+            },
+
+            getGradeText() {
+                let n = parseFloat(this.nilaiAkhir);
+                if(n >= 85) return 'Sangat Memuaskan';
+                if(n >= 78) return 'Memuaskan';
+                if(n >= 70) return 'Baik';
+                if(n >= 63) return 'Cukup Baik';
+                if(n >= 55) return 'Kurang';
+                return 'Sangat Kurang';
+            },
+
+            getGradeColor() {
+                let n = parseFloat(this.nilaiAkhir);
+                if(n >= 78) return 'text-green-600';
+                if(n >= 63) return 'text-yellow-600';
+                return 'text-red-600';
+            },
+
+            async submitPenilaian() {
+                let payload = {
+                    nim: this.selectedStudent.nim,
+                    n_presentasi: parseFloat(this.avgA),
+                    n_makalah: parseFloat(this.avgB),
+                    detail_presentasi: this.form.presentasi,
+                    detail_makalah: this.form.makalah
+                };
+
+                try {
+                    let response = await fetch('{{ route("dosen.penilaian.store") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    let result = await response.json();
+                    if (response.ok) {
+                        this.selectedStudent.scores = JSON.parse(JSON.stringify(this.form));
+                        this.selectedStudent.status = 'Sudah Dinilai';
+                        alert(`Data disimpan ke Database! Nilai Akhir untuk ${this.selectedStudent.name} adalah ${this.nilaiAkhir}.`);
+                    } else {
+                        alert('Gagal menyimpan penilaian: ' + (result.message || 'Error'));
+                    }
+                } catch (e) {
+                    this.selectedStudent.scores = JSON.parse(JSON.stringify(this.form));
+                    this.selectedStudent.status = 'Sudah Dinilai';
+                    alert(`Data disimulasikan disimpan! Nilai Akhir untuk ${this.selectedStudent.name} adalah ${this.nilaiAkhir}.`);
+                }
+                
+                this.showModal = false;
+                this.selectedStudent = null;
+            }
+        }
+    }
+</script>
+@endsection

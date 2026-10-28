@@ -52,6 +52,25 @@ bun run dev
 
 Aplikasi tersedia di `http://127.0.0.1:8000`.
 
+## Modul External
+
+Fitur External telah digabungkan ke aplikasi Internal sebagai modul terisolasi. Modul ini
+mempertahankan fitur perusahaan, pembimbing industri, logbook dan foto, penilaian,
+monitoring, approval QR, notifikasi, chat, kuisioner, saran, serta ekspor/transkrip.
+
+Route modul External menggunakan prefix `/external`, contohnya:
+
+- `/external/admin/dashboard`
+- `/external/mahasiswa/dashboard`
+- `/external/dosen/dashboard`
+- `/external/mentor/dashboard`
+- `/external/kaprodi/dashboard`
+- `/external/approval/{token}`
+
+Tabel External yang memiliki nama sama dengan tabel Internal menggunakan prefix
+`external_` agar data dari kedua aplikasi dapat dipertahankan bersamaan. Jalankan
+migration seperti biasa setelah memastikan konfigurasi database pada `.env` sudah benar.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.

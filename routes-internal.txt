@@ -1,0 +1,141 @@
+
+  GET|HEAD        / ................................................................ welcome › routes/web.php:23
+  GET|HEAD        admin/kps ........................................ admin.kps.index › Admin\KpsController@index
+  POST            admin/kps ........................................ admin.kps.store › Admin\KpsController@store
+  DELETE          admin/kps/{userRole} ......................... admin.kps.destroy › Admin\KpsController@destroy
+  GET|HEAD        admin/matkul ..................................... admin.matkul.index › MatkulController@index
+  POST            admin/matkul ..................................... admin.matkul.store › MatkulController@store
+  GET|HEAD        admin/matkul/batch .................. admin.matkul.batch.create › MatkulController@batchCreate
+  POST            admin/matkul/batch .................... admin.matkul.batch.store › MatkulController@batchStore
+  GET|HEAD        admin/matkul/template .............. admin.matkul.template › MatkulController@downloadTemplate
+  DELETE          admin/matkul/{id} ............................ admin.matkul.destroy › MatkulController@destroy
+  GET|HEAD        admin/periode-pbl ................. admin.periode_pbl.index › Admin\PeriodePblController@index
+  POST            admin/periode-pbl ................. admin.periode_pbl.store › Admin\PeriodePblController@store
+  GET|HEAD        admin/periode-pbl/create ........ admin.periode_pbl.create › Admin\PeriodePblController@create
+  PUT             admin/periode-pbl/{periode_pbl} . admin.periode_pbl.update › Admin\PeriodePblController@update
+  DELETE          admin/periode-pbl/{periode_pbl} admin.periode_pbl.destroy › Admin\PeriodePblController@destroy
+  PATCH           admin/periode-pbl/{periode_pbl}/aktif admin.periode_pbl.aktif › Admin\PeriodePblController@se…
+  GET|HEAD        admin/periode-pbl/{periode_pbl}/edit admin.periode_pbl.edit › Admin\PeriodePblController@edit
+  GET|HEAD        admin/prodi ............................................ admin.prodi.index › routes/web.php:59
+  GET|HEAD        admin/supervisi ................ admin.supervisi.index › Admin\SupervisiMatkulController@index
+  POST            admin/supervisi ................ admin.supervisi.store › Admin\SupervisiMatkulController@store
+  GET|HEAD        admin/supervisi/create ....... admin.supervisi.create › Admin\SupervisiMatkulController@create
+  DELETE          admin/supervisi/{supervisi} admin.supervisi.destroy › Admin\SupervisiMatkulController@destroy
+  GET|HEAD        approval-dosen ................................ approval.index › ApprovalDosenController@index
+  PATCH           approval-dosen/{user}/approve ............. approval.approve › ApprovalDosenController@approve
+  PATCH           approval-dosen/{user}/approve-role approval.approve.role › ApprovalDosenController@approveWit…
+  PATCH           approval-dosen/{user}/reject ................ approval.reject › ApprovalDosenController@reject
+  GET|HEAD        bobot-penilaian ...................................... bobot.index › PenilaianController@bobot
+  GET|HEAD        confirm-password .................. password.confirm › Auth\ConfirmablePasswordController@show
+  POST            confirm-password .................................... Auth\ConfirmablePasswordController@store
+  GET|HEAD        dashboard .............................................. dashboard › DashboardController@index
+  GET|HEAD        dosen .................................................... dosen.index › DosenController@index
+  POST            dosen .................................................... dosen.store › DosenController@store
+  GET|HEAD        dosen/batch ................................. dosen.batch.create › DosenController@batchCreate
+  POST            dosen/batch ................................... dosen.batch.store › DosenController@batchStore
+  GET|HEAD        dosen/create ........................................... dosen.create › DosenController@create
+  GET|HEAD        dosen/template ............................. dosen.template › DosenController@downloadTemplate
+  GET|HEAD        dosen/{dosen} .............................................. dosen.show › DosenController@show
+  PUT|PATCH       dosen/{dosen} .......................................... dosen.update › DosenController@update
+  DELETE          dosen/{dosen} ........................................ dosen.destroy › DosenController@destroy
+  GET|HEAD        dosen/{dosen}/edit ......................................... dosen.edit › DosenController@edit
+  POST            email/verification-notification verification.send › Auth\EmailVerificationNotificationControl…
+  GET|HEAD        feedback-hub .................................... feedback.index › NilaiController@feedbackHub
+  GET|HEAD        forgot-password ................... password.request › Auth\PasswordResetLinkController@create
+  POST            forgot-password ...................... password.email › Auth\PasswordResetLinkController@store
+  GET|HEAD        kelas .................................................... kelas.index › KelasController@index
+  POST            kelas .................................................... kelas.store › KelasController@store
+  GET|HEAD        kelas/create ........................................... kelas.create › KelasController@create
+  GET|HEAD        kelas/{kelas} .............................................. kelas.show › KelasController@show
+  PUT|PATCH       kelas/{kelas} .......................................... kelas.update › KelasController@update
+  DELETE          kelas/{kelas} ........................................ kelas.destroy › KelasController@destroy
+  POST            kelas/{kelas}/assign .......................... kelas.assign › KelasController@assignMahasiswa
+  GET|HEAD        kelas/{kelas}/edit ......................................... kelas.edit › KelasController@edit
+  DELETE          kelas/{kelas}/remove/{mahasiswa} .............. kelas.remove › KelasController@removeMahasiswa
+  GET|HEAD        laporan .............................................. laporan.index › LaporanController@index
+  POST            laporan .............................................. laporan.store › LaporanController@store
+  GET|HEAD        laporan-admin ................................... laporan.admin › LaporanAdminController@index
+  GET|HEAD        laporan/create ..................................... laporan.create › LaporanController@create
+  GET|HEAD        laporan/{laporan} ...................................... laporan.show › LaporanController@show
+  PUT|PATCH       laporan/{laporan} .................................. laporan.update › LaporanController@update
+  DELETE          laporan/{laporan} ................................ laporan.destroy › LaporanController@destroy
+  GET|HEAD        laporan/{laporan}/edit ................................. laporan.edit › LaporanController@edit
+  PATCH           laporan/{laporan}/verifikasi ............... laporan.verifikasi › LaporanController@verifikasi
+  GET|HEAD        logbook .............................................. logbook.index › LogbookController@index
+  POST            logbook .............................................. logbook.store › LogbookController@store
+  GET|HEAD        logbook-harian .......................... logbook_harian.index › LogbookHarianController@index
+  POST            logbook-harian .......................... logbook_harian.store › LogbookHarianController@store
+  GET|HEAD        logbook-harian-rekap ............ logbook_harian.rekap › LogbookHarianController@rekapMingguan
+  GET|HEAD        logbook-harian/create ................. logbook_harian.create › LogbookHarianController@create
+  GET|HEAD        logbook-harian/{logbook_harian} ........... logbook_harian.show › LogbookHarianController@show
+  PUT             logbook-harian/{logbook_harian} ....... logbook_harian.update › LogbookHarianController@update
+  DELETE          logbook-harian/{logbook_harian} ..... logbook_harian.destroy › LogbookHarianController@destroy
+  GET|HEAD        logbook-harian/{logbook_harian}/edit ...... logbook_harian.edit › LogbookHarianController@edit
+  PATCH           logbook-harian/{logbook_harian}/verifikasi logbook_harian.verifikasi › LogbookHarianControlle…
+  GET|HEAD        logbook-mingguan .................... logbook_mingguan.index › LogbookMingguanController@index
+  POST            logbook-mingguan/generate ..... logbook_mingguan.generate › LogbookMingguanController@generate
+  GET|HEAD        logbook-mingguan/verifikasi logbook_mingguan.daftar_verifikasi › LogbookMingguanController@da…
+  GET|HEAD        logbook-mingguan/{logbookMingguan} .... logbook_mingguan.show › LogbookMingguanController@show
+  DELETE          logbook-mingguan/{logbookMingguan}/batal logbook_mingguan.batal › LogbookMingguanController@b…
+  PATCH           logbook-mingguan/{logbookMingguan}/verifikasi logbook_mingguan.verifikasi › LogbookMingguanCo…
+  GET|HEAD        logbook/create ..................................... logbook.create › LogbookController@create
+  GET|HEAD        logbook/{logbook} ...................................... logbook.show › LogbookController@show
+  PUT|PATCH       logbook/{logbook} .................................. logbook.update › LogbookController@update
+  DELETE          logbook/{logbook} ................................ logbook.destroy › LogbookController@destroy
+  GET|HEAD        logbook/{logbook}/edit ................................. logbook.edit › LogbookController@edit
+  PATCH           logbook/{logbook}/verifikasi ............... logbook.verifikasi › LogbookController@verifikasi
+  GET|HEAD        login ..................................... login › Auth\AuthenticatedSessionController@create
+  POST            login .............................................. Auth\AuthenticatedSessionController@store
+  POST            logout .................................. logout › Auth\AuthenticatedSessionController@destroy
+  GET|HEAD        mahasiswa ........................................ mahasiswa.index › MahasiswaController@index
+  POST            mahasiswa ........................................ mahasiswa.store › MahasiswaController@store
+  GET|HEAD        mahasiswa/batch ..................... mahasiswa.batch.create › MahasiswaController@batchCreate
+  POST            mahasiswa/batch ....................... mahasiswa.batch.store › MahasiswaController@batchStore
+  GET|HEAD        mahasiswa/create ............................... mahasiswa.create › MahasiswaController@create
+  GET|HEAD        mahasiswa/template ................. mahasiswa.template › MahasiswaController@downloadTemplate
+  GET|HEAD        mahasiswa/{mahasiswa} .............................. mahasiswa.show › MahasiswaController@show
+  PUT|PATCH       mahasiswa/{mahasiswa} .......................... mahasiswa.update › MahasiswaController@update
+  DELETE          mahasiswa/{mahasiswa} ........................ mahasiswa.destroy › MahasiswaController@destroy
+  GET|HEAD        mahasiswa/{mahasiswa}/edit ......................... mahasiswa.edit › MahasiswaController@edit
+  GET|HEAD        nilai-saya ............................................... nilai.index › NilaiController@index
+  PUT             password .................................... password.update › Auth\PasswordController@update
+  POST            pengajuan-proyek .................... pengajuan_proyek.store › PengajuanProyekController@store
+  GET|HEAD        pengajuan-proyek .................... pengajuan_proyek.index › PengajuanProyekController@index
+  GET|HEAD        pengajuan-proyek/create ........... pengajuan_proyek.create › PengajuanProyekController@create
+  DELETE          pengajuan-proyek/{pengajuan_proyek} pengajuan_proyek.destroy › PengajuanProyekController@dest…
+  GET|HEAD        pengajuan-proyek/{pengajuan_proyek} ... pengajuan_proyek.show › PengajuanProyekController@show
+  PATCH           pengajuan-proyek/{pengajuan_proyek}/approve pengajuan_proyek.approve › PengajuanProyekControl…
+  GET|HEAD        pengajuan-proyek/{pengajuan_proyek}/assign pengajuan_proyek.assign › PengajuanProyekControlle…
+  POST            pengajuan-proyek/{pengajuan_proyek}/assign pengajuan_proyek.simpan_mahasiswa › PengajuanProye…
+  PATCH           pengajuan-proyek/{pengajuan_proyek}/reject pengajuan_proyek.reject › PengajuanProyekControlle…
+  GET|HEAD        penilaian ........................................ penilaian.index › PenilaianController@index
+  POST            penilaian/dosen ....................... penilaian.dosen.store › PenilaianController@storeDosen
+  GET|HEAD        penilaian/dosen/create .............. penilaian.dosen.create › PenilaianController@createDosen
+  POST            penilaian/manager ................. penilaian.manager.store › PenilaianController@storeManager
+  GET|HEAD        penilaian/manager/create ........ penilaian.manager.create › PenilaianController@createManager
+  GET|HEAD        pilih-role .................................................... pilih.role › routes/web.php:30
+  POST            pilih-role ............................................. pilih.role.simpan › routes/web.php:46
+  GET|HEAD        proyek-pbl ............................ proyek_pbl.index › PengajuanProyekController@proyekPbl
+  GET|HEAD        register ..................................... register › Auth\RegisteredUserController@create
+  POST            register ................................................. Auth\RegisteredUserController@store
+  POST            reset-password ............................. password.store › Auth\NewPasswordController@store
+  GET|HEAD        reset-password/{token} .................... password.reset › Auth\NewPasswordController@create
+  GET|HEAD        rubrik-penilaian ................................... rubrik.index › PenilaianController@rubrik
+  GET|HEAD        supervisi-harian .................... supervisi_harian.index › SupervisiHarianController@index
+  POST            supervisi-harian .................... supervisi_harian.store › SupervisiHarianController@store
+  GET|HEAD        supervisi-harian/create ........... supervisi_harian.create › SupervisiHarianController@create
+  PUT             supervisi-harian/{supervisiHarian} supervisi_harian.update › SupervisiHarianController@update
+  DELETE          supervisi-harian/{supervisiHarian} supervisi_harian.destroy › SupervisiHarianController@destr…
+  GET|HEAD        supervisi-harian/{supervisiHarian} .... supervisi_harian.show › SupervisiHarianController@show
+  GET|HEAD        supervisi-harian/{supervisiHarian}/edit supervisi_harian.edit › SupervisiHarianController@edit
+  GET|HEAD        supervisi-mingguan .............. supervisi_mingguan.index › SupervisiMingguanController@index
+  POST            supervisi-mingguan/generate supervisi_mingguan.generate › SupervisiMingguanController@generate
+  GET|HEAD        supervisi-mingguan/verifikasi/daftar supervisi_mingguan.daftar_verifikasi › SupervisiMingguan…
+  GET|HEAD        supervisi-mingguan/{supervisiMingguan} supervisi_mingguan.show › SupervisiMingguanController@…
+  DELETE          supervisi-mingguan/{supervisiMingguan}/batal supervisi_mingguan.batal › SupervisiMingguanCont…
+  PATCH           supervisi-mingguan/{supervisiMingguan}/verifikasi supervisi_mingguan.verifikasi › SupervisiMi…
+  GET|HEAD        verify-email .................... verification.notice › Auth\EmailVerificationPromptController
+  GET|HEAD        verify-email/{id}/{hash} .................... verification.verify › Auth\VerifyEmailController
+
+                                                                                            Showing [137] routes
+

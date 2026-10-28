@@ -1,0 +1,507 @@
+<?php
+namespace App\External\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\External\Models\User;
+use App\External\Models\Mahasiswa;
+use App\External\Models\Dosen;
+use App\External\Models\PembimbingIndustri;
+use App\External\Models\ProgramStudi;
+use App\External\Models\Perusahaan;
+use App\External\Models\MataKuliah;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use App\External\Models\JadwalMonitoring;
+
+class AdminController extends \App\Http\Controllers\Controller
+{
+    public function index() {
+        $dosens = Dosen::all();
+        $perusahaans = Perusahaan::all();
+        $prodis = ProgramStudi::with('mataKuliahs')->get();
+        $mentors = PembimbingIndustri::all();
+        $mahasiswas = Mahasiswa::with(['programStudi', 'pembimbingIndustri'])->get();
+        $jadwals = JadwalMonitoring::all();
+        return view('external.admin.dashboard', compact('dosens', 'perusahaans', 'prodis', 'mentors', 'mahasiswas', 'jadwals'));
+    }
+
+    public function storeMatkul(Request $request)
+    {
+        $request->validate([
+            'id_prodi' => 'required|exists:program_studis,id_prodi',
+            'kd_mat' => 'required|string',
+            'nama_komp' => 'required|string',
+            'jam_min' => 'required|numeric',
+        ]);
+
+        MataKuliah::create($request->all());
+
+        return response()->json(['message' => 'Mata Kuliah berhasil ditambahkan']);
+    }
+
+    public function updateMatkul(Request $request, $id)
+    {
+        $request->validate([
+            'kd_mat' => 'required|string',
+            'nama_komp' => 'required|string',
+            'jam_min' => 'required|numeric',
+        ]);
+
+        $matkul = MataKuliah::findOrFail($id);
+        $matkul->update($request->only(['kd_mat', 'nama_komp', 'jam_min']));
+
+        return response()->json(['message' => 'Mata Kuliah berhasil diperbarui']);
+    }
+
+    public function deleteMatkul($id)
+    {
+        $matkul = MataKuliah::findOrFail($id);
+        $matkul->delete();
+
+        return response()->json(['message' => 'Mata Kuliah berhasil dihapus']);
+    }
+
+    public function users() {
+        $users = User::with(['mahasiswa.programStudi', 'mahasiswa.dosen', 'mahasiswa.pembimbingIndustri', 'dosen', 'pembimbingIndustri'])->get();
+        
+        $mappedUsers = $users->map(function ($user) {
+            $identifier = null;
+            $prodi = null;
+            $kelas = null;
+            $pt = null;
+            $nim = null;
+            $nidn = null;
+            $id_pem = null;
+            $dosen_name = null;
+            $mentor_name = null;
+            
+            if ($user->role === 'mahasiswa' && $user->mahasiswa) {
+                $nim = $user->mahasiswa->nim;
+                $identifier = 'NIM: ' . $nim;
+                $prodiName = $user->mahasiswa->programStudi->nama_prodi ?? '';
+                if (in_array($prodiName, ['TRIN', 'TRO', 'TRMO'])) {
+                    $prodi = $prodiName;
+                } elseif (stripos($prodiName, 'Mekatronika') !== false) {
+                    $prodi = 'TRMO';
+                } elseif (stripos($prodiName, 'Manufaktur') !== false && stripos($prodiName, 'Perancangan') !== false) {
+                    $prodi = 'TRIN';
+                } else {
+                    $prodi = 'TRO';
+                }
+                $kelas = $user->mahasiswa->kelas;
+                $nidn = $user->mahasiswa->nidn;
+                $id_pem = $user->mahasiswa->id_pem;
+                $dosen_name = $user->mahasiswa->dosen->nama_dosen ?? null;
+                $mentor_name = $user->mahasiswa->pembimbingIndustri->nama_pem ?? null;
+                $pt = $user->mahasiswa->pembimbingIndustri->perusahaan ?? null;
+            } elseif ($user->role === 'dosen' && $user->dosen) {
+                $identifier = 'NIP: ' . $user->dosen->nidn;
+            } elseif ($user->role === 'mentor' && $user->pembimbingIndustri) {
+                $pt = $user->pembimbingIndustri->perusahaan;
+            }
+
+            return [
+                'id' => $user->id,
+                'role' => $user->role,
+                'name' => $user->name,
+                'identifier' => $identifier,
+                'nim' => $nim,
+                'prodi' => $prodi,
+                'kelas' => $kelas,
+                'email' => $user->email,
+                'plain_password' => $user->plain_password,
+                'pt' => $pt,
+                'nidn' => $nidn,
+                'id_pem' => $id_pem,
+                'dosen_name' => $dosen_name,
+                'mentor_name' => $mentor_name,
+            ];
+        });
+
+        // Ambil data perusahaan dari tabel perusahaans & pembimbing_industris
+        $perusahaanList = Perusahaan::all();
+        $companiesFromDb = $perusahaanList->pluck('nama_perusahaan')->toArray();
+        $companiesFromMentor = PembimbingIndustri::pluck('perusahaan')->unique()->toArray();
+        $companies = array_values(array_unique(array_filter(array_merge($companiesFromDb, $companiesFromMentor))));
+
+        // Ambil data Dosen & Mentor untuk pilihan pembimbing
+        $dosens = Dosen::all(['nidn', 'nama_dosen']);
+        $mentors = PembimbingIndustri::all(['id_pem', 'nama_pem', 'perusahaan']);
+
+        return view('external.admin.users', [
+            'mappedUsers' => json_encode($mappedUsers),
+            'companies' => json_encode($companies),
+            'perusahaans' => json_encode($perusahaanList),
+            'dosens' => json_encode($dosens),
+            'mentors' => json_encode($mentors),
+        ]);
+    }
+
+public function storeUser(Request $request)
+    {
+        $request->validate([
+            'role' => 'required|in:admin,mahasiswa,dosen,mentor,kaprodi',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // 1. Create User
+            $plainPass = $request->plain_password ?: '123';
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($plainPass),
+                'plain_password' => $plainPass,
+                'role' => $request->role,
+            ]);
+
+            // 2. Create Profile based on Role
+            if ($request->role === 'mahasiswa') {
+                $namaProdi = $request->prodi ?? 'TRO';
+                $prodi = ProgramStudi::firstOrCreate(['nama_prodi' => $namaProdi]);
+
+                if ($request->pt) {
+                    Perusahaan::firstOrCreate(['nama_perusahaan' => $request->pt]);
+                }
+
+                Mahasiswa::create([
+                    'nim' => $request->identifier,
+                    'user_id' => $user->id,
+                    'nama_mhs' => $request->name,
+                    'kelas' => $request->kelas,
+                    'id_prodi' => $prodi->id_prodi,
+                    'nidn' => $request->nidn ?: null,
+                    'id_pem' => $request->id_pem ?: null,
+                ]);
+            } elseif ($request->role === 'dosen') {
+                Dosen::create([
+                    'nidn' => $request->identifier,
+                    'user_id' => $user->id,
+                    'nama_dosen' => $request->name,
+                ]);
+            } elseif ($request->role === 'mentor') {
+                if ($request->pt) {
+                    Perusahaan::firstOrCreate(['nama_perusahaan' => $request->pt]);
+                }
+
+                PembimbingIndustri::create([
+                    'user_id' => $user->id,
+                    'nama_pem' => $request->name,
+                    'perusahaan' => $request->pt,
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Akun ' . ucfirst($request->role) . ' berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Gagal menambahkan akun: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+
+            if ($user->role === 'mahasiswa') {
+                $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+                if ($mahasiswa) {
+                    $namaProdi = $request->prodi ?? 'TRO';
+                    $prodi = ProgramStudi::firstOrCreate(['nama_prodi' => $namaProdi]);
+
+                    if ($request->pt) {
+                        Perusahaan::firstOrCreate(['nama_perusahaan' => $request->pt]);
+                    }
+
+                    $cleanNim = $request->identifier;
+                    if (str_starts_with($cleanNim, 'NIM: ')) {
+                        $cleanNim = trim(str_replace('NIM:', '', $cleanNim));
+                    }
+
+                    // PERBAIKAN: Menyertakan nidn dan id_pem agar ikut terupdate
+                    $mahasiswa->update([
+                        'nim' => $cleanNim,
+                        'nama_mhs' => $request->name,
+                        'kelas' => $request->kelas,
+                        'id_prodi' => $prodi->id_prodi,
+                        'nidn' => $request->nidn ?: null,
+                        'id_pem' => $request->id_pem ?: null,
+                    ]);
+                }
+            } elseif ($user->role === 'dosen') {
+                $dosen = Dosen::where('user_id', $user->id)->first();
+                if ($dosen) {
+                    $cleanNidn = $request->identifier;
+                    if (str_starts_with($cleanNidn, 'NIP: ')) {
+                        $cleanNidn = trim(str_replace('NIP:', '', $cleanNidn));
+                    }
+                    $dosen->update([
+                        'nidn' => $cleanNidn,
+                        'nama_dosen' => $request->name,
+                    ]);
+                }
+            } elseif ($user->role === 'mentor') {
+                if ($request->pt) {
+                    Perusahaan::firstOrCreate(['nama_perusahaan' => $request->pt]);
+                }
+
+                $mentor = PembimbingIndustri::where('user_id', $user->id)->first();
+                if ($mentor) {
+                    $mentor->update([
+                        'nama_pem' => $request->name,
+                        'perusahaan' => $request->pt,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Akun berhasil diperbarui']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Gagal memperbarui akun: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'password' => 'required|string|min:1',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'plain_password' => $request->password,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Password berhasil diubah']);
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        
+        if ($user->role === 'mahasiswa') {
+            Mahasiswa::where('user_id', $user->id)->delete();
+        } elseif ($user->role === 'dosen') {
+            Dosen::where('user_id', $user->id)->delete();
+        } elseif ($user->role === 'mentor') {
+            PembimbingIndustri::where('user_id', $user->id)->delete();
+        }
+        
+        $user->delete();
+
+        return response()->json(['success' => true, 'message' => 'User berhasil dihapus']);
+    }
+
+    public function storePerusahaan(Request $request)
+    {
+        $request->validate([
+            'nama_perusahaan' => 'required|string|max:255|unique:perusahaans,nama_perusahaan',
+            'alamat' => 'nullable|string',
+            'kontak' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $perusahaan = Perusahaan::create([
+                'nama_perusahaan' => $request->nama_perusahaan,
+                'alamat' => $request->alamat,
+                'kontak' => $request->kontak,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Perusahaan berhasil ditambahkan', 'data' => $perusahaan]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menambahkan perusahaan: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyPerusahaan($id)
+    {
+        try {
+            $perusahaan = Perusahaan::findOrFail($id);
+            $perusahaan->delete();
+
+            return response()->json(['success' => true, 'message' => 'Perusahaan berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus perusahaan: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function assignPembimbing(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|exists:mahasiswas,nim',
+            'nidn' => 'nullable|exists:dosens,nidn',
+            'id_pem' => 'nullable|exists:pembimbing_industris,id_pem',
+        ]);
+
+        try {
+            $mahasiswa = Mahasiswa::where('nim', $request->nim)->firstOrFail();
+            $mahasiswa->nidn = $request->nidn ?: null;
+            $mahasiswa->id_pem = $request->id_pem ?: null;
+            $mahasiswa->save();
+
+            $dosen = $mahasiswa->dosen;
+            $mentor = $mahasiswa->pembimbingIndustri;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Pembimbing berhasil diperbarui',
+                'dosen_name' => $dosen ? $dosen->nama_dosen : null,
+                'mentor_name' => $mentor ? $mentor->nama_pem : null,
+                'pt' => $mentor ? $mentor->perusahaan : null,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal memperbarui pembimbing: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function storeJadwal(Request $request)
+    {
+        $request->validate([
+            'nidn' => 'required|exists:dosens,nidn',
+            'perusahaan' => 'required|exists:perusahaans,nama_perusahaan',
+            'tanggal' => 'required|date',
+        ]);
+
+        try {
+            $jadwal = JadwalMonitoring::create([
+                'nidn' => $request->nidn,
+                'perusahaan' => $request->perusahaan,
+                'tanggal' => $request->tanggal,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Jadwal berhasil ditambahkan', 'data' => $jadwal]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menambahkan jadwal: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyJadwal($id)
+    {
+        try {
+            $jadwal = JadwalMonitoring::findOrFail($id);
+            $jadwal->delete();
+            return response()->json(['success' => true, 'message' => 'Jadwal berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus jadwal: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // --- FITUR BACKUP, RESTORE, DELETE ALL & RENAME KATEGORI ---
+    
+    public function listBackups()
+    {
+        $directory = storage_path('app/private/backup');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+        $files = glob($directory . '/*.json');
+        $backupList = [];
+        foreach ($files as $file) {
+            $backupList[] = [
+                'filename' => basename($file),
+                'size' => filesize($file),
+                'updated_at' => date('Y-m-d H:i:s', filemtime($file))
+            ];
+        }
+        return response()->json(['success' => true, 'data' => $backupList]);
+    }
+
+    public function createBackup(Request $request)
+    {
+        $category = $request->input('category', 'mahasiswa');
+        $filename = $request->input('filename', 'backup_' . $category . '_' . date('Ymd_His') . '.json');
+        
+        $data = [];
+        if ($category === 'mahasiswa') {
+            $data = Mahasiswa::with(['user', 'programStudi', 'pembimbingIndustri'])->get();
+        } elseif ($category === 'dosen') {
+            $data = Dosen::with('user')->get();
+        } elseif ($category === 'mentor') {
+            $data = PembimbingIndustri::with('user')->get();
+        } elseif ($category === 'perusahaan') {
+            $data = Perusahaan::all();
+        }
+
+        $directory = storage_path('app/private/backup');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        $filePath = $directory . '/' . $filename;
+        file_put_contents($filePath, json_encode($data, JSON_PRETTY_PRINT));
+
+        return response()->json(['success' => true, 'message' => "Backup kategori {$category} berhasil disimpan ke {$filename}"]);
+    }
+
+    public function deleteCategoryData(Request $request)
+    {
+        $category = $request->input('category');
+        DB::beginTransaction();
+        try {
+            if ($category === 'mahasiswa') {
+                $userIds = Mahasiswa::pluck('user_id');
+                Mahasiswa::query()->delete();
+                User::whereIn('id', $userIds)->delete();
+            } elseif ($category === 'dosen') {
+                $userIds = Dosen::pluck('user_id');
+                Dosen::query()->delete();
+                User::whereIn('id', $userIds)->delete();
+            } elseif ($category === 'mentor') {
+                $userIds = PembimbingIndustri::pluck('user_id');
+                PembimbingIndustri::query()->delete();
+                User::whereIn('id', $userIds)->delete();
+            } elseif ($category === 'perusahaan') {
+                Perusahaan::query()->delete();
+            }
+            DB::commit();
+            return response()->json(['success' => true, 'message' => "Seluruh data kategori {$category} berhasil dihapus."]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus data: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function renameBackup(Request $request)
+    {
+        $oldName = $request->input('old_name');
+        $newName = $request->input('new_name');
+        
+        $directory = storage_path('app/private/backup');
+        $oldPath = $directory . '/' . $oldName;
+        $newPath = $directory . '/' . (str_ends_with($newName, '.json') ? $newName : $newName . '.json');
+
+        if (file_exists($oldPath)) {
+            rename($oldPath, $newPath);
+            return response()->json(['success' => true, 'message' => 'File backup berhasil direname.']);
+        }
+        return response()->json(['success' => false, 'message' => 'File backup tidak ditemukan.'], 404);
+    }
+
+    public function deleteBackupFile(Request $request)
+    {
+        $filename = $request->input('filename');
+        $filePath = storage_path('app/private/backup/' . $filename);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            return response()->json(['success' => true, 'message' => 'File backup berhasil dihapus.']);
+        }
+        return response()->json(['success' => false, 'message' => 'File tidak ditemukan.'], 404);
+    }
+}
