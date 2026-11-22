@@ -172,6 +172,7 @@ class MahasiswaController extends Controller
 
     public function destroy(Mahasiswa $mahasiswa)
     {
+        \DB::table('nilai_mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->delete();
         $mahasiswa->laporan()->delete();
         $mahasiswa->logbook()->delete();
         $mahasiswa->logbookHarian()->delete();
@@ -181,7 +182,7 @@ class MahasiswaController extends Controller
 
         $user = $mahasiswa->user;
         $mahasiswa->delete();
-        $user->delete();
+        $user?->delete();
 
         return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil dihapus.');
     }

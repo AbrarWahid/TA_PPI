@@ -1,4 +1,4 @@
-@extends('external.dosen.app')
+@extends('layouts.app')
 @section('title', 'Riwayat TTD & Approval')
 
 @section('content')

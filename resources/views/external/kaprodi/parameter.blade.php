@@ -1,21 +1,21 @@
-@extends('external.kaprodi.app')
+@extends('layouts.app')
 @section('title', 'Manajemen Formulir')
 
 @section('content')
 <div x-data="parameterApp()" class="space-y-6">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#e4e4e7] pb-4">
         <div>
             <h2 class="text-3xl font-black text-blue-900 tracking-wide">Manajemen Formulir</h2>
             <p class="text-gray-600 mt-1 font-medium">Atur sub-kategori dan indikator penilaian yang digunakan oleh Mahasiswa, Dosen, dan Mentor.</p>
         </div>
         <div class="flex gap-2 mt-4 md:mt-0">
-            <button x-show="activeTab === 'mahasiswa'" @click="openModal()" class="bg-yellow-500 hover:bg-yellow-600 text-yellow-950 font-bold py-2 px-4 rounded-xl shadow-[4px_4px_0_0_#ca8a04] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
+            <button x-show="activeTab === 'mahasiswa'" @click="openModal()" class="bg-[#013981] hover:bg-[#012b63] text-white font-bold py-2 px-4 rounded-xl shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
                 + Tambah Form Saran
             </button>
-            <button x-show="activeTab === 'dosen'" @click="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-[4px_4px_0_0_#1e3a8a] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
+            <button x-show="activeTab === 'dosen'" @click="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
                 + Tambah Parameter Dosen
             </button>
-            <button x-show="activeTab === 'mentor'" @click="openModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl shadow-[4px_4px_0_0_#581c87] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
+            <button x-show="activeTab === 'mentor'" @click="openModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none" style="display: none;">
                 + Tambah Form Saran Mentor
             </button>
         </div>
@@ -29,7 +29,7 @@
     @endif
 
     <!-- TABS NAVIGATION -->
-    <div class="flex border-b-2 border-gray-200 mb-6 flex-wrap">
+    <div class="flex border-b border-[#e4e4e7] mb-6 flex-wrap">
         <button @click="activeTab = 'mahasiswa'" :class="{'border-blue-900 text-blue-900 border-b-4 font-black': activeTab === 'mahasiswa', 'text-gray-500 hover:text-blue-700 font-bold': activeTab !== 'mahasiswa'}" class="px-6 py-3 transition-colors text-lg">
             Mahasiswa
         </button>
@@ -49,24 +49,24 @@
             </div>
             <h2 class="text-2xl font-black text-gray-800">Formulir Mahasiswa</h2>
         </div>
-        <div class="bg-white rounded-xl border-2 border-yellow-500 shadow-[6px_6px_0_0_#eab308] overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
             <div class="bg-yellow-500 p-4 text-yellow-950">
                 <h3 class="text-xl font-black uppercase">Kategori: Saran & Masukan PT</h3>
             </div>
             <div class="p-4 space-y-4">
                 @forelse($parameters->where('jenis', 'saran_mahasiswa') as $param)
                     <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-yellow-400 transition-colors">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                             <h4 class="font-black text-xl text-yellow-900 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
                                 {{ $param->sub_kategori }}
                             </h4>
                             <div class="flex gap-2 w-full sm:w-auto">
-                                <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                 <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus form saran ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                    <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                 </form>
                             </div>
                         </div>
@@ -104,24 +104,24 @@
 
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
             <!-- Presentasi -->
-            <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-blue-900 p-4 text-white">
                     <h3 class="text-xl font-black uppercase">Bagian A: Mutu Presentasi</h3>
                 </div>
                 <div class="p-4 space-y-4">
                     @forelse($parameters->where('jenis', 'presentasi') as $param)
                         <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-blue-300 transition-colors">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                                 <h4 class="font-black text-xl text-blue-900 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     {{ $param->sub_kategori }}
                                 </h4>
                                 <div class="flex gap-2 w-full sm:w-auto">
-                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                     <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus parameter ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -143,24 +143,24 @@
             </div>
 
             <!-- Makalah -->
-            <div class="bg-white rounded-xl border-2 border-emerald-900 shadow-[6px_6px_0_0_#064e3b] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-emerald-900 p-4 text-white">
                     <h3 class="text-xl font-black uppercase">Bagian B: Penulisan Makalah</h3>
                 </div>
                 <div class="p-4 space-y-4">
                     @forelse($parameters->where('jenis', 'makalah') as $param)
                         <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-emerald-300 transition-colors">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                                 <h4 class="font-black text-xl text-emerald-900 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     {{ $param->sub_kategori }}
                                 </h4>
                                 <div class="flex gap-2 w-full sm:w-auto">
-                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                     <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus parameter ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -194,24 +194,24 @@
 
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
             <!-- Disiplin & Prestasi -->
-            <div class="bg-white rounded-xl border-2 border-purple-900 shadow-[6px_6px_0_0_#581c87] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-purple-900 p-4 text-white">
                     <h3 class="text-xl font-black uppercase">Form Disiplin & Prestasi</h3>
                 </div>
                 <div class="p-4 space-y-4">
                     @forelse($parameters->where('jenis', 'disiplin_prestasi') as $param)
                         <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-purple-400 transition-colors">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                                 <h4 class="font-black text-xl text-purple-900 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                                     {{ $param->sub_kategori }}
                                 </h4>
                                 <div class="flex gap-2 w-full sm:w-auto">
-                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                     <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus form disiplin ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -238,24 +238,24 @@
             </div>
 
             <!-- Kuisioner Evaluasi -->
-            <div class="bg-white rounded-xl border-2 border-emerald-900 shadow-[6px_6px_0_0_#064e3b] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-emerald-900 p-4 text-white">
                     <h3 class="text-xl font-black uppercase">Evaluasi Kuisioner Soft & Hard Skill</h3>
                 </div>
                 <div class="p-4 space-y-4">
                     @forelse($parameters->where('jenis', 'kuisioner_mentor') as $param)
                         <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-emerald-400 transition-colors">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                                 <h4 class="font-black text-xl text-emerald-900 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     {{ $param->sub_kategori }}
                                 </h4>
                                 <div class="flex gap-2 w-full sm:w-auto">
-                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                     <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus form kuisioner ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -282,24 +282,24 @@
             </div>
 
             <!-- Saran & Masukan dari Mentor -->
-            <div class="bg-white rounded-xl border-2 border-fuchsia-900 shadow-[6px_6px_0_0_#701a75] overflow-hidden col-span-1 xl:col-span-2 mt-8">
+            <div class="bg-white rounded-xl border-2 border-fuchsia-900 shadow-surface overflow-hidden col-span-1 xl:col-span-2 mt-8">
                 <div class="bg-fuchsia-900 p-4 text-white">
                     <h3 class="text-xl font-black uppercase">Kategori: Saran & Masukan Mentor</h3>
                 </div>
                 <div class="p-4 space-y-4">
                     @forelse($parameters->where('jenis', 'saran_mentor') as $param)
                         <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50 hover:border-fuchsia-400 transition-colors">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b-2 border-gray-200 pb-3 gap-3">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-[#e4e4e7] pb-3 gap-3">
                                 <h4 class="font-black text-xl text-fuchsia-900 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
                                     {{ $param->sub_kategori }}
                                 </h4>
                                 <div class="flex gap-2 w-full sm:w-auto">
-                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#713f12] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
+                                    <button @click="openModal({{ $param }})" class="flex-1 sm:flex-none text-sm bg-yellow-400 text-yellow-900 px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Edit</button>
                                     <form action="{{ route('external.kaprodi.parameter.destroy', $param->id) }}" method="POST" class="flex-1 sm:flex-none" onsubmit="return confirm('Yakin ingin menghapus form saran mentor ini?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-[2px_2px_0_0_#7f1d1d] transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
+                                        <button type="submit" class="w-full text-sm bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold shadow-surface transition-all hover:translate-y-px hover:translate-x-px hover:shadow-none text-center">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -332,7 +332,7 @@
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="closeModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div x-show="showModal" x-transition.scale class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border-4 border-blue-900">
+            <div x-show="showModal" x-transition.scale class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-[#e4e4e7]">
                 <form :action="formAction" method="POST">
                     @csrf
                     <template x-if="isEditing">
@@ -393,7 +393,7 @@
                     </div>
                     <div class="px-6 py-4 bg-gray-50 flex justify-end gap-2 border-t">
                         <button type="button" @click="closeModal()" class="px-4 py-2 border-2 border-gray-300 rounded-md font-bold text-gray-700 bg-white hover:bg-gray-50">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 border-2 border-blue-900 text-white rounded-md font-bold shadow-[2px_2px_0_0_#1e3a8a] hover:translate-y-px hover:translate-x-px hover:shadow-none">Simpan</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 border border-[#e4e4e7] text-white rounded-md font-bold shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -427,7 +427,7 @@
             openModal(param = null) {
                 if (param) {
                     this.isEditing = true;
-                    this.formAction = `/kaprodi/parameter/${param.id}`;
+                    this.formAction = `/external/kaprodi/parameter/${param.id}`;
                     this.form = {
                         id: param.id,
                         jenis: param.jenis,
@@ -436,7 +436,7 @@
                     };
                 } else {
                     this.isEditing = false;
-                    this.formAction = '{{ route("kaprodi.parameter.store") }}';
+                    this.formAction = '{{ route("external.kaprodi.parameter.store") }}';
                     let defaultJenis = 'presentasi';
                     if (this.activeTab === 'mahasiswa') defaultJenis = 'saran_mahasiswa';
                     if (this.activeTab === 'mentor') defaultJenis = 'saran_mentor';

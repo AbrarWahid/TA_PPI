@@ -1,21 +1,21 @@
-@extends('external.admin.app')
+@extends('layouts.app')
 @section('title', 'Manajemen Akun & Perusahaan')
 
 @section('content')
 <div x-data="userManagementApp()" class="space-y-6">
 
     <!-- Header Panel -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#e4e4e7] pb-4">
         <div>
             <h2 class="text-3xl font-black text-blue-900 tracking-wide">Kelola Akun & Perusahaan</h2>
             <p class="text-gray-600 mt-1 font-medium">Tambah, hapus, filter akun, serta atur pembimbing dosen & mentor untuk mahasiswa.</p>
         </div>
         <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
-            <button @click="openPerusahaanModal()" class="bg-emerald-600 text-white font-bold py-2 px-5 rounded-lg border-2 border-emerald-900 shadow-[4px_4px_0_0_#065f46] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all flex items-center gap-2">
+            <button @click="openPerusahaanModal()" class="bg-emerald-600 text-white font-bold py-2 px-5 rounded-lg border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9m4 0v10"></path></svg>
                 + Perusahaan Baru
             </button>
-            <button @click="openAddModal()" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all flex items-center gap-2">
+            <button @click="openAddModal()" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
                 + Tambah Akun
             </button>
@@ -23,14 +23,14 @@
     </div>
 
     <!-- MAIN CARD -->
-    <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+    <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden flex flex-col md:flex-row min-h-[600px]">
         
         <!-- SIDEBAR FILTER (Kiri) -->
-        <div class="w-full md:w-72 bg-blue-50 border-r-2 border-blue-200 p-4 flex flex-col gap-6 flex-shrink-0">
+        <div class="w-full md:w-72 bg-blue-50 border-r border-[#e4e4e7] p-4 flex flex-col gap-6 flex-shrink-0">
             
             <!-- Kategori Role Utama -->
             <div>
-                <p class="text-xs font-black text-blue-900 uppercase tracking-widest mb-3 border-b-2 border-blue-200 pb-1">Kategori Data</p>
+                <p class="text-xs font-black text-blue-900 uppercase tracking-widest mb-3 border-b border-[#e4e4e7] pb-1">Kategori Data</p>
                 <div class="space-y-2">
                     <button @click="setRole('mahasiswa')" :class="activeRole === 'mahasiswa' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-blue-100'" class="w-full text-left px-4 py-2 rounded-lg font-bold border border-blue-200 transition-all flex justify-between items-center">
                         Mahasiswa <span class="text-xs bg-black/10 px-2 py-0.5 rounded-full" x-text="countUsers('mahasiswa')"></span>
@@ -44,9 +44,6 @@
                     <button @click="setRole('admin')" :class="activeRole === 'admin' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-blue-100'" class="w-full text-left px-4 py-2 rounded-lg font-bold border border-blue-200 transition-all flex justify-between items-center">
                         Admin <span class="text-xs bg-black/10 px-2 py-0.5 rounded-full" x-text="countUsers('admin')"></span>
                     </button>
-                    <button @click="setRole('kaprodi')" :class="activeRole === 'kaprodi' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-blue-100'" class="w-full text-left px-4 py-2 rounded-lg font-bold border border-blue-200 transition-all flex justify-between items-center">
-                        KPS <span class="text-xs bg-black/10 px-2 py-0.5 rounded-full" x-text="countUsers('kaprodi')"></span>
-                    </button>
                     <button @click="setRole('perusahaan')" :class="activeRole === 'perusahaan' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-emerald-100'" class="w-full text-left px-4 py-2 rounded-lg font-bold border border-emerald-200 transition-all flex justify-between items-center">
                         Perusahaan / PT <span class="text-xs bg-black/10 px-2 py-0.5 rounded-full" x-text="perusahaans.length"></span>
                     </button>
@@ -56,7 +53,7 @@
             <!-- Sub-Filter & Manajemen Kelas -->
             <div x-show="activeRole === 'mahasiswa'" x-transition class="space-y-4">
                 <div>
-                    <p class="text-xs font-black text-blue-900 uppercase tracking-widest mb-3 border-b-2 border-blue-200 pb-1">Filter Program Studi</p>
+                    <p class="text-xs font-black text-blue-900 uppercase tracking-widest mb-3 border-b border-[#e4e4e7] pb-1">Filter Program Studi</p>
                     <div class="space-y-2">
                         <label class="flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded">
                             <input type="radio" name="prodi" value="ALL" x-model="filterProdi" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
@@ -136,7 +133,7 @@
                 <template x-if="activeRole !== 'perusahaan'">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b-2 border-gray-300 text-gray-600">
+                            <tr class="border-b border-[#e4e4e7] text-gray-600">
                                 <th class="p-3 font-black text-sm uppercase">Nama / Identitas</th>
                                 <th class="p-3 font-black text-sm uppercase">Email Login</th>
                                 <th class="p-3 font-black text-sm uppercase">Password</th>
@@ -240,7 +237,7 @@
                 <template x-if="activeRole === 'perusahaan'">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b-2 border-gray-300 text-gray-600">
+                            <tr class="border-b border-[#e4e4e7] text-gray-600">
                                 <th class="p-3 font-black text-sm uppercase">Nama Perusahaan / PT</th>
                                 <th class="p-3 font-black text-sm uppercase">Alamat</th>
                                 <th class="p-3 font-black text-sm uppercase">Kontak</th>
@@ -282,7 +279,7 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showModal = false"></div>
 
-            <div x-show="showModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border-4 border-blue-900 rounded-xl">
+            <div x-show="showModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border border-[#e4e4e7] rounded-xl">
                 
                 <div class="bg-blue-900 px-6 py-4 flex justify-between items-center text-white">
                     <h3 class="text-xl font-black uppercase" x-text="(isEdit ? 'Edit Akun ' : 'Tambah Akun ') + (activeRole === 'perusahaan' ? 'Mahasiswa' : activeRole)"></h3>
@@ -379,8 +376,8 @@
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t-2 border-gray-200 flex justify-end">
-                        <button type="submit" class="bg-green-500 text-white font-black px-6 py-2 rounded-lg border-2 border-green-900 shadow-[3px_3px_0_0_#14532d] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+                    <div class="pt-4 border-t border-[#e4e4e7] flex justify-end">
+                        <button type="submit" class="bg-[#013981] hover:bg-[#012b63] text-white font-medium px-6 py-2 rounded-lg border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                             <span x-text="isEdit ? 'Simpan Perubahan' : 'Simpan Akun Baru'"></span>
                         </button>
                     </div>
@@ -395,7 +392,7 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div x-show="showAssignModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showAssignModal = false"></div>
 
-            <div x-show="showAssignModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border-4 border-blue-900 rounded-xl">
+            <div x-show="showAssignModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border border-[#e4e4e7] rounded-xl">
                 
                 <div class="bg-blue-900 px-6 py-4 flex justify-between items-center text-white">
                     <div>
@@ -428,11 +425,11 @@
                         </select>
                     </div>
 
-                    <div class="pt-4 border-t-2 border-gray-200 flex justify-end gap-2">
+                    <div class="pt-4 border-t border-[#e4e4e7] flex justify-end gap-2">
                         <button type="button" @click="showAssignModal = false" class="px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-lg border border-gray-300 hover:bg-gray-300 transition-colors">
                             Batal
                         </button>
-                        <button type="submit" class="bg-blue-600 text-white font-black px-6 py-2 rounded-lg border-2 border-blue-900 shadow-[3px_3px_0_0_#1e3a8a] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+                        <button type="submit" class="bg-blue-600 text-white font-black px-6 py-2 rounded-lg border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                             Simpan Pembimbing
                         </button>
                     </div>
@@ -447,7 +444,7 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div x-show="showPasswordModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showPasswordModal = false"></div>
 
-            <div x-show="showPasswordModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-md w-full border-4 border-purple-900 rounded-xl">
+            <div x-show="showPasswordModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-md w-full border border-[#e4e4e7] rounded-xl">
                 
                 <div class="bg-purple-900 px-6 py-4 flex justify-between items-center text-white">
                     <div>
@@ -487,11 +484,11 @@
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t-2 border-gray-200 flex justify-end gap-2">
+                    <div class="pt-4 border-t border-[#e4e4e7] flex justify-end gap-2">
                         <button type="button" @click="showPasswordModal = false" class="px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-lg border border-gray-300 hover:bg-gray-300 transition-colors">
                             Batal
                         </button>
-                        <button type="submit" class="bg-purple-600 text-white font-black px-6 py-2 rounded-lg border-2 border-purple-900 shadow-[3px_3px_0_0_#581c87] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+                        <button type="submit" class="bg-purple-600 text-white font-black px-6 py-2 rounded-lg border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                             Simpan Password
                         </button>
                     </div>
@@ -506,7 +503,7 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div x-show="showPerusahaanModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="showPerusahaanModal = false"></div>
 
-            <div x-show="showPerusahaanModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border-4 border-emerald-900 rounded-xl">
+            <div x-show="showPerusahaanModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-lg w-full border border-[#e4e4e7] rounded-xl">
                 
                 <div class="bg-emerald-900 px-6 py-4 flex justify-between items-center text-white">
                     <h3 class="text-xl font-black uppercase">Tambah Perusahaan Baru</h3>
@@ -531,8 +528,8 @@
                         <input type="text" x-model="formPerusahaan.kontak" class="w-full border-2 border-gray-300 rounded p-2 font-bold outline-none focus:border-emerald-600" placeholder="Contoh: 021-1234567 / hr@astra.co.id">
                     </div>
 
-                    <div class="pt-4 border-t-2 border-gray-200 flex justify-end">
-                        <button type="submit" class="bg-emerald-600 text-white font-black px-6 py-2 rounded-lg border-2 border-emerald-950 shadow-[3px_3px_0_0_#064e3b] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+                    <div class="pt-4 border-t border-[#e4e4e7] flex justify-end">
+                        <button type="submit" class="bg-emerald-600 text-white font-black px-6 py-2 rounded-lg border-2 border-emerald-950 shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                             Simpan Perusahaan Baru
                         </button>
                     </div>
@@ -706,7 +703,7 @@
                     return;
                 }
                 try {
-                    let response = await fetch(`{{ url('/admin/users') }}/${this.formPassword.id}/password`, {
+                    let response = await fetch(`{{ url('/external/admin/users') }}/${this.formPassword.id}/password`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -756,7 +753,7 @@
 
                 try {
                     let method = this.isEdit ? 'PUT' : 'POST';
-                    let url = this.isEdit ? `{{ url('/admin/users') }}/${this.formUser.id}` : '{{ route("admin.users.store") }}';
+                    let url = this.isEdit ? `{{ url('/external/admin/users') }}/${this.formUser.id}` : '{{ route("external.admin.users.store") }}';
                     
                     let response = await fetch(url, {
                         method: method,
@@ -783,7 +780,7 @@
             async deleteUser(id) {
                 if(confirm('Yakin ingin menghapus akun ini secara permanen?')) {
                     try {
-                        let response = await fetch(`{{ url('/admin/users') }}/${id}`, {
+                        let response = await fetch(`{{ url('/external/admin/users') }}/${id}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -806,7 +803,7 @@
 
             async savePerusahaan() {
                 try {
-                    let response = await fetch('{{ route("admin.perusahaan.store") }}', {
+                    let response = await fetch('{{ route("external.admin.perusahaan.store") }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -839,7 +836,7 @@
             async deletePerusahaan(id) {
                 if(confirm('Yakin ingin menghapus perusahaan ini?')) {
                     try {
-                        let response = await fetch(`{{ url('/admin/perusahaan') }}/${id}`, {
+                        let response = await fetch(`{{ url('/external/admin/perusahaan') }}/${id}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -862,7 +859,7 @@
 
             async saveAssignPembimbing() {
                 try {
-                    let response = await fetch('{{ route("admin.mahasiswa.assign") }}', {
+                    let response = await fetch('{{ route("external.admin.mahasiswa.assign") }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

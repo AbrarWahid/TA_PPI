@@ -1,11 +1,11 @@
-@extends('external.admin.app')
+@extends('layouts.app')
 @section('title', 'Pusat Kendali Administrator')
 
 @section('content')
 <div x-data="adminDashboardApp()" class="space-y-8 pb-10">
 
     <!-- Header Panel -->
-    <div class="bg-white p-6 md:p-8 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0_0_#1e3a8a] flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+    <div class="bg-white p-6 md:p-8 rounded-2xl border border-[#e4e4e7] shadow-surface flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
         <!-- Dekorasi Latar -->
         <div class="absolute -right-10 -top-10 opacity-10 pointer-events-none">
             <svg class="w-64 h-64 text-blue-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13.5h-13L12 6.5z"/></svg>
@@ -18,7 +18,7 @@
             </p>
         </div>
         <div class="relative z-10">
-            <a href="{{ route('external.admin.users') }}" class="bg-yellow-400 text-blue-900 font-black py-3 px-8 rounded-xl border-4 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-3 text-lg">
+            <a href="{{ route('external.admin.users') }}" class="bg-[#013981] text-white font-black py-3 px-8 rounded-xl border border-[#e4e4e7] shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-3 text-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 Kelola Semua Akun
             </a>
@@ -29,8 +29,8 @@
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
         
         <!-- BAGIAN KIRI: Setting Jam Minimum (Format Frame Accordion) -->
-        <div class="bg-white p-6 md:p-8 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0_0_#1e3a8a] flex flex-col h-full">
-            <div class="flex items-center gap-4 border-b-4 border-gray-100 pb-4 mb-6">
+        <div class="bg-white p-6 md:p-8 rounded-2xl border border-[#e4e4e7] shadow-surface flex flex-col h-full">
+            <div class="flex items-center gap-4 border-b border-[#e4e4e7] pb-4 mb-6">
                 <div class="bg-blue-100 p-3 rounded-xl border-2 border-blue-300 text-blue-800">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
@@ -51,9 +51,9 @@
                             <svg :class="expanded ? 'rotate-180' : ''" class="w-6 h-6 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
                         <div x-show="expanded" x-collapse.duration.300ms>
-                            <div class="p-4 pt-0 border-t-2 border-gray-200 mt-2">
+                            <div class="p-4 pt-0 border-t border-[#e4e4e7] mt-2">
                                 <div class="flex justify-end mb-3">
-                                    <button @click="openMatkulModal(prodi)" class="bg-blue-600 text-white text-xs font-black px-4 py-2 rounded-lg border-b-4 border-blue-900 hover:translate-y-1 hover:border-b-0 transition-all">+ Tambah Matkul</button>
+                                    <button @click="openMatkulModal(prodi)" class="bg-blue-600 text-white text-xs font-black px-4 py-2 rounded-lg border-b border-[#e4e4e7] hover:translate-y-1 hover:border-b-0 transition-all">+ Tambah Matkul</button>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <template x-for="matkul in prodi.mata_kuliahs" :key="matkul.id">
@@ -86,8 +86,8 @@
         </div>
 
         <!-- BAGIAN KANAN: Mapping Dosen ke PT -->
-        <div class="bg-white p-8 rounded-2xl border-4 border-blue-900 shadow-[8px_8px_0_0_#1e3a8a] flex flex-col h-full">
-            <div class="flex items-center gap-4 border-b-4 border-gray-100 pb-4 mb-6">
+        <div class="bg-white p-8 rounded-2xl border border-[#e4e4e7] shadow-surface flex flex-col h-full">
+            <div class="flex items-center gap-4 border-b border-[#e4e4e7] pb-4 mb-6">
                 <div class="bg-blue-100 p-3 rounded-xl border-2 border-blue-300 text-blue-800">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </div>
@@ -124,7 +124,7 @@
                         <label class="block text-xs font-black text-blue-900 uppercase mb-1">Tanggal Kunjungan</label>
                         <input type="date" x-model="mapForm.date" required class="w-full border-2 border-blue-300 rounded-lg p-2.5 text-sm font-bold outline-none focus:border-blue-600 bg-white">
                     </div>
-                    <button type="submit" class="w-full md:w-1/3 bg-blue-600 text-white font-black py-3 px-4 rounded-xl border-4 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all h-[52px]">
+                    <button type="submit" class="w-full md:w-1/3 bg-blue-600 text-white font-black py-3 px-4 rounded-xl border border-[#e4e4e7] shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all h-[52px]">
                         + Tetapkan
                     </button>
                 </div>
@@ -186,7 +186,7 @@
     
     <!-- Modal Matkul -->
     <div x-show="isMatkulModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" x-cloak>
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-blue-900" @click.away="isMatkulModalOpen = false">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-[#e4e4e7]" @click.away="isMatkulModalOpen = false">
             <h3 class="text-2xl font-black text-blue-900 mb-6" x-text="matkulForm.id ? 'Edit Mata Kuliah' : 'Tambah Mata Kuliah'"></h3>
             <form @submit.prevent="saveMatkul()">
                 <div class="space-y-4">
@@ -205,7 +205,7 @@
                 </div>
                 <div class="mt-8 flex justify-end gap-3">
                     <button type="button" @click="isMatkulModalOpen = false" class="px-5 py-2 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Batal</button>
-                    <button type="submit" class="bg-blue-600 text-white font-black py-2 px-6 rounded-xl border-b-4 border-blue-900 hover:translate-y-1 hover:border-b-0 transition-all">Simpan</button>
+                    <button type="submit" class="bg-blue-600 text-white font-black py-2 px-6 rounded-xl border-b border-[#e4e4e7] hover:translate-y-1 hover:border-b-0 transition-all">Simpan</button>
                 </div>
             </form>
         </div>
@@ -234,7 +234,7 @@
             mapForm: { dosenId: '', ptName: '', date: '' },
 
             addMapping() {
-                fetch('{{ route("admin.jadwal.store") }}', {
+                fetch('{{ route("external.admin.jadwal.store") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -262,7 +262,7 @@
 
             deleteMapping(id, idx) {
                 if(!confirm('Yakin ingin menghapus jadwal ini?')) return;
-                fetch(`/admin/jadwal/${id}`, {
+                fetch(`/external/admin/jadwal/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -296,7 +296,7 @@
                 this.isMatkulModalOpen = true;
             },
             saveMatkul() {
-                const url = this.matkulForm.id ? `/admin/matkul/${this.matkulForm.id}` : '/admin/matkul';
+                const url = this.matkulForm.id ? `/external/admin/matkul/${this.matkulForm.id}` : '/external/admin/matkul';
                 const method = this.matkulForm.id ? 'PUT' : 'POST';
                 
                 fetch(url, {
@@ -323,7 +323,7 @@
             },
             deleteMatkul(id) {
                 if(!confirm('Yakin ingin menghapus mata kuliah ini?')) return;
-                fetch(`/admin/matkul/${id}`, {
+                fetch(`/external/admin/matkul/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

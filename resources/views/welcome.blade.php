@@ -1,607 +1,561 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PBL Portal — AE Polman Bandung</title>
+    <title>PBL &amp; PPI Portal — Politeknik Manufaktur Bandung</title>
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        aqua: {
-                            50:  '#f0fffe',
-                            100: '#ccfff7',
-                            200: '#7fffd4',
-                            300: '#40e0d0',
-                            400: '#00c4b4',
-                            500: '#00a896',
-                            600: '#008080',
-                            700: '#006666',
-                            800: '#004d4d',
-                            900: '#003333',
-                        }
-                    },
-                    keyframes: {
-                        float: {
-                            '0%,100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-14px)' },
-                        },
-                    },
-                    animation: {
-                        float: 'float 7s ease-in-out infinite',
-                    }
-                }
-            }
-        }
-    </script>
+    @include('layouts.partials.design-system')
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        ::selection { background: #7fffd4; color: #004d4d; }
-
-        .dot-grid {
-            background-image: radial-gradient(#008080 1px, transparent 0);
-            background-size: 28px 28px;
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50%      { transform: translateY(-10px); }
         }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #008080 0%, #40e0d0 50%, #7fffd4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .animate-float-slow {
+            animation: floatSlow 6s ease-in-out infinite;
         }
-
-        html { scroll-behavior: smooth; }
-
-        #navbar {
-            transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        #navbar.scrolled {
-            background: rgba(255,255,255,0.97) !important;
-            box-shadow: 0 1px 24px 0 rgba(0,128,128,0.10);
-            border-bottom-color: rgba(127,255,212,0.4) !important;
-        }
+        .h-anim-1 { animation: heroReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
+        .h-anim-2 { animation: heroReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
+        .h-anim-3 { animation: heroReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both; }
+        .h-anim-4 { animation: heroReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both; }
+        .h-anim-5 { animation: heroReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both; }
 
-        .feature-card:hover {
-            box-shadow: 0 8px 40px -8px rgba(0,128,128,0.18);
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        .nav-link { position: relative; }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            left: 0; bottom: -2px;
-            width: 0; height: 2px;
-            background: #008080;
-            border-radius: 9999px;
-            transition: width 0.25s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-
-        .blob {
-            filter: blur(90px);
-            border-radius: 9999px;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(1); opacity: 0.8; }
-            80%, 100% { transform: scale(2.2); opacity: 0; }
-        }
-        .pulse-dot { position: relative; }
-        .pulse-dot::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: #008080;
-            animation: pulse-ring 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="min-h-screen bg-white font-sans text-aqua-900 antialiased">
+<body class="flex flex-col min-h-screen bg-white font-sans text-[#0b0b0c] antialiased selection:bg-[#013981] selection:text-white">
 
 {{-- ============================================================
-     NAVBAR
+     STICKY NAVBAR (Polman Logos + Center Links + Sliding Pill Button)
 ============================================================ --}}
-<nav id="navbar" class="fixed top-0 w-full z-50 bg-white/85 backdrop-blur-xl border-b border-aqua-200/30">
-    <div class="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
+<header class="sticky top-0 z-50 w-full bg-slate-50/85 backdrop-blur-md border-b border-slate-200/70">
+    <div class="flex items-center justify-between px-4 lg:px-8 py-3.5 max-w-7xl mx-auto">
 
-        <a href="#" class="flex items-center gap-3 group">
-            <div class="h-12 w-12 rounded-xl bg-aqua-800 flex items-center justify-center shadow-sm group-hover:bg-aqua-700 transition-colors overflow-hidden">
-                <img src="{{ asset('images/logo.png') }}" alt="AE Logo" class="h-9 w-9 object-contain"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <span class="text-aqua-200 font-black text-sm hidden items-center justify-center w-full h-full">AE</span>
-            </div>
-            <div class="leading-tight">
-                <span class="font-black text-aqua-800 text-base tracking-tight">PBL Portal</span>
-                <span class="block text-[10px] text-aqua-600 font-semibold tracking-widest uppercase">AE Polman Bandung</span>
-            </div>
+        {{-- Left: Polman & BLU Speed Logos --}}
+        <a href="{{ url('/') }}" class="shrink-0 flex items-center gap-3.5">
+            <img src="{{ asset('images/logo-polman-teks.webp') }}" alt="Logo Polman" class="h-8 md:h-10 w-auto object-contain">
+            <img src="{{ asset('images/logo-blu-speed.png') }}" alt="Logo BLU Speed" class="h-9 md:h-11 w-auto object-contain">
         </a>
 
-        <div class="hidden md:flex items-center gap-8">
-            <a href="#fitur" class="nav-link text-sm font-semibold text-aqua-700/70 hover:text-aqua-800 transition-colors">Fitur</a>
-            <a href="#alur"  class="nav-link text-sm font-semibold text-aqua-700/70 hover:text-aqua-800 transition-colors">Alur</a>
-            <a href="#role"  class="nav-link text-sm font-semibold text-aqua-700/70 hover:text-aqua-800 transition-colors">Pengguna</a>
-        </div>
+        {{-- Center: Navigation Links --}}
+        <nav class="hidden md:flex items-center gap-7">
+            <a href="#prodi"      class="text-sm font-semibold text-slate-600 hover:text-[#013981] transition-colors">Program Studi</a>
+            <a href="#fitur"      class="text-sm font-semibold text-slate-600 hover:text-[#013981] transition-colors">Kapabilitas Sistem</a>
+            <a href="#keunggulan" class="text-sm font-semibold text-slate-600 hover:text-[#013981] transition-colors">Standar Mutu</a>
+            <a href="#faq"        class="text-sm font-semibold text-slate-600 hover:text-[#013981] transition-colors">Informasi &amp; FAQ</a>
+        </nav>
 
+        {{-- Right: Animated Sliding Pill CTA --}}
         <div class="flex items-center gap-3">
-            <a href="{{ route('register') }}"
-               class="hidden sm:inline-flex items-center gap-1.5 text-aqua-700 font-bold text-sm px-4 py-2 rounded-xl hover:bg-aqua-100/60 transition-colors">
-                Daftar
-            </a>
-            <a href="{{ route('login') }}"
-               class="inline-flex items-center gap-2 bg-aqua-200 text-aqua-800 px-5 py-2.5 rounded-xl font-black text-sm hover:bg-aqua-300 transition-colors shadow-sm shadow-aqua-300/40 active:scale-95 border border-aqua-300/50">
-                <span class="material-symbols-outlined" style="font-size:16px;">login</span>
-                Masuk
-            </a>
-        </div>
-    </div>
-</nav>
-
-
-{{-- ============================================================
-     HERO
-============================================================ --}}
-<section id="hero" class="relative pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden min-h-[92vh] flex items-center">
-
-    <div class="blob w-[60%] h-[70%] bg-aqua-200/35 -top-[10%] -right-[5%]"></div>
-    <div class="blob w-[45%] h-[55%] bg-aqua-300/15 top-[30%] -left-[10%]"></div>
-    <div class="blob w-[35%] h-[40%] bg-aqua-200/15 bottom-0 right-[20%]"></div>
-    <div class="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none"></div>
-
-    <div class="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center w-full">
-
-        {{-- LEFT --}}
-        <div class="space-y-9">
-
-            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-aqua-200/20 border border-aqua-200/60">
-                <span class="pulse-dot w-2 h-2 rounded-full bg-aqua-600 shrink-0"></span>
-                <span class="text-aqua-700 font-bold text-[11px] tracking-[0.25em] uppercase font-mono">
-                    Sistem Aktif — AE Polman Bandung
-                </span>
-            </div>
-
-            <div class="space-y-1">
-                <h1 class="text-6xl lg:text-7xl font-black text-aqua-900 leading-[0.88] tracking-tighter">
-                    Kelola PBL
-                </h1>
-                <h1 class="text-6xl lg:text-7xl font-black leading-[0.88] tracking-tighter gradient-text">
-                    Lebih Cerdas.
-                </h1>
-            </div>
-
-            <p class="text-aqua-800/60 text-xl max-w-md leading-relaxed font-medium italic border-l-4 border-aqua-300 pl-5">
-                Platform manajemen Project-Based Learning terintegrasi untuk seluruh sivitas akademika Jurusan Automation Engineering.
-            </p>
-
-            <div class="flex items-center gap-7 pt-1">
-                <div class="text-center">
-                    <p class="text-3xl font-black text-aqua-600 counter" data-target="4">0</p>
-                    <p class="text-[10px] text-aqua-700/50 font-bold uppercase tracking-widest mt-0.5">Role</p>
-                </div>
-                <div class="w-px h-8 bg-aqua-200/60"></div>
-                <div class="text-center">
-                    <p class="text-3xl font-black text-aqua-600 counter" data-target="3">0</p>
-                    <p class="text-[10px] text-aqua-700/50 font-bold uppercase tracking-widest mt-0.5">Prodi</p>
-                </div>
-                <div class="w-px h-8 bg-aqua-200/60"></div>
-                <div class="text-center">
-                    <p class="text-3xl font-black text-aqua-600 counter" data-target="6">0</p>
-                    <p class="text-[10px] text-aqua-700/50 font-bold uppercase tracking-widest mt-0.5">Fitur</p>
-                </div>
-                <div class="w-px h-8 bg-aqua-200/60"></div>
-                <div class="text-center">
-                    <p class="text-3xl font-black text-aqua-600">100%</p>
-                    <p class="text-[10px] text-aqua-700/50 font-bold uppercase tracking-widest mt-0.5">Terintegrasi</p>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap gap-3 pt-1">
+            @auth
+                <a href="{{ route('dashboard') }}"
+                   class="group relative flex items-center h-10 rounded-full bg-[#013981] hover:bg-[#012b63] text-white text-sm font-medium overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all">
+                    <div class="absolute right-1 group-hover:right-[calc(100%-36px)] flex items-center justify-center w-8 h-8 rounded-full bg-white text-[#013981] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-10">
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </div>
+                    <span class="whitespace-nowrap font-bold pl-4 pr-11 group-hover:translate-x-8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] text-white">
+                        Dashboard
+                    </span>
+                </a>
+            @else
+                <a href="{{ route('register') }}"
+                   class="hidden sm:inline-flex items-center h-10 px-4 rounded-full text-sm font-bold text-slate-700 hover:text-[#013981] hover:bg-slate-200/60 transition-colors">
+                    Daftar
+                </a>
                 <a href="{{ route('login') }}"
-                   class="inline-flex items-center gap-2 bg-aqua-200 text-aqua-900 px-9 py-4 rounded-2xl font-black text-sm shadow-2xl shadow-aqua-300/50 hover:bg-aqua-300 hover:scale-[1.02] transition-all active:scale-95 border border-aqua-300/60">
-                    <span class="material-symbols-outlined" style="font-size:16px;">rocket_launch</span>
-                    Masuk Sekarang
-                </a>
-                <a href="#fitur"
-                   class="inline-flex items-center gap-2 text-aqua-700 border border-aqua-200/70 px-8 py-4 rounded-2xl font-bold text-sm hover:bg-aqua-100/50 transition-colors">
-                    <span class="material-symbols-outlined" style="font-size:16px;">info</span>
-                    Pelajari Fitur
-                </a>
-            </div>
-        </div>
-
-        {{-- RIGHT: CARD --}}
-        <div class="relative hidden lg:block">
-            <div class="absolute inset-4 bg-aqua-200/25 rounded-full blur-3xl"></div>
-
-            <div class="relative animate-float">
-                <div class="bg-white/30 backdrop-blur-2xl rounded-[3rem] border border-white/50 p-2 shadow-2xl shadow-aqua-300/30">
-                    <div class="bg-aqua-800 rounded-[2.6rem] p-9 overflow-hidden relative">
-                        <div class="absolute inset-0 dot-grid opacity-[0.07]"></div>
-
-                        <div class="relative z-10 space-y-7">
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="h-11 w-11 rounded-xl bg-aqua-200/15 border border-aqua-200/25 flex items-center justify-center overflow-hidden">
-                                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8 w-8 object-contain"
-                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                        <span class="font-black text-aqua-200 text-base hidden">AE</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-black text-white text-sm">Integrated Assessment</p>
-                                        <p class="text-aqua-200/50 text-xs">PBL System v2.0</p>
-                                    </div>
-                                </div>
-                                <span class="text-[10px] font-bold text-aqua-300/60 tracking-widest bg-aqua-200/10 px-2 py-1 rounded-lg border border-aqua-200/15 uppercase">LIVE</span>
-                            </div>
-
-                            <div>
-                                <p class="text-aqua-200/50 text-xs font-bold uppercase tracking-widest mb-3">Bobot Penilaian</p>
-                                <div class="space-y-3">
-                                    <div>
-                                        <div class="flex justify-between items-center mb-1.5">
-                                            <span class="text-white/70 text-xs font-semibold">Manager Proyek</span>
-                                            <span class="text-aqua-200 text-xs font-black">55%</span>
-                                        </div>
-                                        <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                            <div class="h-full bg-aqua-200 rounded-full" style="width:55%"></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex justify-between items-center mb-1.5">
-                                            <span class="text-white/70 text-xs font-semibold">Dosen Pengampu</span>
-                                            <span class="text-aqua-200 text-xs font-black">45%</span>
-                                        </div>
-                                        <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                            <div class="h-full bg-aqua-300/70 rounded-full" style="width:45%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-5 gap-2">
-                                @foreach([['A','≥85',true],['B','≥75',false],['C','≥65',false],['D','≥55',false],['E','<55',false]] as $g)
-                                <div class="rounded-xl {{ $g[2] ? 'bg-aqua-200/20 text-aqua-200 border border-aqua-200/30' : 'bg-white/8 text-white/40 border border-white/10' }} p-2.5 text-center">
-                                    <p class="font-black text-sm">{{ $g[0] }}</p>
-                                    <p class="text-[9px] opacity-70 font-bold">{{ $g[1] }}</p>
-                                </div>
-                                @endforeach
-                            </div>
-
-                            <div class="space-y-2.5 pt-1">
-                                @foreach(['Logbook Harian & Mingguan','Upload & Verifikasi Laporan','Export PDF & CSV','Monitoring Real-time'] as $f)
-                                <div class="flex items-center gap-3">
-                                    <div class="w-4 h-4 rounded-full bg-aqua-200/20 flex items-center justify-center shrink-0 border border-aqua-200/30">
-                                        <span class="material-symbols-outlined text-aqua-200" style="font-size:10px;">check</span>
-                                    </div>
-                                    <span class="text-white/60 text-xs font-medium">{{ $f }}</span>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
+                   class="group relative flex items-center h-10 rounded-full bg-[#013981] hover:bg-[#012b63] text-white text-sm font-medium overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all">
+                    <div class="absolute right-1 group-hover:right-[calc(100%-36px)] flex items-center justify-center w-8 h-8 rounded-full bg-white text-[#013981] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-10">
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="absolute -bottom-4 -left-8 bg-white rounded-2xl border border-aqua-200/40 p-3.5 shadow-xl shadow-aqua-900/10">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-aqua-200/30 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-aqua-600" style="font-size:16px;">check_circle</span>
-                    </div>
-                    <div>
-                        <p class="text-aqua-900 font-black text-xs">Logbook Diverifikasi</p>
-                        <p class="text-aqua-600/50 text-[10px]">Minggu ke-8 · 2 menit lalu</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="absolute -top-4 -right-4 bg-white rounded-2xl border border-aqua-200/40 p-3.5 shadow-xl shadow-aqua-900/10">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-aqua-600" style="font-size:18px;">trending_up</span>
-                    <div>
-                        <p class="text-aqua-900 font-black text-xs">Nilai A</p>
-                        <p class="text-aqua-600/50 text-[10px]">Rekap terbaru</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-35">
-        <span class="text-[10px] text-aqua-700 font-bold uppercase tracking-widest">Scroll</span>
-        <div class="w-px h-8 bg-gradient-to-b from-aqua-500 to-transparent"></div>
-    </div>
-</section>
-
-
-{{-- ============================================================
-     FEATURES
-============================================================ --}}
-<section id="fitur" class="py-24 bg-gradient-to-b from-white via-aqua-50/40 to-white">
-    <div class="max-w-7xl mx-auto px-6">
-
-        <div class="text-center mb-16">
-            <span class="inline-block text-[11px] font-bold tracking-[0.35em] uppercase text-aqua-600 bg-aqua-200/20 border border-aqua-200/50 px-4 py-1.5 rounded-full">
-                Fitur Sistem
-            </span>
-            <h2 class="text-4xl font-black text-aqua-900 mt-4 tracking-tight">Semua yang kamu butuhkan</h2>
-            <p class="text-aqua-700/50 mt-2 text-lg">dalam satu platform terintegrasi.</p>
-        </div>
-
-        @php
-        $features = [
-            ['icon' => 'menu_book',       'title' => 'Logbook Harian & Mingguan',   'desc' => 'Catat aktivitas proyek setiap hari. Generate rekap mingguan sebagai PDF dan kirim untuk diverifikasi Manager.', 'tag' => 'Mahasiswa'],
-            ['icon' => 'grade',           'title' => 'Penilaian Berbasis Rubrik',   'desc' => 'Sistem penilaian terstruktur dengan radio button per kriteria. Bobot Manager 55% dan Dosen 45% dihitung otomatis.', 'tag' => 'Dosen & Manager'],
-            ['icon' => 'upload_file',     'title' => 'Upload & Verifikasi Laporan', 'desc' => 'Mahasiswa upload laporan MK. Sistem otomatis mendeteksi dosen supervisi yang bersangkutan untuk verifikasi.', 'tag' => 'Mahasiswa & Dosen'],
-            ['icon' => 'analytics',       'title' => 'Monitoring & Rekap Nilai',    'desc' => 'Admin dapat memantau progres seluruh mahasiswa dan mengekspor rekap nilai ke CSV maupun PDF.', 'tag' => 'Admin'],
-            ['icon' => 'manage_accounts', 'title' => 'Dual Role Dosen',             'desc' => 'Dosen dapat beralih mode antara Dosen Pengampu dan Manager Proyek dalam satu akun tanpa perlu login ulang.', 'tag' => 'Dosen'],
-            ['icon' => 'approval',        'title' => 'Manajemen Proyek & Akun',     'desc' => 'Admin mengelola pengajuan proyek, approval akun mahasiswa, serta penugasan supervisi mata kuliah.', 'tag' => 'Admin'],
-        ];
-        @endphp
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach($features as $f)
-            <div class="feature-card group bg-white rounded-3xl p-7 border border-aqua-200/40 hover:-translate-y-1.5 transition-all duration-300">
-                <div class="flex items-start justify-between mb-5">
-                    <div class="w-11 h-11 rounded-2xl bg-aqua-200/25 border border-aqua-200/50 flex items-center justify-center group-hover:bg-aqua-200/50 transition-colors">
-                        <span class="material-symbols-outlined text-aqua-600" style="font-size:20px;">{{ $f['icon'] }}</span>
-                    </div>
-                    <span class="text-[10px] font-bold text-aqua-600 bg-aqua-200/20 border border-aqua-200/50 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                        {{ $f['tag'] }}
+                    <span class="whitespace-nowrap font-bold pl-4 pr-11 group-hover:translate-x-8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] text-white">
+                        Login
                     </span>
-                </div>
-                <h3 class="font-black text-aqua-900 text-base mb-2 leading-snug">{{ $f['title'] }}</h3>
-                <p class="text-aqua-700/55 text-sm leading-relaxed">{{ $f['desc'] }}</p>
-            </div>
-            @endforeach
+                </a>
+            @endauth
         </div>
     </div>
-</section>
+</header>
 
+<main class="flex-1 flex flex-col">
 
-{{-- ============================================================
-     ALUR
-============================================================ --}}
-<section id="alur" class="py-24 bg-aqua-800 relative overflow-hidden">
+    {{-- ============================================================
+         SECTION 1: ASYMMETRIC CAMPUS HERO
+    ============================================================ --}}
+    <section class="relative border-b border-slate-200 py-20 lg:py-28 bg-slate-900 overflow-hidden">
+        {{-- Campus Image with Smooth Fade-in & Directional Gradient --}}
+        <div id="hero-bg"
+             class="absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-out"
+             style="background-image: url('{{ asset('images/PolmanBandung.png') }}');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/85 to-[#013981]/75 backdrop-blur-[2px] z-0"></div>
 
-    <div class="absolute inset-0 dot-grid opacity-[0.07] pointer-events-none"></div>
-    <div class="blob w-[40%] h-[80%] bg-aqua-300/10 top-0 -right-[10%]"></div>
-
-    <div class="relative max-w-7xl mx-auto px-6 z-10">
-
-        <div class="text-center mb-16">
-            <span class="inline-block text-[11px] font-bold tracking-[0.35em] uppercase text-aqua-200/60 bg-aqua-200/8 border border-aqua-200/15 px-4 py-1.5 rounded-full">
-                Alur Kerja
-            </span>
-            <h2 class="text-4xl font-black text-white mt-4 tracking-tight">Bagaimana Cara Kerjanya?</h2>
-            <p class="text-aqua-200/50 mt-2 text-lg">4 langkah mudah dari pengajuan hingga penilaian.</p>
-        </div>
-
-        @php
-        $steps = [
-            ['num' => '01', 'icon' => 'assignment_add',    'title' => 'Pengajuan Proyek',     'desc' => 'Manager Proyek atau Dosen mengajukan proyek PBL. Admin mereview dan memberikan approval serta menugaskan mahasiswa.', 'actor' => 'Manager / Admin'],
-            ['num' => '02', 'icon' => 'edit_note',         'title' => 'Input Logbook',         'desc' => 'Mahasiswa mencatat aktivitas harian dan merekap menjadi logbook mingguan yang siap diverifikasi.', 'actor' => 'Mahasiswa'],
-            ['num' => '03', 'icon' => 'fact_check',        'title' => 'Verifikasi & Supervisi','desc' => 'Manager memverifikasi logbook mingguan. Dosen Pengampu mereview laporan MK yang di-upload mahasiswa.', 'actor' => 'Manager & Dosen'],
-            ['num' => '04', 'icon' => 'workspace_premium', 'title' => 'Penilaian & Rekap',    'desc' => 'Nilai akhir dihitung otomatis dari rubrik Manager (55%) dan Dosen (45%). Admin export rekap ke CSV atau PDF.', 'actor' => 'Semua Role'],
-        ];
-        @endphp
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 relative">
-
-            @foreach($steps as $s)
-            <div class="group">
-                <div class="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-aqua-200/30 rounded-3xl p-6 transition-all duration-300 h-full">
-                    <div class="flex items-center gap-3 mb-5">
-                        <div class="relative w-14 h-14 rounded-2xl bg-aqua-200/12 border border-aqua-200/20 flex items-center justify-center shrink-0 group-hover:bg-aqua-200/20 transition-colors">
-                            <span class="material-symbols-outlined text-aqua-200" style="font-size:22px;">{{ $s['icon'] }}</span>
-                            <span class="absolute -top-1.5 -right-1.5 text-[10px] font-black text-aqua-300 bg-aqua-800 border border-aqua-600 rounded-lg px-1.5 py-0.5">{{ $s['num'] }}</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-aqua-300/60 uppercase tracking-widest leading-tight">{{ $s['actor'] }}</span>
-                    </div>
-                    <h3 class="font-black text-white text-base mb-2">{{ $s['title'] }}</h3>
-                    <p class="text-aqua-200/50 text-sm leading-relaxed">{{ $s['desc'] }}</p>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="max-w-3xl space-y-7 text-left">
+                <div class="h-anim-1 inline-flex items-center gap-2.5 text-xs font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/25 px-4 py-1.5 rounded-full shadow-sm tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Jurusan Automation Engineering · Polman Bandung</span>
                 </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
 
+                <h1 class="h-anim-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight drop-shadow-md">
+                    Portal Terpadu <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-emerald-300">Project-Based Learning</span> &amp; Praktik Industri
+                </h1>
 
-{{-- ============================================================
-     ROLE
-============================================================ --}}
-<section id="role" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-
-        <div class="text-center mb-16">
-            <span class="inline-block text-[11px] font-bold tracking-[0.35em] uppercase text-aqua-600 bg-aqua-200/20 border border-aqua-200/50 px-4 py-1.5 rounded-full">
-                Pengguna Sistem
-            </span>
-            <h2 class="text-4xl font-black text-aqua-900 mt-4 tracking-tight">4 Role Terintegrasi</h2>
-            <p class="text-aqua-700/50 mt-2 text-lg">Setiap aktor punya peran dan akses yang terdefinisi jelas.</p>
-        </div>
-
-        @php
-        $roles = [
-            ['icon' => 'admin_panel_settings', 'role' => 'Admin',          'sub' => 'KPS / Kaprodi',                    'desc' => 'Kelola seluruh data master sistem, approve pengajuan proyek dan akun baru, assign mahasiswa ke proyek, serta pantau rekap nilai seluruh mahasiswa.',     'perms' => ['Master Data','Approve Proyek','Assign Mahasiswa','Export Rekap'], 'dark' => true],
-            ['icon' => 'manage_accounts',       'role' => 'Manager Proyek', 'sub' => 'Dosen Pembimbing / Pihak Industri', 'desc' => 'Mengajukan proyek PBL, memverifikasi logbook mingguan mahasiswa (55% bobot penilaian), dan memberikan penilaian berbasis rubrik.',                       'perms' => ['Ajukan Proyek','Verifikasi Logbook','Penilaian 55%','Feedback'],  'dark' => false],
-            ['icon' => 'school',                'role' => 'Dosen Pengampu', 'sub' => 'Dosen Mata Kuliah',                'desc' => 'Mensupervisi mahasiswa per mata kuliah, memverifikasi laporan yang di-upload, dan memberikan penilaian (45% bobot). Bisa beralih ke mode Manager Proyek.', 'perms' => ['Supervisi MK','Verifikasi Laporan','Penilaian 45%','Dual Role'],  'dark' => false],
-            ['icon' => 'person',                'role' => 'Mahasiswa',      'sub' => 'Peserta PBL',                      'desc' => 'Input logbook harian, generate rekap logbook mingguan (PDF), upload laporan MK, serta melihat nilai akhir dan feedback dari pembimbing.',               'perms' => ['Logbook Harian','Rekap PDF','Upload Laporan','Lihat Nilai'],       'dark' => false],
-        ];
-        @endphp
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            @foreach($roles as $r)
-            <div class="rounded-3xl {{ $r['dark'] ? 'bg-aqua-800 border-aqua-600/40' : 'bg-aqua-50/60 border-aqua-200/40' }} border p-6 flex flex-col gap-5 hover:-translate-y-1.5 transition-transform duration-300 feature-card">
-                <div class="w-12 h-12 rounded-2xl {{ $r['dark'] ? 'bg-aqua-200/15 border border-aqua-200/25' : 'bg-white border border-aqua-200/60' }} flex items-center justify-center">
-                    <span class="material-symbols-outlined {{ $r['dark'] ? 'text-aqua-200' : 'text-aqua-600' }}" style="font-size:22px;">{{ $r['icon'] }}</span>
-                </div>
-                <div>
-                    <p class="text-[10px] font-bold {{ $r['dark'] ? 'text-aqua-300/60' : 'text-aqua-500' }} uppercase tracking-widest mb-1">{{ $r['sub'] }}</p>
-                    <h3 class="font-black {{ $r['dark'] ? 'text-white' : 'text-aqua-900' }} text-lg">{{ $r['role'] }}</h3>
-                </div>
-                <p class="{{ $r['dark'] ? 'text-aqua-200/55' : 'text-aqua-700/60' }} text-sm leading-relaxed flex-1">{{ $r['desc'] }}</p>
-                <div class="flex flex-wrap gap-1.5">
-                    @foreach($r['perms'] as $p)
-                    <span class="{{ $r['dark'] ? 'bg-aqua-200/12 text-aqua-200 border-aqua-200/20' : 'bg-white text-aqua-600 border-aqua-200/60' }} text-[10px] font-bold border px-2.5 py-1 rounded-full uppercase tracking-wider">
-                        {{ $p }}
-                    </span>
-                    @endforeach
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-
-{{-- ============================================================
-     QUOTE STRIP
-============================================================ --}}
-<section class="py-16 bg-aqua-200/15 border-y border-aqua-200/40">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <span class="material-symbols-outlined text-aqua-300 mb-4 block" style="font-size:32px;">format_quote</span>
-        <blockquote class="text-2xl font-black text-aqua-900 tracking-tight leading-snug mb-4">
-            "Streamlining industrial excellence through smart project-based evaluation."
-        </blockquote>
-        <p class="text-aqua-600/60 text-sm font-bold uppercase tracking-widest">
-            Jurusan Automation Engineering · Politeknik Manufaktur Bandung
-        </p>
-    </div>
-</section>
-
-
-{{-- ============================================================
-     CTA
-============================================================ --}}
-<section class="py-24 bg-white">
-    <div class="max-w-2xl mx-auto px-6">
-        <div class="bg-aqua-800 rounded-[2.5rem] p-12 text-center relative overflow-hidden">
-            <div class="absolute inset-0 dot-grid opacity-[0.07] pointer-events-none"></div>
-            <div class="blob w-[60%] h-[80%] bg-aqua-300/10 -top-[20%] -right-[20%]"></div>
-            <div class="relative z-10">
-                <div class="w-16 h-16 rounded-3xl bg-aqua-200/15 border border-aqua-200/25 flex items-center justify-center mx-auto mb-6">
-                    <span class="material-symbols-outlined text-aqua-200" style="font-size:28px;">rocket_launch</span>
-                </div>
-                <h2 class="text-4xl font-black text-white tracking-tight mb-3">Siap memulai?</h2>
-                <p class="text-aqua-200/55 mb-8 text-base max-w-sm mx-auto leading-relaxed">
-                    Masuk ke sistem dan mulai kelola proyek PBL kamu sekarang juga.
+                <p class="h-anim-3 text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed font-medium">
+                    Kelola logbook aktivitas harian, supervisi mata kuliah, evaluasi mitra perusahaan, hingga pengesahan transkrip ber-QR dalam satu ekosistem akademik.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="{{ route('login') }}"
-                       class="inline-flex items-center justify-center gap-2 bg-aqua-200 text-aqua-900 px-8 py-4 rounded-2xl font-black text-sm hover:bg-aqua-300 transition-colors active:scale-95 shadow-xl shadow-aqua-900/30">
-                        <span class="material-symbols-outlined" style="font-size:16px;">login</span>
-                        Masuk ke Sistem
-                    </a>
-                    <a href="{{ route('register') }}"
-                       class="inline-flex items-center justify-center gap-2 bg-white/10 text-aqua-100 border border-aqua-200/20 px-8 py-4 rounded-2xl font-bold text-sm hover:bg-white/15 transition-colors active:scale-95">
-                        <span class="material-symbols-outlined" style="font-size:16px;">person_add</span>
-                        Daftar Akun Baru
+
+                <div class="h-anim-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                    @auth
+                        <a href="{{ route('dashboard') }}"
+                           class="inline-flex items-center justify-center h-14 px-8 text-base font-bold rounded-full bg-[#013981] hover:bg-[#012b63] text-white shadow-lg shadow-[#013981]/40 transition-all hover:scale-105 active:scale-95">
+                            <span>Buka Dashboard</span>
+                            <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="inline-flex items-center justify-center h-14 px-8 text-base font-bold rounded-full bg-[#013981] hover:bg-[#012b63] text-white shadow-lg shadow-[#013981]/40 transition-all hover:scale-105 active:scale-95">
+                            <span>Masuk ke Portal</span>
+                            <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+                        </a>
+                    @endauth
+                    <a href="#fitur"
+                       class="inline-flex items-center justify-center h-14 px-8 text-base font-bold rounded-full bg-white/10 text-white border border-white/25 hover:bg-white/20 transition-all backdrop-blur-sm">
+                        <span>Jelajahi Fitur</span>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    {{-- ============================================================
+         SECTION 2: PROGRAM STUDI JURUSAN AUTOMATION ENGINEERING (#prodi)
+         (3 High-Impact Cards for D4 TRIN, D4 TRO, and D4 TRMO)
+    ============================================================ --}}
+    <section id="prodi" class="relative bg-white py-20 lg:py-28 border-b border-slate-100 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-blue-100/40 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="reveal text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="inline-block text-xs font-bold text-[#013981] bg-[#eef4fc] border border-[#d8e6f8] px-4 py-1.5 rounded-full uppercase tracking-wider">
+                    Jurusan Automation Engineering
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Tiga Program Studi Sarjana Terapan (D4)
+                </h2>
+                <p class="text-base sm:text-lg text-slate-600 font-medium">
+                    Kurikulum berbasis praktik industri dan proyek rekayasa terapan yang terintegrasi untuk seluruh program studi di Jurusan AE.
+                </p>
+            </div>
+
+            @php
+            $prodiCards = [
+                [
+                    'code'        => 'D4 — TRIN',
+                    'kelas'       => 'Kelas AEC',
+                    'title'       => 'Teknologi Rekayasa Informatika Industri',
+                    'desc'        => 'Berfokus pada rekayasa perangkat lunak manufaktur, Industrial IoT, sistem eksekusi produksi (MES), akuisisi data pabrik, dan kecerdasan buatan terapan.',
+                    'icon'        => 'terminal',
+                    'bg'          => 'bg-blue-50',
+                    'iconColor'   => 'text-[#013981]',
+                    'borderColor' => 'border-blue-200 hover:border-[#013981]',
+                    'shadowColor' => 'hover:shadow-blue-500/15',
+                    'topics'      => ['Industrial IoT & Cloud', 'Sistem Informasi Manufaktur', 'Cyber-Physical Systems'],
+                ],
+                [
+                    'code'        => 'D4 — TRO',
+                    'kelas'       => 'Kelas AEB',
+                    'title'       => 'Teknologi Rekayasa Otomasi',
+                    'desc'        => 'Berfokus pada perancangan sistem kendali industri, pemrograman PLC & SCADA, instrumentasi proses, jaringan komunikasi industri, dan robotika.',
+                    'icon'        => 'settings_suggest',
+                    'bg'          => 'bg-emerald-50',
+                    'iconColor'   => 'text-emerald-600',
+                    'borderColor' => 'border-emerald-200 hover:border-emerald-500',
+                    'shadowColor' => 'hover:shadow-emerald-500/15',
+                    'topics'      => ['PLC, HMI & SCADA', 'Instrumentasi & Kendali', 'Robotika Industri'],
+                ],
+                [
+                    'code'        => 'D4 — TRMO',
+                    'kelas'       => 'Kelas AEA',
+                    'title'       => 'Teknologi Rekayasa Mekatronika',
+                    'desc'        => 'Berfokus pada sinergi perancangan mekanik presisi, elektronika daya, sistem pneumatik-hidrolik, kendali tertanam (embedded), dan mesin otomatis.',
+                    'icon'        => 'precision_manufacturing',
+                    'bg'          => 'bg-purple-50',
+                    'iconColor'   => 'text-purple-600',
+                    'borderColor' => 'border-purple-200 hover:border-purple-500',
+                    'shadowColor' => 'hover:shadow-purple-500/15',
+                    'topics'      => ['Desain Sistem Mekatronik', 'Embedded & Pneumatik', 'Otomasi Mesin Produksi'],
+                ],
+            ];
+            @endphp
+
+            <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-8">
+                @foreach($prodiCards as $p)
+                <div class="group relative overflow-hidden rounded-[2.25rem] border-2 {{ $p['borderColor'] }} bg-white p-8 transition-all duration-300 hover:shadow-2xl {{ $p['shadowColor'] }} hover:-translate-y-2 flex flex-col justify-between">
+                    <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full blur-3xl transition-all duration-500 group-hover:scale-150 {{ $p['bg'] }} opacity-70 pointer-events-none"></div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-7">
+                            <div class="inline-flex h-16 w-16 items-center justify-center rounded-2xl {{ $p['bg'] }} {{ $p['iconColor'] }} shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                                <span class="material-symbols-outlined text-[32px]">{{ $p['icon'] }}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-mono text-xs font-extrabold {{ $p['iconColor'] }} {{ $p['bg'] }} px-3 py-1 rounded-full block">
+                                    {{ $p['code'] }}
+                                </span>
+                                <span class="font-mono text-[11px] text-slate-400 mt-1 block">{{ $p['kelas'] }}</span>
+                            </div>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 leading-snug">
+                            {{ $p['title'] }}
+                        </h3>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium mb-6">
+                            {{ $p['desc'] }}
+                        </p>
+                    </div>
+
+                    <div class="relative z-10 pt-5 border-t border-slate-100 space-y-2">
+                        @foreach($p['topics'] as $tp)
+                        <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                            <span class="material-symbols-outlined text-[15px] {{ $p['iconColor'] }}">check_circle</span>
+                            <span>{{ $tp }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================================
+         SECTION 3: 6 KAPABILITAS SISTEM (#fitur)
+    ============================================================ --}}
+    <section id="fitur" class="relative bg-slate-50 py-20 lg:py-28 border-b border-slate-100 overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-[#013981]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6">
+            <div class="reveal text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="inline-block text-xs font-bold text-[#013981] bg-[#eef4fc] border border-[#d8e6f8] px-4 py-1.5 rounded-full uppercase tracking-wider">
+                    Kapabilitas Sistem
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Fitur Lengkap untuk Seluruh Kebutuhan Akademik
+                </h2>
+                <p class="text-base sm:text-lg text-slate-600 font-medium">
+                    Dirancang agar proses pencatatan, supervisi, dan penilaian berjalan lebih cepat, akurat, dan terdokumentasi.
+                </p>
+            </div>
+
+            @php
+            $features = [
+                [
+                    'icon'        => 'menu_book',
+                    'title'       => 'Logbook & Jam Kompetensi',
+                    'desc'        => 'Catat aktivitas harian lengkap dengan kalkulasi durasi menit/jam otomatis serta unggah multi-foto dokumentasi kegiatan.',
+                    'tag'         => 'Mahasiswa',
+                    'bg'          => 'bg-blue-50',
+                    'iconColor'   => 'text-[#013981]',
+                    'borderColor' => 'border-blue-200 hover:border-[#013981]',
+                    'shadowColor' => 'hover:shadow-blue-500/15',
+                ],
+                [
+                    'icon'        => 'grade',
+                    'title'       => 'Penilaian Berbasis Rubrik',
+                    'desc'        => 'Sistem evaluasi objektif dengan indikator keterampilan terukur. Nilai Manager (55%) dan Dosen (45%) dihitung otomatis.',
+                    'tag'         => 'Evaluasi',
+                    'bg'          => 'bg-emerald-50',
+                    'iconColor'   => 'text-emerald-600',
+                    'borderColor' => 'border-emerald-200 hover:border-emerald-500',
+                    'shadowColor' => 'hover:shadow-emerald-500/15',
+                ],
+                [
+                    'icon'        => 'qr_code_scanner',
+                    'title'       => 'Validasi Tanda Tangan QR',
+                    'desc'        => 'Pengajuan dan pengesahan tanda tangan digital terenkripsi untuk transkrip nilai dan lembar evaluasi pembimbing.',
+                    'tag'         => 'Otentikasi',
+                    'bg'          => 'bg-purple-50',
+                    'iconColor'   => 'text-purple-600',
+                    'borderColor' => 'border-purple-200 hover:border-purple-500',
+                    'shadowColor' => 'hover:shadow-purple-500/15',
+                ],
+                [
+                    'icon'        => 'swap_horiz',
+                    'title'       => 'Multi-Role Dosen Terpadu',
+                    'desc'        => 'Satu akun dosen dapat beralih mode antara Dosen Pengampu, Manager Proyek, dan Koordinator Prodi (KPS) secara instan.',
+                    'tag'         => 'Single Sign-On',
+                    'bg'          => 'bg-orange-50',
+                    'iconColor'   => 'text-orange-600',
+                    'borderColor' => 'border-orange-200 hover:border-orange-500',
+                    'shadowColor' => 'hover:shadow-orange-500/15',
+                ],
+                [
+                    'icon'        => 'fact_check',
+                    'title'       => 'Supervisi & Verifikasi Laporan',
+                    'desc'        => 'Mahasiswa mengajukan rekap supervisi mingguan dan laporan mata kuliah untuk diverifikasi langsung oleh dosen pengampu.',
+                    'tag'         => 'Akademik',
+                    'bg'          => 'bg-cyan-50',
+                    'iconColor'   => 'text-cyan-600',
+                    'borderColor' => 'border-cyan-200 hover:border-cyan-500',
+                    'shadowColor' => 'hover:shadow-cyan-500/15',
+                ],
+                [
+                    'icon'        => 'analytics',
+                    'title'       => 'Pusat Kendali KPS & Ekspor',
+                    'desc'        => 'Pantau pemenuhan standar jam minimum prodi, kelola parameter kuisioner industri, dan ekspor transkrip ke PDF & CSV.',
+                    'tag'         => 'KPS & Admin',
+                    'bg'          => 'bg-rose-50',
+                    'iconColor'   => 'text-rose-600',
+                    'borderColor' => 'border-rose-200 hover:border-rose-500',
+                    'shadowColor' => 'hover:shadow-rose-500/15',
+                ],
+            ];
+            @endphp
+
+            <div class="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                @foreach($features as $f)
+                <div class="group relative overflow-hidden rounded-[2rem] border-2 {{ $f['borderColor'] }} bg-white p-7 transition-all duration-300 hover:shadow-2xl {{ $f['shadowColor'] }} hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div class="absolute -right-10 -top-10 h-36 w-36 rounded-full blur-3xl transition-all duration-500 group-hover:scale-150 {{ $f['bg'] }} opacity-60 pointer-events-none"></div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="inline-flex h-16 w-16 items-center justify-center rounded-2xl {{ $f['bg'] }} {{ $f['iconColor'] }} shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                                <span class="material-symbols-outlined text-[30px]">{{ $f['icon'] }}</span>
+                            </div>
+                            <span class="text-[11px] font-bold {{ $f['iconColor'] }} {{ $f['bg'] }} px-3 py-1 rounded-full">
+                                {{ $f['tag'] }}
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 mb-2.5">{{ $f['title'] }}</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            {{ $f['desc'] }}
+                        </p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================================
+         SECTION 4: STANDAR MUTU & TRANSPARANSI EVALUASI (#keunggulan)
+         (Split Highlight Section: Quality Assurance & Rubric Transparency)
+    ============================================================ --}}
+    <section id="keunggulan" class="py-20 lg:py-28 bg-white border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="reveal grid lg:grid-cols-12 gap-12 items-center">
+
+                {{-- Left Column (6 cols): Editorial Explanation & Pillars --}}
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="inline-block text-xs font-bold text-[#013981] bg-[#eef4fc] border border-[#d8e6f8] px-4 py-1.5 rounded-full uppercase tracking-wider">
+                        Standar Mutu Akademik
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Transparansi Penilaian &amp; Keaslian Dokumen Digital
+                    </h2>
+                    <p class="text-slate-600 text-base leading-relaxed font-medium">
+                        Setiap catatan kegiatan harian mahasiswa diverifikasi secara berlapis dan dikonversi otomatis ke dalam komponen nilai akhir tanpa rekapitulasi manual yang rawan kesalahan.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        @foreach([
+                            ['verified_user', 'Verifikasi Berlapis & Real-Time', 'Catatan aktivitas dan dokumentasi foto diperiksa keasliannya serta divalidasi langsung oleh pembimbing terkait.'],
+                            ['calculate',     'Kalkulasi Nilai Akhir Otomatis', 'Sistem menggabungkan nilai keterampilan lapangan, disiplin kerja, supervisi, dan sidang presentasi secara presisi.'],
+                            ['qr_code_2',     'Dokumen Transkrip Ber-QR Resmi', 'Setiap lembar pengesahan memiliki token verifikasi QR unik yang dapat dipindai untuk memastikan keabsahan nilai.'],
+                        ] as [$ic, $ttl, $dsc])
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                            <div class="w-11 h-11 rounded-xl bg-[#eef4fc] text-[#013981] flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[22px]">{{ $ic }}</span>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">{{ $ttl }}</h3>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">{{ $dsc }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Right Column (6 cols): Visual Evaluation & Competency Dashboard Card --}}
+                <div class="lg:col-span-6">
+                    <div class="rounded-[2.25rem] bg-slate-50 border-2 border-slate-200 p-7 sm:p-9 space-y-6 shadow-sm">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                            <div>
+                                <p class="font-mono text-[11px] font-bold text-[#013981] uppercase tracking-wider">STANDAR EVALUASI KURIKULUM</p>
+                                <h3 class="text-xl font-bold text-slate-900 mt-0.5">Komponen &amp; Indikator Capaian</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Skala 0–100
+                            </span>
+                        </div>
+
+                        {{-- 4 Competency Modules --}}
+                        <div class="grid grid-cols-2 gap-3.5">
+                            @foreach([
+                                ['PII', 'Praktik Industri', 'Implementasi teknis di lini produksi / proyek rekayasa', 'bg-blue-50 text-[#013981] border-blue-200'],
+                                ['SUP', 'Supervisi Akademik', 'Konsultasi berkala & pelaporan capaian mata kuliah', 'bg-emerald-50 text-emerald-700 border-emerald-200'],
+                                ['K3',  'Keselamatan Kerja', 'Penerapan standar K3, ergonomi, dan disiplin lingkungan', 'bg-amber-50 text-amber-700 border-amber-200'],
+                                ['LTD', 'Laporan Teknik', 'Penyusunan dokumentasi teknis & sidang presentasi akhir', 'bg-purple-50 text-purple-700 border-purple-200'],
+                            ] as [$kd, $nm, $ket, $cls])
+                            <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2">
+                                <span class="font-mono text-xs font-bold px-2.5 py-0.5 rounded-lg border {{ $cls }} inline-block">{{ $kd }}</span>
+                                <h4 class="text-sm font-bold text-slate-900">{{ $nm }}</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">{{ $ket }}</p>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Grade Conversion Bar --}}
+                        <div class="bg-white rounded-2xl border border-slate-200 p-4">
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-3">
+                                <span>Konversi Indeks Prestasi Akhir</span>
+                                <span class="font-mono text-[#013981]">Standar Polman Bandung</span>
+                            </div>
+                            <div class="grid grid-cols-5 gap-2 text-center">
+                                @foreach([['A','85–100','bg-[#013981] text-white border-[#013981]'],['B','75–84','bg-slate-50 text-slate-800 border-slate-200'],['C','65–74','bg-slate-50 text-slate-800 border-slate-200'],['D','55–64','bg-slate-50 text-slate-800 border-slate-200'],['E','< 55','bg-slate-50 text-slate-800 border-slate-200']] as [$g, $rng, $gCls])
+                                <div class="py-2 rounded-xl border {{ $gCls }}">
+                                    <p class="font-mono text-sm font-extrabold">{{ $g }}</p>
+                                    <p class="font-mono text-[10px] opacity-80 mt-0.5">{{ $rng }}</p>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================================
+         SECTION 5: PUSAT INFORMASI AKADEMIK / FAQ & CTA (#faq)
+    ============================================================ --}}
+    <section id="faq" class="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/80">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="reveal text-center max-w-2xl mx-auto mb-14 space-y-3">
+                <span class="inline-block text-xs font-bold text-[#013981] bg-[#eef4fc] border border-[#d8e6f8] px-4 py-1.5 rounded-full uppercase tracking-wider">
+                    Pusat Informasi
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Pertanyaan yang Sering Diajukan
+                </h2>
+                <p class="text-base text-slate-600 font-medium">
+                    Panduan singkat mengenai pengisian logbook, supervisi, dan pengesahan nilai di portal PBL &amp; PPI.
+                </p>
+            </div>
+
+            @php
+            $faqs = [
+                [
+                    'q' => 'Bagaimana cara mahasiswa memulai pengisian logbook harian?',
+                    'a' => 'Setelah akun mahasiswa aktif dan telah di-plotting ke proyek kampus atau perusahaan mitra oleh Admin/KPS, mahasiswa dapat masuk ke menu Logbook Magang, memilih minggu dan hari pelaksanaan, mengisi deskripsi kegiatan, durasi jam, serta mengunggah foto dokumentasi.',
+                ],
+                [
+                    'q' => 'Apakah dosen perlu membuat dua akun untuk menjadi Dosen Pengampu sekaligus KPS atau Manager Proyek?',
+                    'a' => 'Tidak perlu. Sistem mendukung fitur Multi-Role (Single Sign-On) sehingga satu akun dosen yang telah diberi hak akses dapat langsung berganti mode antara Dosen Pengampu, Manager Proyek, maupun Koordinator Program Studi (KPS) dari menu sidebar.',
+                ],
+                [
+                    'q' => 'Bagaimana mekanisme pengesahan tanda tangan digital ber-QR pada transkrip nilai?',
+                    'a' => 'Mahasiswa dapat menekan tombol Ajukan TTD QR pada halaman Nilai & Transkrip. Notifikasi akan terkirim secara real-time ke akun Dosen Pembimbing atau Mentor Industri untuk direview dan disetujui, lalu kode QR resmi otomatis tercetak pada dokumen PDF.',
+                ],
+                [
+                    'q' => 'Bagaimana jika akun dosen yang baru didaftarkan belum bisa login?',
+                    'a' => 'Pendaftaran akun baru untuk peran Dosen memerlukan verifikasi dan persetujuan dari Administrator melalui menu Approval Akun untuk menjaga keamanan akses penilaian akademik.',
+                ],
+            ];
+            @endphp
+
+            <div x-data="{ openFaq: 0 }" class="reveal space-y-3.5">
+                @foreach($faqs as $idx => $item)
+                <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs transition-all">
+                    <button type="button"
+                            @click="openFaq = (openFaq === {{ $idx }} ? null : {{ $idx }})"
+                            class="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors">
+                        <span class="text-sm sm:text-base font-bold text-slate-900">{{ $item['q'] }}</span>
+                        <span class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 transition-transform duration-200"
+                              :class="openFaq === {{ $idx }} ? 'rotate-180 bg-[#eef4fc] text-[#013981]' : ''">
+                            <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                        </span>
+                    </button>
+                    <div x-show="openFaq === {{ $idx }}" x-collapse>
+                        <div class="px-6 pb-5 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                            {{ $item['a'] }}
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+</main>
 
 {{-- ============================================================
-     FOOTER
+     OFFICIAL POLMAN BANDUNG FOOTER
 ============================================================ --}}
-<footer class="border-t border-aqua-200/30 bg-white">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="h-11 w-11 rounded-xl bg-aqua-800 flex items-center justify-center overflow-hidden">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8 w-8 object-contain"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <span class="text-aqua-200 font-black text-xs hidden">AE</span>
-                </div>
-                <div>
-                    <p class="font-black text-aqua-900 text-sm">AE Polman Bandung</p>
-                    <p class="text-aqua-600/50 text-[10px] font-semibold">PBL Management System</p>
-                </div>
+<footer class="mt-auto bg-[#013981] text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between gap-12">
+        {{-- Logo & Copyright --}}
+        <div class="flex flex-col gap-5 md:w-1/2">
+            <img src="{{ asset('images/logo-banner.png') }}" alt="Polman Logo Banner" class="h-16 w-auto object-contain object-left">
+            <div class="text-sm font-medium text-white/80">
+                &copy; {{ date('Y') }} Politeknik Manufaktur Bandung. All rights reserved.
             </div>
-            <div class="flex items-center gap-6">
-                <a href="#fitur" class="text-xs text-aqua-600/60 hover:text-aqua-700 font-semibold transition-colors">Fitur</a>
-                <a href="#alur"  class="text-xs text-aqua-600/60 hover:text-aqua-700 font-semibold transition-colors">Alur</a>
-                <a href="#role"  class="text-xs text-aqua-600/60 hover:text-aqua-700 font-semibold transition-colors">Pengguna</a>
-                <a href="{{ route('login') }}" class="text-xs text-aqua-600/60 hover:text-aqua-700 font-semibold transition-colors">Masuk</a>
-            </div>
-            <p class="text-[11px] text-aqua-500/40 font-semibold uppercase tracking-widest">
-                © {{ date('Y') }} · AE Polman Bandung
-            </p>
+        </div>
+
+        {{-- Address Info --}}
+        <div class="flex flex-col gap-2 text-sm text-white/90 md:w-1/2 md:text-right">
+            <h4 class="font-bold text-lg text-white mb-1">Alamat Kampus</h4>
+            <p>Jl. Kanayakan No. 21, Dago, Kecamatan Coblong</p>
+            <p>Kota Bandung, Jawa Barat 40135</p>
+            <p>Telepon: (022) 2500241</p>
+            <p>Surel: sekretariat@polman-bandung.ac.id</p>
         </div>
     </div>
 </footer>
 
-
-{{-- ============================================================
-     JAVASCRIPT
-============================================================ --}}
 <script>
 (function () {
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-        navbar.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-
-    const counters = document.querySelectorAll('.counter[data-target]');
-    const countObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            const target = parseInt(el.dataset.target, 10);
-            let current = 0;
-            const step = Math.ceil(target / 30);
-            const timer = setInterval(() => {
-                current = Math.min(current + step, target);
-                el.textContent = current;
-                if (current >= target) clearInterval(timer);
-            }, 40);
-            countObserver.unobserve(el);
-        });
-    }, { threshold: 0.6 });
-    counters.forEach(c => countObserver.observe(c));
-
-    const fadeEls = document.querySelectorAll('[data-animate="fadeUp"]');
-    if ('IntersectionObserver' in window && fadeEls.length) {
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    entry.target.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-                    fadeObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.05 });
-        fadeEls.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(24px)';
-            fadeObserver.observe(el);
-        });
+    const heroBg = document.getElementById('hero-bg');
+    if (heroBg) {
+        const img = new Image();
+        img.src = "{{ asset('images/PolmanBandung.png') }}";
+        img.onload = () => {
+            heroBg.classList.remove('opacity-0');
+            heroBg.classList.add('opacity-100');
+        };
     }
 
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(sec => {
-            if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
-        });
-        navLinks.forEach(link => {
-            link.style.color = (link.getAttribute('href') === '#' + current) ? '#004d4d' : '';
-        });
-    }, { passive: true });
+    const reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && reveals.length) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('is-visible'));
+    }
 })();
 </script>
 

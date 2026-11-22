@@ -16,6 +16,10 @@ use App\External\Models\JadwalMonitoring;
 class AdminController extends \App\Http\Controllers\Controller
 {
     public function index() {
+        foreach (config('ppi.prodi_map', ['informatika' => 'TRIN', 'otomasi' => 'TRO', 'mekatronika' => 'TRMO']) as $kodeProdi) {
+            ProgramStudi::firstOrCreate(['nama_prodi' => $kodeProdi]);
+        }
+
         $dosens = Dosen::all();
         $perusahaans = Perusahaan::all();
         $prodis = ProgramStudi::with('mataKuliahs')->get();
@@ -140,7 +144,7 @@ class AdminController extends \App\Http\Controllers\Controller
 public function storeUser(Request $request)
     {
         $request->validate([
-            'role' => 'required|in:admin,mahasiswa,dosen,mentor,kaprodi',
+            'role' => 'required|in:admin,mahasiswa,dosen,mentor',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
         ]);
@@ -155,6 +159,9 @@ public function storeUser(Request $request)
                 'password' => Hash::make($plainPass),
                 'plain_password' => $plainPass,
                 'role' => $request->role,
+                'status' => 'active',
+                'role_aktif' => $request->role === 'dosen' ? 'dosen_pengampu' : null,
+                'akses_role' => $request->role === 'dosen' ? 'dosen_pengampu' : null,
             ]);
 
             // 2. Create Profile based on Role
@@ -298,8 +305,10 @@ public function storeUser(Request $request)
         
         if ($user->role === 'mahasiswa') {
             Mahasiswa::where('user_id', $user->id)->delete();
+            \App\Models\Mahasiswa::where('user_id', $user->id)->delete();
         } elseif ($user->role === 'dosen') {
             Dosen::where('user_id', $user->id)->delete();
+            \App\Models\Dosen::where('user_id', $user->id)->delete();
         } elseif ($user->role === 'mentor') {
             PembimbingIndustri::where('user_id', $user->id)->delete();
         }
@@ -345,8 +354,8 @@ public function storeUser(Request $request)
     public function assignPembimbing(Request $request)
     {
         $request->validate([
-            'nim' => 'required|exists:mahasiswas,nim',
-            'nidn' => 'nullable|exists:dosens,nidn',
+            'nim' => 'required|exists:external_mahasiswas,nim',
+            'nidn' => 'nullable|exists:external_dosens,nidn',
             'id_pem' => 'nullable|exists:pembimbing_industris,id_pem',
         ]);
 
@@ -374,7 +383,7 @@ public function storeUser(Request $request)
     public function storeJadwal(Request $request)
     {
         $request->validate([
-            'nidn' => 'required|exists:dosens,nidn',
+            'nidn' => 'required|exists:external_dosens,nidn',
             'perusahaan' => 'required|exists:perusahaans,nama_perusahaan',
             'tanggal' => 'required|date',
         ]);
@@ -458,10 +467,12 @@ public function storeUser(Request $request)
             if ($category === 'mahasiswa') {
                 $userIds = Mahasiswa::pluck('user_id');
                 Mahasiswa::query()->delete();
+                \App\Models\Mahasiswa::whereIn('user_id', $userIds)->delete();
                 User::whereIn('id', $userIds)->delete();
             } elseif ($category === 'dosen') {
                 $userIds = Dosen::pluck('user_id');
                 Dosen::query()->delete();
+                \App\Models\Dosen::whereIn('user_id', $userIds)->delete();
                 User::whereIn('id', $userIds)->delete();
             } elseif ($category === 'mentor') {
                 $userIds = PembimbingIndustri::pluck('user_id');

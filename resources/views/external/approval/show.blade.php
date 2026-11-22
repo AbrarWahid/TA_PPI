@@ -158,7 +158,7 @@
                     this.isLoading = true;
 
                     try {
-                        const response = await fetch(`/approval/${this.token}/process`, {
+                        const response = await fetch(`/external/approval/${this.token}/process`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

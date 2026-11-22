@@ -29,7 +29,7 @@ class PengajuanTTDNotification extends Notification
         return [
             'title' => 'Pengajuan TTD ' . strtoupper($this->approval->jenis_form),
             'message' => 'Mahasiswa (' . $this->approval->mahasiswa_nim . ') mengajukan Tanda Tangan Digital untuk form ' . $this->approval->jenis_form . '.',
-            'url' => route('approval.show', $this->approval->token_verifikasi)
+            'url' => route('external.approval.show', $this->approval->token_verifikasi)
         ];
     }
 }

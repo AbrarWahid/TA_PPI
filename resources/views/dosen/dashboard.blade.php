@@ -4,168 +4,152 @@
 
 @php
     $user = auth()->user();
-    
-    // JUDUL DASHBOARD DINAMIS
-    if ($user->isKps()) {
-        $roleName = 'Koordinator Prodi';
-    } else {
-        $roleName = 'Dosen Pengampu';
-    }
+    $roleName = $user->isKps() ? 'Koordinator Prodi' : 'Dosen Pengampu';
 @endphp
 
 <div class="space-y-6 max-w-[1400px] mx-auto">
 
     {{-- HEADER --}}
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-            <h2 class="text-3xl font-black italic uppercase text-[#004d4d] tracking-tighter">
-                Dashboard <span class="text-[#2dce89]">{{ $roleName }}</span>
-            </h2>
-            <p class="text-sm text-slate-500 mt-1 uppercase tracking-widest font-bold">
-                Selamat datang, <span class="text-[#004d4d]">{{ $user->name }}</span>. Verifikasi laporan & nilai mahasiswa.
+            <p class="font-mono text-[11px] uppercase tracking-[0.1em] text-[#6a6f7c] mb-1">PORTAL AKADEMIK</p>
+            <h1 class="text-2xl font-semibold text-[#0b0b0c] tracking-tight">
+                Dashboard {{ $roleName }}
+            </h1>
+            <p class="text-xs text-[#6a6f7c] mt-1">
+                Selamat datang, <span class="text-[#0b0b0c] font-medium">{{ $user->name }}</span>. Kelola verifikasi laporan &amp; penilaian mahasiswa.
             </p>
         </div>
-        <a href="{{ route('penilaian.dosen.create') }}"
-           class="flex items-center gap-2 px-5 py-3 bg-[#004d4d] hover:bg-[#003d3d] text-[#7fffd4] font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-lg hover:-translate-y-0.5 transition-all w-fit">
-            <span class="material-symbols-outlined text-base">add</span> Input Penilaian
+        <a href="{{ route('penilaian.dosen.create') }}" class="ps-btn-primary w-fit">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span>Input Penilaian</span>
         </a>
     </div>
 
     {{-- STAT CARDS --}}
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-5">
-        <div class="bg-white p-7 rounded-[2rem] border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
-            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">school</span>
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-[#e4e4e7] shadow-surface flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+                <p class="font-mono text-[11px] uppercase tracking-wider text-[#6a6f7c]">Total Supervisi</p>
+                <span class="material-symbols-outlined text-[18px] text-[#6a6f7c]">school</span>
             </div>
-            <div>
-                <p class="text-slate-400 uppercase tracking-widest text-[10px] font-black mb-1">Total Supervisi</p>
-                <h3 class="text-5xl font-black italic tracking-tighter text-[#004d4d]">{{ $supervisiList->count() }}</h3>
-            </div>
+            <h3 class="text-3xl font-semibold font-mono tracking-tight text-[#0b0b0c]">{{ $supervisiList->count() }}</h3>
         </div>
 
-        <div class="bg-white p-7 rounded-[2rem] border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
-            <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#004d4d]">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">group</span>
+        <div class="bg-white p-5 rounded-xl border border-[#e4e4e7] shadow-surface flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+                <p class="font-mono text-[11px] uppercase tracking-wider text-[#6a6f7c]">Total Mahasiswa</p>
+                <span class="material-symbols-outlined text-[18px] text-[#6a6f7c]">group</span>
             </div>
-            <div>
-                <p class="text-slate-400 uppercase tracking-widest text-[10px] font-black mb-1">Total Mahasiswa</p>
-                <h3 class="text-5xl font-black italic tracking-tighter text-[#004d4d]">{{ $totalMahasiswa }}</h3>
-            </div>
+            <h3 class="text-3xl font-semibold font-mono tracking-tight text-[#0b0b0c]">{{ $totalMahasiswa }}</h3>
         </div>
 
-        <div class="bg-white p-7 rounded-[2rem] border border-outline-variant/20 shadow-sm flex flex-col justify-between h-36">
-            <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">pending_actions</span>
+        <div class="bg-white p-5 rounded-xl border border-[#e4e4e7] shadow-surface flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+                <p class="font-mono text-[11px] uppercase tracking-wider text-[#6a6f7c]">Laporan Menunggu</p>
+                <span class="material-symbols-outlined text-[18px] text-[#b45309]">pending_actions</span>
             </div>
-            <div>
-                <p class="text-slate-400 uppercase tracking-widest text-[10px] font-black mb-1">Laporan Menunggu</p>
-                <h3 class="text-5xl font-black italic tracking-tighter text-[#004d4d]">{{ $laporanMenunggu }}</h3>
-            </div>
+            <h3 class="text-3xl font-semibold font-mono tracking-tight text-[#0b0b0c]">{{ $laporanMenunggu }}</h3>
         </div>
 
-        <div class="bg-[#004d4d] p-7 rounded-[2rem] shadow-sm flex flex-col justify-between h-36 relative overflow-hidden">
-            <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-white/5" style="font-size:100px;">edit_note</span>
-            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white backdrop-blur-sm relative z-10">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">edit_note</span>
+        <div class="bg-white p-5 rounded-xl border border-[#e4e4e7] shadow-surface flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-4">
+                <p class="font-mono text-[11px] uppercase tracking-wider text-[#6a6f7c]">Penilaian Selesai</p>
+                <span class="material-symbols-outlined text-[18px] text-[#15803d]">edit_note</span>
             </div>
-            <div class="relative z-10">
-                <p class="text-[#7fffd4] uppercase tracking-widest text-[10px] font-black mb-1">Penilaian Selesai</p>
-                <h3 class="text-5xl font-black italic tracking-tighter text-white">{{ $penilaianSelesai }}</h3>
-            </div>
+            <h3 class="text-3xl font-semibold font-mono tracking-tight text-[#0b0b0c]">{{ $penilaianSelesai }}</h3>
         </div>
     </section>
 
     {{-- MAIN CONTENT --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {{-- Quick Actions --}}
-        <div class="bg-white p-7 rounded-[2rem] border border-outline-variant/20 shadow-sm">
-            <h4 class="text-[10px] font-black text-outline mb-5 uppercase tracking-widest">Aksi Cepat</h4>
-            <div class="space-y-3">
-                <a href="{{ route('laporan.index') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low/40 hover:bg-emerald-50 hover:border-[#2dce89] border border-transparent transition-all group">
-                    <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center group-hover:bg-[#004d4d] transition-colors shrink-0">
-                        <span class="material-symbols-outlined text-lg text-outline group-hover:text-white">description</span>
+        <div class="bg-white p-5 rounded-xl border border-[#e4e4e7] shadow-surface">
+            <h4 class="font-mono text-[11px] font-medium text-[#6a6f7c] mb-4 uppercase tracking-wider">Aksi Cepat</h4>
+            <div class="space-y-2.5">
+                <a href="{{ route('laporan.index') }}" class="flex items-center gap-3.5 p-3.5 rounded-lg bg-[#fafafa] hover:bg-[#f4f4f5] border border-[#e4e4e7] transition-colors group">
+                    <div class="w-8 h-8 rounded-md bg-white border border-[#e4e4e7] flex items-center justify-center group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] transition-colors shrink-0">
+                        <span class="material-symbols-outlined text-[16px]">description</span>
                     </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-black text-[#004d4d]">Verifikasi Laporan</p>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-amber-500 mt-0.5">{{ $laporanMenunggu }} menunggu review</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-[#0b0b0c]">Verifikasi Laporan</p>
+                        <p class="font-mono text-[10px] text-[#b45309] mt-0.5">{{ $laporanMenunggu }} menunggu review</p>
                     </div>
-                    <span class="material-symbols-outlined text-outline group-hover:text-[#2dce89]">chevron_right</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#6a6f7c]">chevron_right</span>
                 </a>
 
-                <a href="{{ route('penilaian.index') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low/40 hover:bg-emerald-50 hover:border-[#2dce89] border border-transparent transition-all group">
-                    <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center group-hover:bg-[#004d4d] transition-colors shrink-0">
-                        <span class="material-symbols-outlined text-lg text-outline group-hover:text-white">edit_note</span>
+                <a href="{{ route('penilaian.index') }}" class="flex items-center gap-3.5 p-3.5 rounded-lg bg-[#fafafa] hover:bg-[#f4f4f5] border border-[#e4e4e7] transition-colors group">
+                    <div class="w-8 h-8 rounded-md bg-white border border-[#e4e4e7] flex items-center justify-center group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] transition-colors shrink-0">
+                        <span class="material-symbols-outlined text-[16px]">edit_note</span>
                     </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-black text-[#004d4d]">Input Nilai</p>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-outline/60 mt-0.5">Form penilaian mahasiswa</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-[#0b0b0c]">Input Nilai</p>
+                        <p class="text-[11px] text-[#6a6f7c] mt-0.5">Formulir penilaian mahasiswa</p>
                     </div>
-                    <span class="material-symbols-outlined text-outline group-hover:text-[#2dce89]">chevron_right</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#6a6f7c]">chevron_right</span>
                 </a>
 
-                <a href="{{ route('laporan.index') }}" class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low/40 hover:bg-emerald-50 hover:border-[#2dce89] border border-transparent transition-all group">
-                    <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center group-hover:bg-[#004d4d] transition-colors shrink-0">
-                        <span class="material-symbols-outlined text-lg text-outline group-hover:text-white">folder_open</span>
+                <a href="{{ route('supervisi_mingguan.daftar_verifikasi') }}" class="flex items-center gap-3.5 p-3.5 rounded-lg bg-[#fafafa] hover:bg-[#f4f4f5] border border-[#e4e4e7] transition-colors group">
+                    <div class="w-8 h-8 rounded-md bg-white border border-[#e4e4e7] flex items-center justify-center group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] transition-colors shrink-0">
+                        <span class="material-symbols-outlined text-[16px]">assignment_turned_in</span>
                     </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-black text-[#004d4d]">Semua Laporan</p>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-outline/60 mt-0.5">Riwayat laporan & tugas</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-[#0b0b0c]">Verifikasi Supervisi</p>
+                        <p class="text-[11px] text-[#6a6f7c] mt-0.5">Review supervisi mingguan</p>
                     </div>
-                    <span class="material-symbols-outlined text-outline group-hover:text-[#2dce89]">chevron_right</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#6a6f7c]">chevron_right</span>
                 </a>
             </div>
         </div>
 
-        {{-- Supervisi Aktif (Kini menggunakan Tabel Baku) --}}
-        <div class="lg:col-span-2 bg-white rounded-[2rem] border border-outline-variant/20 shadow-sm overflow-hidden flex flex-col">
-            <div class="px-7 py-5 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-low/40">
-                <h4 class="text-[10px] font-black text-outline uppercase tracking-widest flex items-center gap-2">
-                    <span class="material-symbols-outlined text-lg">school</span> Supervisi Aktif
-                </h4>
-                <span class="text-[10px] font-black text-[#2dce89] bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-widest">{{ $supervisiList->count() }} mahasiswa</span>
+        {{-- Supervisi Aktif --}}
+        <div class="lg:col-span-2 bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-[#e4e4e7] flex justify-between items-center">
+                <h4 class="text-sm font-semibold text-[#0b0b0c]">Supervisi Aktif</h4>
+                <span class="ps-badge">{{ $supervisiList->count() }} mahasiswa</span>
             </div>
 
             <div class="overflow-x-auto flex-1">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-surface-container-low/20 border-b border-outline-variant/10">
+                    <thead>
                         <tr>
-                            <th class="px-7 py-4 text-[10px] font-black uppercase tracking-widest text-outline w-12">#</th>
-                            <th class="px-7 py-4 text-[10px] font-black uppercase tracking-widest text-outline">Mahasiswa</th>
-                            <th class="px-7 py-4 text-[10px] font-black uppercase tracking-widest text-outline">Mata Kuliah</th>
-                            <th class="px-7 py-4 text-[10px] font-black uppercase tracking-widest text-outline text-center">Status Laporan Terbaru</th>
+                            <th class="px-5 py-3 w-12">#</th>
+                            <th class="px-5 py-3">Mahasiswa</th>
+                            <th class="px-5 py-3">Mata Kuliah</th>
+                            <th class="px-5 py-3 text-center">Status Laporan</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-outline-variant/10">
+                    <tbody class="divide-y divide-[#f4f4f5]">
                         @forelse($supervisiList as $idx => $supervisi)
-                        <tr class="hover:bg-surface-container-lowest transition-colors">
-                            <td class="px-7 py-4 text-[10px] font-black text-outline/40">{{ str_pad($idx + 1, 2, '0', STR_PAD_LEFT) }}</td>
-                            <td class="px-7 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-teal-50 text-[#004d4d] flex items-center justify-center text-xs font-black shrink-0">
+                        <tr>
+                            <td class="px-5 py-3.5 font-mono text-xs text-[#6a6f7c]">{{ str_pad($idx + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                            <td class="px-5 py-3.5">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-7 h-7 rounded-md bg-[#f4f4f5] border border-[#e4e4e7] text-[#0b0b0c] flex items-center justify-center font-mono text-xs font-medium shrink-0">
                                         {{ strtoupper(substr($supervisi->mahasiswa->nama ?? '?', 0, 1)) }}
                                     </div>
                                     <div>
-                                        <p class="font-black text-sm text-on-surface">{{ $supervisi->mahasiswa->nama ?? '-' }}</p>
-                                        <p class="text-[10px] font-bold text-outline mt-0.5">{{ $supervisi->mahasiswa->nim ?? '-' }}</p>
+                                        <p class="font-medium text-xs text-[#0b0b0c]">{{ $supervisi->mahasiswa->nama ?? '-' }}</p>
+                                        <p class="font-mono text-[11px] text-[#6a6f7c]">{{ $supervisi->mahasiswa->nim ?? '-' }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-7 py-4">
-                                <span class="inline-flex px-3 py-1.5 bg-purple-50 text-purple-700 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                            <td class="px-5 py-3.5">
+                                <span class="font-mono inline-flex px-2.5 py-0.5 bg-[#f4f4f5] border border-[#e4e4e7] text-[#0b0b0c] rounded text-[11px]">
                                     {{ $supervisi->mataKuliah->nama_matkul ?? '-' }}
                                 </span>
                             </td>
-                            <td class="px-7 py-4 text-center">
+                            <td class="px-5 py-3.5 text-center">
                                 @php
                                     $laporanMhs = $laporanTerbaru->firstWhere('mahasiswa_id', $supervisi->mahasiswa_id);
-                                    $statusColor = 'bg-gray-100 text-gray-400';
+                                    $statusColor = 'bg-[#f4f4f5] border-[#e4e4e7] text-[#6a6f7c]';
                                     $statusLabel = 'Belum Ada';
                                     if ($laporanMhs) {
                                         $statusColor = match($laporanMhs->status_verifikasi) {
-                                            'disetujui' => 'bg-emerald-50 text-emerald-600',
-                                            'ditolak'   => 'bg-rose-50 text-rose-600',
-                                            default     => 'bg-amber-50 text-amber-600',
+                                            'disetujui' => 'bg-emerald-50 border-emerald-200 text-[#15803d]',
+                                            'ditolak'   => 'bg-red-50 border-red-200 text-[#b91c1c]',
+                                            default     => 'bg-amber-50 border-amber-200 text-[#b45309]',
                                         };
                                         $statusLabel = match($laporanMhs->status_verifikasi) {
                                             'disetujui' => 'Disetujui',
@@ -174,16 +158,16 @@
                                         };
                                     }
                                 @endphp
-                                <span class="inline-flex px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $statusColor }}">
+                                <span class="font-mono inline-flex px-2.5 py-0.5 rounded-full border text-[10px] font-medium {{ $statusColor }}">
                                     {{ $statusLabel }}
                                 </span>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="px-7 py-16 text-center">
-                                <span class="material-symbols-outlined text-4xl text-outline-variant/40 block mb-3">school</span>
-                                <p class="text-sm font-black italic text-outline/50">Belum ada mahasiswa yang disupervisi.</p>
+                            <td colspan="4" class="px-5 py-12 text-center">
+                                <span class="material-symbols-outlined text-3xl text-[#d4d4d8] block mb-2">school</span>
+                                <p class="text-xs text-[#6a6f7c]">Belum ada mahasiswa yang disupervisi.</p>
                             </td>
                         </tr>
                         @endforelse

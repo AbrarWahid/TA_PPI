@@ -165,7 +165,9 @@ class DosenController extends Controller
         );
     }
 
-    $dosen->user->delete();
+    $user = $dosen->user;
+    $dosen->delete();
+    $user?->delete();
 
     return redirect('/dosen')->with('success', 'Dosen ' . $dosen->nama_dosen . ' berhasil dihapus!');
 }

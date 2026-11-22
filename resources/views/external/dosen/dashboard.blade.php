@@ -1,11 +1,11 @@
-@extends('external.dosen.app')
+@extends('layouts.app')
 @section('title', 'Dashboard Dosen Pembimbing')
 
 @section('content')
 <div x-data="dosenApp({{ json_encode($mahasiswas ?? []) }}, {{ json_encode($jadwals ?? []) }}, {{ json_encode($parameters ?? []) }})" class="space-y-6">
 
     <!-- Header Panel -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#e4e4e7] pb-4">
         <div>
             <h2 class="text-3xl font-black text-blue-900 tracking-wide">Monitoring & Penilaian</h2>
             <p class="text-gray-600 mt-1 font-medium">Jadwal kunjungan PT dan penilaian presentasi mahasiswa bimbingan.</p>
@@ -14,28 +14,28 @@
 
     <!-- Statistik Ringkas (Ditambah Draft) -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-blue-100 p-4 rounded-xl border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
+        <div class="bg-blue-100 p-4 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-sm font-bold text-blue-900 uppercase">Total Bimbingan</h3>
             <p class="text-3xl font-black text-blue-700 mt-1" x-text="students.length"></p>
         </div>
-        <div class="bg-red-50 p-4 rounded-xl border-2 border-red-900 shadow-[4px_4px_0_0_#7f1d1d]">
+        <div class="bg-red-50 p-4 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-sm font-bold text-red-900 uppercase">Belum Dinilai</h3>
             <div class="flex items-center gap-2 mt-1">
-                <span class="w-3 h-3 rounded-full bg-red-500 border-2 border-red-900 animate-pulse"></span>
+                <span class="w-3 h-3 rounded-full bg-red-500 border border-[#e4e4e7] animate-pulse"></span>
                 <p class="text-3xl font-black text-red-700" x-text="students.filter(s => s.status === 'Belum Dinilai').length"></p>
             </div>
         </div>
-        <div class="bg-orange-50 p-4 rounded-xl border-2 border-orange-900 shadow-[4px_4px_0_0_#7c2d12]">
+        <div class="bg-orange-50 p-4 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-sm font-bold text-orange-900 uppercase">Draft (Cicilan)</h3>
             <div class="flex items-center gap-2 mt-1">
-                <span class="w-3 h-3 rounded-full bg-orange-500 border-2 border-orange-900"></span>
+                <span class="w-3 h-3 rounded-full bg-orange-500 border border-[#e4e4e7]"></span>
                 <p class="text-3xl font-black text-orange-700" x-text="students.filter(s => s.status === 'Draft').length"></p>
             </div>
         </div>
-        <div class="bg-green-50 p-4 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d]">
+        <div class="bg-green-50 p-4 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-sm font-bold text-green-900 uppercase">Sudah Dinilai</h3>
             <div class="flex items-center gap-2 mt-1">
-                <span class="w-3 h-3 rounded-full bg-green-500 border-2 border-green-900"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500 border border-[#e4e4e7]"></span>
                 <p class="text-3xl font-black text-green-700" x-text="students.filter(s => s.status === 'Sudah Dinilai').length"></p>
             </div>
         </div>
@@ -75,14 +75,14 @@
     <!-- ========================================== -->
 
     <!-- Daftar Mahasiswa Bimbingan -->
-    <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] overflow-hidden mt-8">
-        <div class="bg-blue-50 p-4 border-b-2 border-blue-900">
+    <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden mt-8">
+        <div class="bg-blue-50 p-4 border-b border-[#e4e4e7]">
             <h3 class="text-xl font-black text-blue-900">Jadwal Monitoring & Daftar Mahasiswa</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-gray-100 border-b-2 border-blue-200">
+                    <tr class="bg-gray-100 border-b border-[#e4e4e7]">
                         <th class="p-4 font-bold text-gray-700">Nama Mahasiswa</th>
                         <th class="p-4 font-bold text-gray-700">Tempat Magang & Jadwal</th>
                         <th class="p-4 font-bold text-gray-700 text-center">Status</th>
@@ -124,17 +124,17 @@
                             <!-- Tombol Aksi Dinamis -->
                             <td class="p-4 text-center">
                                 <template x-if="student.status === 'Belum Dinilai'">
-                                    <button @click="openModal(student)" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold border-2 border-blue-900 shadow-[3px_3px_0_0_#1e3a8a] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                    <button @click="openModal(student)" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
                                         Beri Penilaian
                                     </button>
                                 </template>
                                 <template x-if="student.status === 'Draft'">
-                                    <button @click="openModal(student)" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold border-2 border-orange-900 shadow-[3px_3px_0_0_#7c2d12] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                    <button @click="openModal(student)" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
                                         Lanjut Isi Draft
                                     </button>
                                 </template>
                                 <template x-if="student.status === 'Sudah Dinilai'">
-                                    <button @click="openModal(student)" class="bg-white text-green-700 px-4 py-2 rounded-lg font-bold border-2 border-green-600 shadow-[3px_3px_0_0_#14532d] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
+                                    <button @click="openModal(student)" class="bg-white text-green-700 px-4 py-2 rounded-lg font-bold border-2 border-green-600 shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all text-sm">
                                         Lihat / Edit Nilai
                                     </button>
                                 </template>
@@ -152,7 +152,7 @@
             <!-- Background Overlay dipasang klik closeModal agar auto-draft bekerja saat di-klik sembarang -->
             <div x-show="showModal" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="closeModal()"></div>
 
-            <div x-show="showModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-5xl w-full border-4 border-blue-900 rounded-xl">
+            <div x-show="showModal" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-5xl w-full border border-[#e4e4e7] rounded-xl">
                 
                 <div class="bg-blue-900 px-6 py-4 flex justify-between items-center text-white">
                     <h3 class="text-2xl font-black">Penilaian Presentasi PPI</h3>
@@ -192,8 +192,8 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         
                         <!-- BAGIAN A: MUTU PRESENTASI -->
-                        <div class="bg-white p-5 rounded-lg border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
-                            <div class="flex justify-between items-center mb-4 border-b-2 border-blue-100 pb-2">
+                        <div class="bg-white p-5 rounded-lg border border-[#e4e4e7] shadow-surface">
+                            <div class="flex justify-between items-center mb-4 border-b border-[#e4e4e7] pb-2">
                                 <h4 class="font-black text-blue-900 text-lg">A. Mutu Presentasi (40%)</h4>
                                 <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded border border-blue-300" x-text="'Rata-rata: ' + avgA"></span>
                             </div>
@@ -220,8 +220,8 @@
                         </div>
 
                         <!-- BAGIAN B: MUTU PENULISAN -->
-                        <div class="bg-white p-5 rounded-lg border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
-                            <div class="flex justify-between items-center mb-4 border-b-2 border-blue-100 pb-2">
+                        <div class="bg-white p-5 rounded-lg border border-[#e4e4e7] shadow-surface">
+                            <div class="flex justify-between items-center mb-4 border-b border-[#e4e4e7] pb-2">
                                 <h4 class="font-black text-blue-900 text-lg">B. Penulisan Makalah (60%)</h4>
                                 <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded border border-blue-300" x-text="'Rata-rata: ' + avgB"></span>
                             </div>
@@ -250,7 +250,7 @@
                 </div>
 
                 <!-- Footer Modal -->
-                <div class="bg-gray-200 border-t-2 border-gray-300 p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="bg-gray-200 border-t border-[#e4e4e7] p-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="w-full md:w-auto">
                         <p class="text-xs font-bold text-gray-600 mb-1 uppercase">Kriteria Penilaian:</p>
                         <div class="grid grid-cols-3 gap-x-4 gap-y-1 text-xs font-bold text-gray-500 bg-white p-2 border border-gray-300 rounded">
@@ -271,7 +271,7 @@
                                 <span class="text-lg font-bold" :class="getGradeColor()" x-text="'(' + getGradeText() + ')'"></span>
                             </div>
                         </div>
-                        <button @click="submitPenilaian()" class="bg-green-500 text-white font-black px-8 py-3 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
+                        <button @click="submitPenilaian()" class="bg-[#013981] hover:bg-[#012b63] text-white font-medium px-8 py-3 rounded-xl border border-[#e4e4e7] shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
                             <span x-text="selectedStudent?.status === 'Sudah Dinilai' ? 'Update Nilai' : 'Simpan Final'"></span>
                         </button>
                     </div>
@@ -462,7 +462,7 @@
                 };
 
                 try {
-                    let response = await fetch('{{ route("dosen.penilaian.store") }}', {
+                    let response = await fetch('{{ route("external.dosen.penilaian.store") }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

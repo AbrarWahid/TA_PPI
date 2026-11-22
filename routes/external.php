@@ -62,7 +62,7 @@ Route::prefix('external')->middleware(['auth', 'role:mentor'])->group(function (
 });
 
 // Group Route untuk Kaprodi
-Route::prefix('external')->middleware(['auth', 'role:kaprodi'])->group(function () {
+Route::prefix('external')->middleware(['auth', 'role:kps'])->group(function () {
     Route::get('/kaprodi/dashboard', [\App\External\Http\Controllers\KaprodiController::class, 'index'])->name('external.kaprodi.dashboard');
     Route::get('/kaprodi/export', [\App\External\Http\Controllers\KaprodiController::class, 'exportIndex'])->name('external.kaprodi.export');
     Route::get('/kaprodi/export/{nim}', [\App\External\Http\Controllers\KaprodiController::class, 'transkrip'])->name('external.kaprodi.transkrip');
@@ -91,12 +91,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/external/notifikasi/{id}/read', [NotifikasiController::class, 'markAsRead'])->name('external.notifikasi.read');
 
     Route::get('/external/dashboard', function () {
-        $role = auth()->user()->role;
-        if ($role === 'admin') return redirect()->route('admin.dashboard');
-        if ($role === 'dosen') return redirect()->route('dosen.dashboard');
-        if ($role === 'mentor') return redirect()->route('mentor.dashboard');
-        if ($role === 'kaprodi') return redirect()->route('kaprodi.dashboard');
-        return redirect()->route('mahasiswa.dashboard');
+    return match (auth()->user()->role) {
+        'admin'     => redirect()->route('external.admin.dashboard'),
+        'dosen'     => redirect()->route('external.dosen.dashboard'),
+        'mentor'    => redirect()->route('external.mentor.dashboard'),
+        'mahasiswa' => redirect()->route('external.mahasiswa.dashboard'),
+        default     => redirect()->route('dashboard'),
+    };
     })->name('external.dashboard');
 
     Route::get('/external/transkrip/{nim}', [MahasiswaController::class, 'transkrip'])->name('external.transkrip.show');

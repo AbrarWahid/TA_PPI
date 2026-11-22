@@ -33,6 +33,8 @@ class DashboardController extends Controller
             }
         } elseif ($user->isManager()) {
             return $this->managerDashboard();
+        } elseif (in_array($user->role, ['mentor'])) {
+            return redirect()->route('external.dashboard');
         }
 
         abort(403);

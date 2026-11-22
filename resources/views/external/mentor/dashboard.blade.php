@@ -1,11 +1,11 @@
-@extends('external.mentor.app')
+@extends('layouts.app')
 @section('title', 'Dashboard Mentor Industri')
 
 @section('content')
 <div x-data="mentorApp({{ json_encode($mahasiswas ?? []) }}, {{ json_encode($parameterSaranMentor ?? []) }}, {{ json_encode($parameterDisiplin ?? []) }}, {{ json_encode($parameterKuisioner ?? []) }})" class="space-y-6">
 
     <!-- Header Panel -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#e4e4e7] pb-4">
         <div>
             <h2 class="text-3xl font-black text-blue-900 tracking-wide">Validasi & Penilaian Industri</h2>
             <p class="text-gray-600 mt-1 font-medium">Evaluasi kinerja, kedisiplinan, dan hardskill/softskill mahasiswa magang.</p>
@@ -14,33 +14,33 @@
 
     <!-- Statistik Mentor -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-blue-100 p-6 rounded-xl border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
+        <div class="bg-blue-100 p-6 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-lg font-bold text-blue-900">Mahasiswa Aktif</h3>
             <p class="text-4xl font-black text-blue-700 mt-2" x-text="students.length"></p>
         </div>
-        <div class="bg-orange-100 p-6 rounded-xl border-2 border-orange-900 shadow-[4px_4px_0_0_#7c2d12]">
+        <div class="bg-orange-100 p-6 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-lg font-bold text-orange-900">Menunggu Validasi</h3>
             <p class="text-4xl font-black text-orange-700 mt-2" x-text="students.filter(s => s.status === 'Pending').length"></p>
         </div>
-        <div class="bg-green-100 p-6 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d]">
+        <div class="bg-green-100 p-6 rounded-xl border border-[#e4e4e7] shadow-surface">
             <h3 class="text-lg font-bold text-green-900">Selesai Evaluasi</h3>
             <p class="text-4xl font-black text-green-700 mt-2" x-text="students.filter(s => s.status === 'Selesai').length"></p>
         </div>
     </div>
 
     <!-- Daftar Mahasiswa (Accordion Style) -->
-    <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] mt-8 overflow-hidden">
-        <div class="bg-blue-50 p-4 border-b-2 border-blue-900">
+    <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface mt-8 overflow-hidden">
+        <div class="bg-blue-50 p-4 border-b border-[#e4e4e7]">
             <h3 class="text-xl font-black text-blue-900">Daftar Mahasiswa di Perusahaan Anda</h3>
         </div>
         
-        <div class="divide-y-2 divide-blue-100">
+        <div class="divide-y divide-blue-100">
             <template x-for="student in students" :key="student.id">
                 <div class="bg-white transition-colors" x-data="{ expanded: false }">
                     <!-- Header Baris (Clickable) -->
                     <div @click="expanded = !expanded" class="p-4 cursor-pointer hover:bg-blue-50 flex justify-between items-center">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-200 border-2 border-blue-900 rounded-lg flex items-center justify-center font-black text-blue-900 text-xl shadow-[2px_2px_0_0_#1e3a8a]">
+                            <div class="w-12 h-12 bg-blue-200 border border-[#e4e4e7] rounded-lg flex items-center justify-center font-black text-blue-900 text-xl shadow-surface">
                                 <span x-text="student.name.charAt(0)"></span>
                             </div>
                             <div>
@@ -57,24 +57,24 @@
                     </div>
 
                     <!-- Panel Aksi Tersembunyi -->
-                    <div x-show="expanded" x-collapse class="p-4 bg-gray-50 border-t-2 border-blue-100 flex flex-col md:flex-row gap-4 justify-center">
-                        <button @click="openModal('logbook', student)" class="flex-1 bg-white border-2 border-blue-900 p-4 rounded-xl shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
+                    <div x-show="expanded" x-collapse class="p-4 bg-gray-50 border-t border-[#e4e4e7] flex flex-col md:flex-row gap-4 justify-center">
+                        <button @click="openModal('logbook', student)" class="flex-1 bg-white border border-[#e4e4e7] p-4 rounded-xl shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
                             <h5 class="font-black text-blue-900 text-lg group-hover:text-blue-600">Validasi Logbook</h5>
                             <p class="text-xs font-bold text-gray-500 mt-1">Cek deskripsi kegiatan & Beri Nilai</p>
                         </button>
-                        <button @click="openModal('disiplin', student)" class="flex-1 bg-white border-2 border-blue-900 p-4 rounded-xl shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
+                        <button @click="openModal('disiplin', student)" class="flex-1 bg-white border border-[#e4e4e7] p-4 rounded-xl shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
                             <h5 class="font-black text-blue-900 text-lg group-hover:text-blue-600">Disiplin & Prestasi</h5>
                             <p class="text-xs font-bold text-gray-500 mt-1">Evaluasi kerajinan & supervisi kerja</p>
                         </button>
-                        <button @click="openModal('kuisioner', student)" class="flex-1 bg-white border-2 border-blue-900 p-4 rounded-xl shadow-[4px_4px_0_0_#1e3a8a] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
+                        <button @click="openModal('kuisioner', student)" class="flex-1 bg-white border border-[#e4e4e7] p-4 rounded-xl shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
                             <h5 class="font-black text-blue-900 text-lg group-hover:text-blue-600">Form Kuisioner</h5>
                             <p class="text-xs font-bold text-gray-500 mt-1">Penilaian Hardskill & Softskill (1-4)</p>
                         </button>
-                        <button @click="openModal('saran', student)" class="flex-1 bg-white border-2 border-yellow-500 p-4 rounded-xl shadow-[4px_4px_0_0_#eab308] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
+                        <button @click="openModal('saran', student)" class="flex-1 bg-white border border-[#e4e4e7] p-4 rounded-xl shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
                             <h5 class="font-black text-yellow-700 text-lg group-hover:text-yellow-600">Saran Mahasiswa</h5>
                             <p class="text-xs font-bold text-gray-500 mt-1">Berikan masukan & saran ke mahasiswa</p>
                         </button>
-                        <button @click="openModal('transkrip_full', student)" class="flex-1 bg-white border-2 border-cyan-500 p-4 rounded-xl shadow-[4px_4px_0_0_#06b6d4] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group text-left block w-full">
+                        <button @click="openModal('transkrip_full', student)" class="flex-1 bg-white border border-[#e4e4e7] p-4 rounded-xl shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group text-left block w-full">
                             <h5 class="font-black text-cyan-700 text-lg group-hover:text-cyan-600">Transkrip & Logbook</h5>
                             <p class="text-xs font-bold text-gray-500 mt-1">Lihat grafik jam & rekap nilai</p>
                         </button>
@@ -89,7 +89,7 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div x-show="activeModal !== null" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="closeModal()"></div>
 
-            <div x-show="activeModal !== null" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-5xl w-full border-4 border-blue-900 rounded-xl flex flex-col max-h-[90vh]">
+            <div x-show="activeModal !== null" x-transition.scale class="relative inline-block bg-white text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-5xl w-full border border-[#e4e4e7] rounded-xl flex flex-col max-h-[90vh]">
                 
                 <!-- Modal Header -->
                 <div class="bg-blue-900 px-6 py-4 flex justify-between items-center text-white flex-shrink-0">
@@ -116,8 +116,8 @@
 
                     <!-- KONTEN 1: LOGBOOK -->
                     <template x-if="activeModal === 'logbook'">
-                        <div class="bg-white p-6 rounded-xl border-2 border-blue-900 shadow-[4px_4px_0_0_#1e3a8a]">
-                            <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2 mb-4">
+                        <div class="bg-white p-6 rounded-xl border border-[#e4e4e7] shadow-surface">
+                            <div class="flex justify-between items-center border-b border-[#e4e4e7] pb-2 mb-4">
                                 <p class="text-sm font-bold text-gray-600">Periksa deskripsi kegiatan mahasiswa, lalu masukkan nilai 0–100. Anda dapat mengubah nilai kapan saja dengan menekan tombol Simpan.</p>
                             </div>
                             
@@ -141,7 +141,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div x-show="weekExpanded" x-collapse class="border-t-2 border-blue-100">
+                                        <div x-show="weekExpanded" x-collapse class="border-t border-[#e4e4e7]">
                                             <template x-if="!hasLogbookData(w)">
                                                 <div class="p-4 text-center text-gray-400 font-bold text-sm italic">
                                                     Mahasiswa belum mengisi logbook pada minggu ini.
@@ -152,7 +152,7 @@
                                                 <div class="overflow-x-auto p-4">
                                                     <table class="w-full text-left text-sm border-collapse">
                                                         <thead>
-                                                            <tr class="border-b-2 border-gray-200 text-gray-600">
+                                                            <tr class="border-b border-[#e4e4e7] text-gray-600">
                                                                 <th class="pb-2 font-bold w-1/5">Tanggal</th>
                                                                 <th class="pb-2 font-bold w-1/5">Mata Kuliah</th>
                                                                 <th class="pb-2 font-bold w-2/5">Deskripsi Pekerjaan</th>
@@ -184,10 +184,10 @@
 
                     <!-- KONTEN 2: DISIPLIN & PRESTASI -->
                     <template x-if="activeModal === 'disiplin'">
-                        <div class="bg-white p-5 md:p-8 rounded-xl border-4 border-purple-900 shadow-[6px_6px_0_0_#581c87]">
+                        <div class="bg-white p-5 md:p-8 rounded-xl border border-[#e4e4e7] shadow-surface">
                             <div class="flex justify-between items-center mb-6 border-l-4 border-purple-500 pl-3">
                                 <h3 class="text-2xl font-black text-purple-900">Form Disiplin & Prestasi</h3>
-                                <button type="button" x-show="selectedStudent.dataDisiplin && !isEditingDisiplin" @click="enableEditDisiplin()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border-2 border-black shadow-[2px_2px_0_0_#000]">
+                                <button type="button" x-show="selectedStudent.dataDisiplin && !isEditingDisiplin" @click="enableEditDisiplin()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border border-[#e4e4e7] shadow-surface">
                                     Edit Nilai
                                 </button>
                             </div>
@@ -234,15 +234,15 @@
 
                     <!-- KONTEN 3: KUISIONER -->
                     <template x-if="activeModal === 'kuisioner'">
-                        <div class="bg-white p-5 md:p-8 rounded-xl border-4 border-emerald-900 shadow-[6px_6px_0_0_#064e3b]">
+                        <div class="bg-white p-5 md:p-8 rounded-xl border border-[#e4e4e7] shadow-surface">
                             <div class="flex justify-between items-center mb-6 border-l-4 border-emerald-500 pl-3">
                                 <h3 class="text-2xl font-black text-emerald-900">Evaluasi Kuisioner</h3>
-                                <button type="button" x-show="selectedStudent.dataKuisioner && !isEditingKuisioner" @click="enableEditKuisioner()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border-2 border-black shadow-[2px_2px_0_0_#000]">
+                                <button type="button" x-show="selectedStudent.dataKuisioner && !isEditingKuisioner" @click="enableEditKuisioner()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border border-[#e4e4e7] shadow-surface">
                                     Edit Nilai
                                 </button>
                             </div>
                             
-                            <div class="flex flex-wrap items-center gap-4 border-b-2 border-gray-200 pb-2 mb-4">
+                            <div class="flex flex-wrap items-center gap-4 border-b border-[#e4e4e7] pb-2 mb-4">
                                 <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded text-xs border border-blue-300">4: Sangat Baik</span>
                                 <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded text-xs border border-blue-300">3: Baik</span>
                                 <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded text-xs border border-blue-300">2: Cukup</span>
@@ -297,7 +297,7 @@
 
                     <!-- KONTEN 4: SARAN MAHASISWA -->
                     <template x-if="activeModal === 'saran'">
-                        <div class="bg-white p-5 md:p-8 rounded-xl border-4 border-yellow-500 shadow-[6px_6px_0_0_#eab308] relative overflow-hidden">
+                        <div class="bg-white p-5 md:p-8 rounded-xl border border-[#e4e4e7] shadow-surface relative overflow-hidden">
                             <div class="absolute -right-6 -top-6 opacity-10 pointer-events-none">
                                 <svg class="w-32 h-32 text-yellow-600" fill="currentColor" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                             </div>
@@ -305,7 +305,7 @@
                             <div class="relative z-10">
                                 <div class="flex justify-between items-center mb-6 border-l-4 border-yellow-400 pl-3">
                                     <h3 class="text-2xl font-black text-yellow-700">Saran & Masukan untuk Mahasiswa</h3>
-                                    <button type="button" x-show="selectedStudent.saran_mentor && !isEditingSaran" @click="enableEditSaran()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border-2 border-black shadow-[2px_2px_0_0_#000]">
+                                    <button type="button" x-show="selectedStudent.saran_mentor && !isEditingSaran" @click="enableEditSaran()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3 py-1.5 rounded-lg border border-[#e4e4e7] shadow-surface">
                                         Edit Saran
                                     </button>
                                 </div>
@@ -356,7 +356,7 @@
                                         </div>
                                     </template>
                                     <div class="flex justify-end mt-4">
-                                        <button type="submit" :disabled="isSubmitting" class="bg-yellow-400 text-yellow-950 font-black py-2.5 px-6 rounded-xl border-4 border-yellow-600 shadow-[4px_4px_0_0_#ca8a04] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-2 disabled:opacity-50">
+                                        <button type="submit" :disabled="isSubmitting" class="bg-[#013981] text-white font-black py-2.5 px-6 rounded-xl border border-[#e4e4e7] shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-2 disabled:opacity-50">
                                             <span x-show="!isSubmitting">Kirim / Perbarui Saran</span>
                                             <span x-show="isSubmitting">Menyimpan...</span>
                                         </button>
@@ -368,8 +368,8 @@
 
                     <!-- KONTEN 5: REKAPAN JAM -->
                     <template x-if="activeModal === 'rekapan'">
-                        <div class="bg-white p-6 rounded-xl border-2 border-cyan-900 shadow-[4px_4px_0_0_#164e63]">
-                            <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2 mb-4">
+                        <div class="bg-white p-6 rounded-xl border-2 border-cyan-900 shadow-surface">
+                            <div class="flex justify-between items-center border-b border-[#e4e4e7] pb-2 mb-4">
                                 <h4 class="text-xl font-black text-cyan-900">Rekapan Jam Logbook</h4>
                             </div>
                             
@@ -432,17 +432,17 @@
                                 <svg class="w-10 h-10 text-cyan-600 animate-spin mb-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 <p class="text-gray-500 font-bold">Memuat Transkrip...</p>
                             </div>
-                            <iframe :src="'/transkrip/' + selectedStudent.nim + '?mode=modal'" class="w-full h-full border-0" @load="iframeLoading = false"></iframe>
+                            <iframe :src="'/external/transkrip/' + selectedStudent.nim + '?mode=modal'" class="w-full h-full border-0" @load="iframeLoading = false"></iframe>
                         </div>
                     </template>
                 </div>
 
                 <!-- Footer Modal -->
-                <div class="bg-gray-200 border-t-2 border-gray-300 p-4 flex justify-end flex-shrink-0 rounded-b-xl">
-                    <button x-show="activeModal === 'logbook' || (activeModal === 'disiplin' && (!selectedStudent.dataDisiplin || isEditingDisiplin)) || (activeModal === 'kuisioner' && (!selectedStudent.dataKuisioner || isEditingKuisioner))" @click="saveData()" class="bg-green-500 text-white font-black px-8 py-3 rounded-xl border-2 border-green-900 shadow-[4px_4px_0_0_#14532d] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
+                <div class="bg-gray-200 border-t border-[#e4e4e7] p-4 flex justify-end flex-shrink-0 rounded-b-xl">
+                    <button x-show="activeModal === 'logbook' || (activeModal === 'disiplin' && (!selectedStudent.dataDisiplin || isEditingDisiplin)) || (activeModal === 'kuisioner' && (!selectedStudent.dataKuisioner || isEditingKuisioner))" @click="saveData()" class="bg-[#013981] hover:bg-[#012b63] text-white font-medium px-8 py-3 rounded-xl border border-[#e4e4e7] shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
                         Simpan Penilaian
                     </button>
-                    <button x-show="activeModal === 'saran' || activeModal === 'rekapan' || activeModal === 'transkrip_full' || (activeModal === 'disiplin' && selectedStudent.dataDisiplin && !isEditingDisiplin) || (activeModal === 'kuisioner' && selectedStudent.dataKuisioner && !isEditingKuisioner)" @click="closeModal()" class="bg-gray-500 text-white font-black px-8 py-3 rounded-xl border-2 border-gray-800 shadow-[4px_4px_0_0_#1f2937] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
+                    <button x-show="activeModal === 'saran' || activeModal === 'rekapan' || activeModal === 'transkrip_full' || (activeModal === 'disiplin' && selectedStudent.dataDisiplin && !isEditingDisiplin) || (activeModal === 'kuisioner' && selectedStudent.dataKuisioner && !isEditingKuisioner)" @click="closeModal()" class="bg-gray-500 text-white font-black px-8 py-3 rounded-xl border-2 border-gray-800 shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
                         Tutup
                     </button>
                 </div>
@@ -559,7 +559,7 @@
                     this.rekapanData = null;
                     this.rekapanLoading = true;
                     try {
-                        const response = await fetch('/api/rekapan-jam/' + student.nim);
+                        const response = await fetch('/external/api/rekapan-jam/' + student.nim);
                         this.rekapanData = await response.json();
                         setTimeout(() => {
                             this.renderRekapanChart();
@@ -699,7 +699,7 @@
                             };
                         }).filter(l => l.nilai !== null && l.nilai !== '');
 
-                        let res = await fetch('{{ route("mentor.logbook.store") }}', {
+                        let res = await fetch('{{ route("external.mentor.logbook.store") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -720,7 +720,7 @@
                     } catch (e) { console.error(e); }
                 } else if(typeToSave === 'disiplin') {
                     try {
-                        let res = await fetch('{{ route("mentor.disiplin.store") }}', {
+                        let res = await fetch('{{ route("external.mentor.disiplin.store") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -741,7 +741,7 @@
                     } catch (e) { console.error(e); }
                 } else if(typeToSave === 'kuisioner') {
                     try {
-                        let res = await fetch('{{ route("mentor.kuisioner.store") }}', {
+                        let res = await fetch('{{ route("external.mentor.kuisioner.store") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -784,7 +784,7 @@
                 }
 
                 try {
-                    const response = await fetch('{{ route("mentor.saran.store") }}', {
+                    const response = await fetch('{{ route("external.mentor.saran.store") }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -10,8 +10,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'role_aktif', 'akses_role', 'prodi', 'status',
+        'name', 'email', 'password', 'plain_password', 'role', 'role_aktif', 'akses_role', 'prodi', 'status',
     ];
 
     protected $hidden = [
@@ -52,6 +54,7 @@ class User extends Authenticatable
     {
         return $this->role === 'mahasiswa';
     }
+
 
     public function isDosen(): bool
     {
@@ -102,7 +105,7 @@ class User extends Authenticatable
         if ($this->role === 'dosen') {
             return $this->role_aktif ?? 'dosen_pengampu';
         }
-        return $this->role;
+        return $this->role ?? 'mahasiswa';
     }
 
     // ── Daftar role yang bisa dipilih user ini ──

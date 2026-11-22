@@ -1,4 +1,4 @@
-@extends('external.mentor.app')
+@extends('layouts.app')
 @section('title', 'Riwayat TTD & Approval')
 
 @section('content')

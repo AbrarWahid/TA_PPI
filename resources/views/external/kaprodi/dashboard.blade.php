@@ -1,11 +1,11 @@
-@extends('external.kaprodi.app')
+@extends('layouts.app')
 @section('title', 'Dashboard Kaprodi')
 
 @section('content')
 <div class="space-y-6" x-data="kaprodiApp()">
 
     <!-- Header Panel -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 border-blue-900 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#e4e4e7] pb-4">
         <div>
             <h2 class="text-3xl font-black text-blue-900 tracking-wide">Dashboard KPS</h2>
             <p class="text-gray-600 mt-1 font-medium">Pantau dan kelola saran masukan serta form evaluasi industri.</p>
@@ -13,14 +13,14 @@
     </div>
 
     <!-- FILTER BAR NEO-BRUTALISM -->
-    <div class="bg-[#FFB347] p-4 rounded-xl border-4 border-black shadow-[6px_6px_0_0_#000] mb-8">
+    <div class="bg-white p-4 rounded-xl border border-[#e4e4e7] shadow-surface mb-8">
         <h3 class="text-black font-black uppercase tracking-widest mb-3 text-sm flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
             Filter Data Spesifik
         </h3>
         <div class="flex flex-col sm:flex-row gap-4">
             <div class="flex-1">
-                <select x-model="filterKelas" @change="filterNim = ''" class="w-full p-3 bg-white border-2 border-black rounded-lg font-bold outline-none cursor-pointer focus:ring-2 focus:ring-black">
+                <select x-model="filterKelas" @change="filterNim = ''" class="w-full p-3 bg-white border border-[#e4e4e7] rounded-lg font-bold outline-none cursor-pointer focus:ring-2 focus:ring-black">
                     <option value="">-- SEMUA BATCH / KELAS --</option>
                     @foreach($kelasAktif ?? [] as $kls)
                         <option value="{{ $kls }}">{{ $kls }}</option>
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="flex-1">
-                <select x-model="filterNim" class="w-full p-3 bg-white border-2 border-black rounded-lg font-bold outline-none cursor-pointer focus:ring-2 focus:ring-black">
+                <select x-model="filterNim" class="w-full p-3 bg-white border border-[#e4e4e7] rounded-lg font-bold outline-none cursor-pointer focus:ring-2 focus:ring-black">
                     <option value="">-- SEMUA MAHASISWA --</option>
                     @foreach($mahasiswas ?? [] as $m)
                         <option value="{{ $m->nim }}" x-show="filterKelas === '' || filterKelas === '{{ $m->kelas }}'">
@@ -41,21 +41,21 @@
     </div>
 
     <!-- ACTION BUTTONS: CETAK REKAP PDF -->
-    <div class="mb-8 p-6 bg-white rounded-xl border-4 border-black shadow-[6px_6px_0_0_#000] flex flex-col md:flex-row gap-6 justify-between items-center">
+    <div class="mb-8 p-6 bg-white rounded-xl border border-[#e4e4e7] shadow-surface flex flex-col md:flex-row gap-6 justify-between items-center">
         <div>
             <h3 class="text-xl font-black uppercase tracking-widest text-black">Cetak Transkrip / Rekapitulasi</h3>
             <p class="text-gray-600 font-bold mt-1 text-sm">Download rekap nilai akhir PPI ke dalam format PDF.</p>
         </div>
         <div class="flex flex-wrap gap-3">
             <!-- Tombol Cetak Seluruh Kelas -->
-            <a href="{{ route('external.kaprodi.rekap_all', ['export' => 'pdf']) }}" class="flex items-center gap-2 bg-red-600 text-white font-black px-5 py-2 border-2 border-black shadow-[3px_3px_0_0_#000] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+            <a href="{{ route('external.kaprodi.rekap_all', ['export' => 'pdf']) }}" class="flex items-center gap-2 bg-red-600 text-white font-black px-5 py-2 border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Semua Kelas
             </a>
 
             <!-- Looping Tombol per Kelas Aktif (3AEC1, 3AEC2, dsb) -->
             @foreach($kelasAktif as $kls)
-            <a href="{{ route('external.kaprodi.rekap_all', ['export' => 'pdf', 'kelas' => $kls]) }}" class="flex items-center gap-2 bg-blue-600 text-white font-black px-5 py-2 border-2 border-black shadow-[3px_3px_0_0_#000] hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
+            <a href="{{ route('external.kaprodi.rekap_all', ['export' => 'pdf', 'kelas' => $kls]) }}" class="flex items-center gap-2 bg-blue-600 text-white font-black px-5 py-2 border border-[#e4e4e7] shadow-surface hover:translate-y-px hover:translate-x-px hover:shadow-none transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Kelas {{ $kls }}
             </a>
@@ -73,7 +73,7 @@
         </div>
 
         <!-- MAIN CARD: SARAN -->
-        <div class="bg-white rounded-xl border-2 border-blue-900 shadow-[6px_6px_0_0_#1e3a8a] overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
             <div class="bg-blue-900 p-4 flex justify-between items-center text-white">
                 <h3 class="text-xl font-black uppercase">Daftar Saran dan Masukan</h3>
                 <span class="text-sm font-bold bg-black/20 px-3 py-1 rounded-full">{{ count($sarans) }} Data</span>
@@ -143,7 +143,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- MAIN CARD: DISIPLIN -->
-            <div class="bg-white rounded-xl border-2 border-purple-900 shadow-[6px_6px_0_0_#581c87] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-purple-900 p-4 flex justify-between items-center text-white">
                     <h3 class="text-lg font-black uppercase">Form Disiplin & Prestasi</h3>
                     <span class="text-sm font-bold bg-black/20 px-3 py-1 rounded-full">{{ count($disiplins) }} Data</span>
@@ -199,7 +199,7 @@
             </div>
 
             <!-- MAIN CARD: KUISIONER -->
-            <div class="bg-white rounded-xl border-2 border-emerald-900 shadow-[6px_6px_0_0_#064e3b] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#e4e4e7] shadow-surface overflow-hidden">
                 <div class="bg-emerald-900 p-4 flex justify-between items-center text-white">
                     <h3 class="text-lg font-black uppercase">Evaluasi Kuisioner</h3>
                     <span class="text-sm font-bold bg-black/20 px-3 py-1 rounded-full">{{ count($kuisioners) }} Data</span>
@@ -258,7 +258,7 @@
 
     <!-- MAIN CARD: SARAN MENTOR -->
     <div class="mb-10">
-        <div class="bg-white rounded-xl border-2 border-fuchsia-900 shadow-[6px_6px_0_0_#701a75] overflow-hidden">
+        <div class="bg-white rounded-xl border-2 border-fuchsia-900 shadow-surface overflow-hidden">
             <div class="bg-fuchsia-900 p-4 flex justify-between items-center text-white">
                 <h3 class="text-xl font-black uppercase">Daftar Saran dan Masukan dari Mentor</h3>
                 <span class="text-sm font-bold bg-black/20 px-3 py-1 rounded-full">{{ count($saranMentors ?? []) }} Data</span>
@@ -383,8 +383,8 @@
                 </div>
             </div>
 
-            <div class="bg-gray-200 border-t-2 border-gray-300 p-4 flex justify-end flex-shrink-0 rounded-b-xl">
-                <button @click="closeRekapanModal()" class="bg-gray-500 text-white font-black px-8 py-3 rounded-xl border-2 border-gray-800 shadow-[4px_4px_0_0_#1f2937] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
+            <div class="bg-gray-200 border-t border-[#e4e4e7] p-4 flex justify-end flex-shrink-0 rounded-b-xl">
+                <button @click="closeRekapanModal()" class="bg-gray-500 text-white font-black px-8 py-3 rounded-xl border-2 border-gray-800 shadow-surface hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all text-lg">
                     Tutup
                 </button>
             </div>
@@ -417,7 +417,7 @@
                 this.rekapanLoading = true;
 
                 try {
-                    const response = await fetch('/api/rekapan-jam/' + nim);
+                    const response = await fetch('/external/api/rekapan-jam/' + nim);
                     this.rekapanData = await response.json();
                     setTimeout(() => {
                         this.renderRekapanChart();

@@ -1,4 +1,4 @@
-@extends(request('mode') === 'modal' ? 'layouts.blank' : 'mahasiswa.app')
+@extends(request('mode') === 'modal' ? 'layouts.blank' : 'layouts.app')
 @section('title', 'Transkrip Nilai PPI')
 
 @section('content')
@@ -64,41 +64,53 @@
     }
 @endphp
 
-<div x-data="nilaiApp()" id="transkrip-content" class="space-y-8 max-w-6xl mx-auto pb-16 font-sans">
+<div x-data="nilaiApp()" id="transkrip-content" class="space-y-8 max-w-[1400px] mx-auto pb-16 font-sans">
     
-    <!-- Header Panel -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/70 backdrop-blur-xl p-8 rounded-[2rem] border border-gray-100 shadow-sm relative overflow-hidden" data-html2canvas-ignore="true">
+    <!-- Unified Header Panel (Matching Magang Dalam Kampus) -->
+    <div class="bg-white border border-[#e4e4e7] rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-surface" data-html2canvas-ignore="true">
         <div>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Transkrip Penilaian PPI</h2>
-            <p class="text-gray-500 mt-2 text-lg">Rincian evaluasi dari Dosen Pembimbing dan Mentor Industri.</p>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#f4f4f5] border border-[#e4e4e7] mb-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#013981]"></span>
+                <span class="font-mono text-[10px] uppercase tracking-wider text-[#0b0b0c]">MAGANG LUAR KAMPUS (INDUSTRI) · TRANSKRIP NILAI</span>
+            </div>
+            <h1 class="text-2xl font-semibold text-[#0b0b0c] tracking-tight">Transkrip &amp; Rincian Penilaian</h1>
+            <p class="text-xs text-[#6a6f7c] mt-1">Rincian evaluasi dari Dosen Pembimbing dan Mentor Industri (PT).</p>
         </div>
         
         @if(request('mode') !== 'modal')
-        <div class="mt-6 md:mt-0 flex flex-wrap gap-3 relative z-10">
-            <a href="javascript:history.back()" class="bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200 hover:text-gray-900 font-semibold px-6 py-3 rounded-2xl shadow-sm transition-all duration-300 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Kembali
+        <div class="flex flex-wrap gap-2.5">
+            <a href="javascript:history.back()" class="ps-btn-secondary">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                <span>Kembali</span>
             </a>
-            <button @click="generatePDF()" class="bg-blue-600 border border-blue-700 text-white hover:bg-blue-700 font-semibold px-6 py-3 rounded-2xl shadow-sm transition-all duration-300 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Download PDF
+            <button @click="generatePDF()" class="ps-btn-primary">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Download PDF</span>
             </button>
         </div>
         @endif
     </div>
 
-    <!-- Nilai Akhir Keseluruhan (Hero Card) -->
-    <div class="bg-gray-900 rounded-[2rem] p-8 md:p-10 shadow-lg text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-gray-800">
-        <div class="relative z-10 w-full md:w-2/3">
-            <p class="text-gray-400 font-semibold uppercase tracking-widest text-sm mb-2">Status PPI Keseluruhan</p>
-            <h3 class="text-4xl md:text-5xl font-black tracking-tight mb-2 text-white" x-text="data.statusFinal"></h3>
-            <p class="text-gray-400 font-medium text-lg mt-4">Mahasiswa: <span class="text-white font-bold" x-text="data.nama"></span> <span class="mx-2 text-gray-600">|</span> NIM: <span class="text-white font-bold" x-text="data.nim"></span></p>
+    <!-- Unified Summary Hero Card (Matching Magang Dalam Kampus) -->
+    <div class="bg-white border border-[#e4e4e7] rounded-xl p-6 sm:p-7 shadow-surface flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-1.5">
+            <p class="font-mono text-[11px] uppercase tracking-wider text-[#6a6f7c]">Status Evaluasi PPI</p>
+            <h2 class="text-2xl font-semibold text-[#0b0b0c] tracking-tight" x-text="data.statusFinal"></h2>
+            <p class="text-xs text-[#6a6f7c] pt-1">
+                Mahasiswa: <span class="text-[#0b0b0c] font-semibold" x-text="data.nama"></span>
+                <span class="mx-2 text-[#d4d4d8]">·</span>
+                NIM: <span class="font-mono text-[#0b0b0c] font-medium" x-text="data.nim"></span>
+            </p>
         </div>
-        <div class="relative z-10 w-full md:w-1/3 flex justify-start md:justify-end">
-            <div class="bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-3xl text-center w-full max-w-[200px]">
-                <p class="text-gray-300 text-sm font-semibold uppercase tracking-wider mb-1">Index Prestasi</p>
-                <p class="text-6xl font-black text-white tracking-tighter" x-text="data.nilaiHuruf"></p>
-                <p class="text-xl font-bold text-gray-400 mt-2"><span class="text-white" x-text="data.nilaiAkhir"></span> / 100</p>
+        <div class="flex items-center gap-4 bg-[#fafafa] border border-[#e4e4e7] rounded-xl px-6 py-4 shrink-0">
+            <div>
+                <p class="font-mono text-[10px] uppercase tracking-wider text-[#6a6f7c]">Nilai Akhir</p>
+                <p class="font-mono text-3xl font-semibold text-[#0b0b0c] mt-0.5"><span x-text="data.nilaiAkhir"></span><span class="text-xs text-[#6a6f7c] font-normal">/100</span></p>
+            </div>
+            <div class="w-px h-10 bg-[#e4e4e7]"></div>
+            <div class="text-center">
+                <p class="font-mono text-[10px] uppercase tracking-wider text-[#6a6f7c]">Predikat</p>
+                <span class="inline-flex items-center justify-center font-mono text-xl font-semibold bg-[#013981] text-white w-10 h-10 rounded-lg mt-0.5" x-text="data.nilaiHuruf"></span>
             </div>
         </div>
     </div>
@@ -169,7 +181,7 @@
                                     <td class="px-6 py-3 text-center border-l border-gray-100 font-bold text-gray-900" x-text="item.nilai"></td>
                                 </tr>
                             </template>
-                            <tr class="bg-gray-50 border-t-2 border-gray-200">
+                            <tr class="bg-gray-50 border-t border-[#e4e4e7]">
                                 <td colspan="2" class="px-6 py-4 text-right font-bold text-gray-900 uppercase tracking-widest text-xs">Total Rata-rata Prestasi & Supervisi</td>
                                 <td class="px-6 py-4 text-center border-l border-gray-200 font-black text-blue-600 text-base" x-text="getAverage(data.mentor.disiplin)"></td>
                             </tr>
@@ -204,7 +216,7 @@
                         
                         <div x-show="data.approval.disiplin.status === 'accepted'" class="w-full flex flex-col items-center">
                             <div class="w-24 h-24 bg-white border border-gray-200 p-1.5 mb-2 rounded-lg shadow-sm">
-                                <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/approval') }}/' + data.approval.disiplin.token)" alt="QR Code" class="w-full h-full object-contain">
+                                <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/external/approval') }}/' + data.approval.disiplin.token)" alt="QR Code" class="w-full h-full object-contain">
                             </div>
                             <span class="text-emerald-600 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -301,7 +313,7 @@
                         
                         <div x-show="data.approval.kuisioner.status === 'accepted'" class="w-full flex flex-col items-center">
                             <div class="w-24 h-24 bg-white border border-gray-200 p-1.5 mb-2 rounded-lg shadow-sm">
-                                <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/approval') }}/' + data.approval.kuisioner.token)" alt="QR Code" class="w-full h-full object-contain">
+                                <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/external/approval') }}/' + data.approval.kuisioner.token)" alt="QR Code" class="w-full h-full object-contain">
                             </div>
                             <span class="text-emerald-600 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -392,7 +404,7 @@
                             
                             <div x-show="data.approval.presentasi.status === 'accepted'" class="w-full flex flex-col items-center">
                                 <div class="w-24 h-24 bg-white border border-gray-200 p-1.5 mb-2 rounded-lg shadow-sm">
-                                    <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/approval') }}/' + data.approval.presentasi.token)" alt="QR Code" class="w-full h-full object-contain">
+                                    <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/external/approval') }}/' + data.approval.presentasi.token)" alt="QR Code" class="w-full h-full object-contain">
                                 </div>
                                 <span class="text-emerald-600 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -457,7 +469,7 @@
                             
                             <div x-show="data.approval.makalah.status === 'accepted'" class="w-full flex flex-col items-center">
                                 <div class="w-24 h-24 bg-white border border-gray-200 p-1.5 mb-2 rounded-lg shadow-sm">
-                                    <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/approval') }}/' + data.approval.makalah.token)" alt="QR Code" class="w-full h-full object-contain">
+                                    <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent('{{ url('/external/approval') }}/' + data.approval.makalah.token)" alt="QR Code" class="w-full h-full object-contain">
                                 </div>
                                 <span class="text-emerald-600 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -706,7 +718,7 @@
 
             async refreshLogbookScores() {
                 try {
-                    const response = await fetch('{{ route("mahasiswa.nilai.logbook") }}', {
+                    const response = await fetch('{{ route("external.mahasiswa.nilai.logbook") }}', {
                         headers: { 'Accept': 'application/json' }
                     });
                     if (!response.ok) return;
@@ -791,7 +803,7 @@
         async ajukanQR(formName) {
             this.data.approval[formName].status = 'pending';
             try {
-                const response = await fetch('{{ route("mahasiswa.nilai.ajukan_qr") }}', {
+                const response = await fetch('{{ route("external.mahasiswa.nilai.ajukan_qr") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -826,7 +838,7 @@
 
             try {
                 // PANGGIL ROUTE BACKEND UNTUK HAPUS DB
-                const response = await fetch('{{ route("mahasiswa.nilai.batal_qr") }}', {
+                const response = await fetch('{{ route("external.mahasiswa.nilai.batal_qr") }}', {
                     method: 'POST', 
                     headers: {
                         'Content-Type': 'application/json',
@@ -861,7 +873,7 @@
             const token = this.data.approval[formName].token;
 
             try {
-                const response = await fetch('{{ route("mahasiswa.nilai.batal_qr") }}', {
+                const response = await fetch('{{ route("external.mahasiswa.nilai.batal_qr") }}', {
                     method: 'POST', 
                     headers: {
                         'Content-Type': 'application/json',

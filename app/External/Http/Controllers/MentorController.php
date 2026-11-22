@@ -88,7 +88,7 @@ class MentorController extends \App\Http\Controllers\Controller
         if (!$mentor) return response()->json(['message' => 'Unauthorized'], 403);
 
         $request->validate([
-            'nim' => 'required|exists:mahasiswas,nim',
+            'nim' => 'required|exists:external_mahasiswas,nim',
             'penilaian' => 'required|string',
         ]);
 
@@ -109,7 +109,7 @@ class MentorController extends \App\Http\Controllers\Controller
         if (!$mentor) return response()->json(['message' => 'Unauthorized'], 403);
 
         $request->validate([
-            'nim' => 'required|exists:mahasiswas,nim',
+            'nim' => 'required|exists:external_mahasiswas,nim',
             'penilaian' => 'required|string',
         ]);
 
@@ -143,7 +143,7 @@ class MentorController extends \App\Http\Controllers\Controller
         if (!$mentor) return response()->json(['message' => 'Unauthorized'], 403);
 
         $data = $request->validate([
-            'nim' => 'required|exists:mahasiswas,nim',
+            'nim' => 'required|exists:external_mahasiswas,nim',
             'logbooks' => 'required|array',
             'logbooks.*.id' => 'required|exists:logbooks,id_log',
             'logbooks.*.status' => 'nullable|string',

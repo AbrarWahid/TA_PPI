@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('mata_kuliah_id')->constrained('mata_kuliah')->onDelete('cascade');
             $table->foreignId('dosen_id')->constrained('dosen')->onDelete('cascade');
             $table->string('tahun_ajaran', 10); // contoh: 2025/2026
-            $table->tinyInteger('semester');     // 1 atau 2
+            $table->string('semester', 20);     // ganjil atau genap
             $table->timestamps();
 
             $table->unique(['mahasiswa_id', 'mata_kuliah_id', 'tahun_ajaran', 'semester'], 'unique_supervisi');

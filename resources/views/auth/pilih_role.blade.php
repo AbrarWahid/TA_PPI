@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Mode — PBL Portal</title>
+    <title>Pilih Mode Peran — PBL Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    @include('layouts.partials.design-system')
 </head>
-<body class="min-h-screen bg-[#f0faf8] flex items-center justify-center p-6">
+<body class="min-h-screen bg-[#fafafa] font-sans text-[#0b0b0c] antialiased flex items-center justify-center p-6">
 
     @php
         $user           = auth()->user();
@@ -20,97 +20,94 @@
 
     <div class="w-full max-w-2xl">
 
-        {{-- Logo & Title --}}
-        <div class="text-center mb-10">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-2xl">
-            <h1 class="text-3xl font-black italic uppercase text-[#004d4d]">
-                Masuk <span class="text-[#2dce89]">Sebagai</span>
+        <div class="text-center mb-8">
+            <div class="w-10 h-10 rounded-lg bg-[#013981] flex items-center justify-center mx-auto mb-4 overflow-hidden">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-6 h-6 object-contain"
+                     onerror="this.style.display='none';">
+            </div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.1em] text-[#6a6f7c] mb-1.5">SESI MULTI-PERAN</p>
+            <h1 class="text-2xl font-semibold text-[#0b0b0c] tracking-tight">
+                Pilih mode kerja aktif
             </h1>
-            <p class="text-sm text-slate-400 mt-2 font-medium">
-                Halo, <span class="font-black text-[#004d4d]">{{ $user->name }}</span>! Pilih mode untuk melanjutkan.
+            <p class="text-xs text-[#6a6f7c] mt-1.5">
+                Halo, <span class="font-medium text-[#0b0b0c]">{{ $user->name }}</span>. Pilih peran untuk masuk ke dashboard.
             </p>
         </div>
 
-        {{-- Pilihan Role --}}
-        <div class="grid gap-4 mb-6 {{ $totalRole === 1 ? 'grid-cols-1 max-w-xs mx-auto' : ($totalRole === 2 ? 'grid-cols-2' : 'grid-cols-3') }}">
+        <div class="grid gap-3.5 mb-6 {{ $totalRole === 1 ? 'grid-cols-1 max-w-xs mx-auto' : ($totalRole === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-3') }}">
 
-            {{-- Manager Proyek --}}
             @if($bisaManager)
             <form action="{{ route('pilih.role.simpan') }}" method="POST">
                 @csrf
                 <input type="hidden" name="role_aktif" value="manager_proyek">
                 <button type="submit"
-                    class="w-full bg-white border-2 border-gray-100 hover:border-[#2dce89] hover:bg-teal-50/50 rounded-[2rem] p-8 text-center transition-all group shadow-sm hover:shadow-md">
-                    <div class="w-16 h-16 rounded-2xl bg-[#004d4d] flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-[#7fffd4] text-3xl">rocket_launch</span>
+                    class="w-full bg-white border border-[#e4e4e7] hover:border-[#013981] rounded-xl p-6 text-left transition-all group shadow-surface hover:shadow-surface-md flex flex-col justify-between h-full">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-[#f4f4f5] border border-[#e4e4e7] group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] flex items-center justify-center mb-4 transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+                        </div>
+                        <p class="font-semibold text-[#0b0b0c] text-base">Manager Proyek</p>
+                        <p class="text-xs text-[#6a6f7c] mt-1 leading-relaxed">Kelola pengajuan proyek PBL &amp; verifikasi logbook mingguan.</p>
                     </div>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Manager</p>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Proyek</p>
-                    <p class="text-xs text-slate-400 font-medium mt-2">Kelola & ajukan proyek PBL</p>
-                    <div class="mt-4 inline-flex items-center gap-1 text-[10px] font-black text-[#2dce89] uppercase tracking-widest">
-                        <span class="material-symbols-outlined text-sm">assessment</span>
-                        Bobot 55%
+                    <div class="mt-5 pt-3 border-t border-[#f4f4f5] flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#6a6f7c] uppercase">Bobot 55%</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#6a6f7c] group-hover:text-[#0b0b0c] group-hover:translate-x-0.5 transition-all">arrow_forward</span>
                     </div>
                 </button>
             </form>
             @endif
 
-            {{-- Dosen Pengampu --}}
             @if($bisaDosen)
             <form action="{{ route('pilih.role.simpan') }}" method="POST">
                 @csrf
                 <input type="hidden" name="role_aktif" value="dosen_pengampu">
                 <button type="submit"
-                    class="w-full bg-white border-2 border-gray-100 hover:border-[#2dce89] hover:bg-teal-50/50 rounded-[2rem] p-8 text-center transition-all group shadow-sm hover:shadow-md">
-                    <div class="w-16 h-16 rounded-2xl bg-[#2dce89] flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-[#004d4d] text-3xl">school</span>
+                    class="w-full bg-white border border-[#e4e4e7] hover:border-[#013981] rounded-xl p-6 text-left transition-all group shadow-surface hover:shadow-surface-md flex flex-col justify-between h-full">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-[#f4f4f5] border border-[#e4e4e7] group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] flex items-center justify-center mb-4 transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">school</span>
+                        </div>
+                        <p class="font-semibold text-[#0b0b0c] text-base">Dosen Pengampu</p>
+                        <p class="text-xs text-[#6a6f7c] mt-1 leading-relaxed">Supervisi mata kuliah, verifikasi laporan &amp; penilaian akademik.</p>
                     </div>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Dosen</p>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Pengampu</p>
-                    <p class="text-xs text-slate-400 font-medium mt-2">Verifikasi laporan & beri nilai</p>
-                    <div class="mt-4 inline-flex items-center gap-1 text-[10px] font-black text-[#2dce89] uppercase tracking-widest">
-                        <span class="material-symbols-outlined text-sm">assessment</span>
-                        Bobot 45%
+                    <div class="mt-5 pt-3 border-t border-[#f4f4f5] flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#6a6f7c] uppercase">Bobot 45%</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#6a6f7c] group-hover:text-[#0b0b0c] group-hover:translate-x-0.5 transition-all">arrow_forward</span>
                     </div>
                 </button>
             </form>
             @endif
 
-            {{-- KPS --}}
             @if($bisaKps)
             <form action="{{ route('pilih.role.simpan') }}" method="POST">
                 @csrf
                 <input type="hidden" name="role_aktif" value="kps">
                 <button type="submit"
-                    class="w-full bg-white border-2 border-gray-100 hover:border-[#2dce89] hover:bg-teal-50/50 rounded-[2rem] p-8 text-center transition-all group shadow-sm hover:shadow-md">
-                    <div class="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-white text-3xl">account_balance</span>
+                    class="w-full bg-white border border-[#e4e4e7] hover:border-[#013981] rounded-xl p-6 text-left transition-all group shadow-surface hover:shadow-surface-md flex flex-col justify-between h-full">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-[#f4f4f5] border border-[#e4e4e7] group-hover:bg-[#013981] group-hover:text-white group-hover:border-[#013981] flex items-center justify-center mb-4 transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">account_balance</span>
+                        </div>
+                        <p class="font-semibold text-[#0b0b0c] text-base">Koordinator Prodi</p>
+                        <p class="text-xs text-[#6a6f7c] mt-1 leading-relaxed">Monitoring mahasiswa, parameter penilaian &amp; ekspor transkrip.</p>
                     </div>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Koordinator</p>
-                    <p class="font-black text-[#004d4d] text-lg uppercase tracking-tight">Program Studi</p>
-                    <p class="text-xs text-slate-400 font-medium mt-2">
-                        Monitoring & manajemen prodi
-                    </p>
                     @php $prodiKps = $user->getProdiKps(); @endphp
-                    @if($prodiKps)
-                    <div class="mt-4 inline-flex items-center gap-1 text-[10px] font-black text-blue-600 uppercase tracking-widest">
-                        <span class="material-symbols-outlined text-sm">domain</span>
-                        {{ strtoupper($prodiKps) }}
+                    <div class="mt-5 pt-3 border-t border-[#f4f4f5] flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#0b0b0c] bg-[#f4f4f5] px-2 py-0.5 rounded uppercase">{{ $prodiKps ? strtoupper($prodiKps) : 'KPS' }}</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#6a6f7c] group-hover:text-[#0b0b0c] group-hover:translate-x-0.5 transition-all">arrow_forward</span>
                     </div>
-                    @endif
                 </button>
             </form>
             @endif
 
         </div>
 
-        {{-- Logout --}}
         <div class="text-center">
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="text-xs text-slate-400 hover:text-red-400 font-medium transition flex items-center gap-1 mx-auto">
-                    <span class="material-symbols-outlined text-sm">logout</span>
-                    Keluar dari akun ini
+                <button type="submit" class="text-xs text-[#6a6f7c] hover:text-[#b91c1c] font-medium transition-colors inline-flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">logout</span>
+                    <span>Keluar dari akun ini</span>
                 </button>
             </form>
         </div>

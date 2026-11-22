@@ -14,7 +14,14 @@ class KaprodiController extends \App\Http\Controllers\Controller
 {
     private function prodiId()
     {
-        return \App\External\Models\User::find(\Illuminate\Support\Facades\Auth::id())?->kaprodi?->id_prodi;
+        // Prodi KPS diambil dari user_roles (Internal), lalu dipetakan ke kode prodi External.
+        $slug = \Illuminate\Support\Facades\Auth::user()?->getProdiKps();
+        $kode = $slug ? (config("ppi.prodi_map")[$slug] ?? null) : null;
+
+        abort_unless($kode, 403, "Prodi KPS belum ditetapkan.");
+
+        // -1 = tidak ada yang cocok (jangan sampai filter prodi terlewat dan menampilkan semua data)
+        return \App\External\Models\ProgramStudi::where("nama_prodi", $kode)->value("id_prodi") ?? -1;
     }
 
     public function index()

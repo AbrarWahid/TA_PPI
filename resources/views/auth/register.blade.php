@@ -4,385 +4,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun | PBL Portal AE Polman Bandung</title>
+    <title>Daftar Akun | PBL &amp; PPI Portal — Politeknik Manufaktur Bandung</title>
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        aqua: {
-                            50:  '#f0fffe',
-                            100: '#ccfff7',
-                            200: '#7fffd4',
-                            300: '#40e0d0',
-                            400: '#00c4b4',
-                            500: '#00a896',
-                            600: '#008080',
-                            700: '#006666',
-                            800: '#004d4d',
-                            900: '#003333',
-                        }
-                    },
-                    keyframes: {
-                        fadeUp: {
-                            '0%':   { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    },
-                    animation: {
-                        fadeUp: 'fadeUp 0.5s ease forwards',
-                    }
-                }
-            }
-        }
-    </script>
+    @include('layouts.partials.design-system')
     <style>
-        ::selection { background: #7fffd4; color: #004d4d; }
-
-        /* ---- Input field lebih kontras ---- */
-        .input-field {
-            width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            background: #f8fffe;
-            border: 1.5px solid #b2e8e0;
-            border-radius: 0.875rem;
-            color: #003333;
-            font-size: 0.875rem;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: all 0.2s ease;
+        .akasia-left-panel {
+            background: linear-gradient(135deg, #02002e 0%, #013981 52%, #142c6e 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .input-field::placeholder { color: #7fb8b0; font-weight: 400; }
-        .input-field:focus {
-            border-color: #008080;
-            background: #f0fffe;
-            box-shadow: 0 0 0 4px rgba(0,128,128,0.10);
+        .akasia-left-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("{{ asset('images/akasia/sapolman.png') }}");
+            background-repeat: no-repeat;
+            background-position: left bottom;
+            background-size: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
-        .input-field-sm {
+        .input-field, .input-field-sm {
             width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            background: #f8fffe;
-            border: 1.5px solid #b2e8e0;
-            border-radius: 0.875rem;
-            color: #003333;
+            height: 42px;
+            padding: 0.5rem 0.875rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            color: #0b0b0c;
             font-size: 0.8125rem;
             font-weight: 500;
-            font-family: 'Inter', sans-serif;
             outline: none;
-            transition: all 0.2s ease;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
         }
-        .input-field-sm::placeholder { color: #7fb8b0; font-weight: 400; }
-        .input-field-sm:focus {
-            border-color: #008080;
-            background: #f0fffe;
-            box-shadow: 0 0 0 4px rgba(0,128,128,0.10);
+        .input-field::placeholder, .input-field-sm::placeholder { color: #94a3b8; font-weight: 400; }
+        .input-field:focus, .input-field-sm:focus {
+            border-color: #013981;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(1, 57, 129, 0.10);
         }
 
-        .input-icon {
-            position: absolute;
-            left: 0.875rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #60a8a0;
-            font-size: 18px !important;
-            pointer-events: none;
-            transition: color 0.2s;
-        }
-        .input-group:focus-within .input-icon { color: #008080; }
-
-        /* ---- Role / Prodi / Kelas buttons ---- */
-        .role-btn {
-            transition: all 180ms cubic-bezier(0.34,1.56,0.64,1);
-            border: 1.5px solid #b2e8e0;
-            background: #f8fffe;
-            border-radius: 0.875rem;
-            padding: 0.875rem 0.5rem;
+        .role-btn, .prodi-btn {
+            transition: all 150ms ease;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 0.625rem 0.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.375rem;
-            color: #60a8a0;
+            gap: 0.25rem;
+            color: #64748b;
             cursor: pointer;
             width: 100%;
         }
-        .role-btn:hover { transform: scale(1.02); background: #edfdf8; }
-        .role-btn.active { border-color: #008080; background: #e6faf5; color: #004d4d; }
-
-        .prodi-btn {
-            transition: all 180ms cubic-bezier(0.34,1.56,0.64,1);
-            border: 1.5px solid #b2e8e0;
-            background: #f8fffe;
-            border-radius: 0.875rem;
-            padding: 0.75rem 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.375rem;
-            color: #60a8a0;
-            cursor: pointer;
-        }
-        .prodi-btn:hover { transform: scale(1.02); background: #edfdf8; }
-        .prodi-btn.active { border-color: #008080; background: #e6faf5; color: #004d4d; }
+        .role-btn:hover, .prodi-btn:hover { background: #f1f5f9; border-color: #cbd5e1; color: #0b0b0c; }
+        .role-btn.active, .prodi-btn.active { border-color: #013981; background: #013981; color: #ffffff; }
 
         .kelas-btn {
-            transition: all 180ms cubic-bezier(0.34,1.56,0.64,1);
-            border: 1.5px solid #b2e8e0;
-            background: #f8fffe;
-            border-radius: 0.875rem;
-            padding: 0.625rem 0.25rem;
+            transition: all 150ms ease;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #60a8a0;
-            font-weight: 800;
-            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.75rem;
             cursor: pointer;
         }
-        .kelas-btn:hover { transform: scale(1.03); background: #edfdf8; }
-        .kelas-btn.active { border-color: #008080; background: #008080; color: white; }
-
-        /* ---- Panel kiri ---- */
-        .dot-grid-left {
-            background-image: radial-gradient(circle at 2px 2px, #7fffd4 1px, transparent 0);
-            background-size: 32px 32px;
-        }
+        .kelas-btn:hover { background: #f1f5f9; color: #0b0b0c; }
+        .kelas-btn.active { border-color: #013981; background: #013981; color: #ffffff; }
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased bg-white">
+<body class="min-h-screen bg-slate-50 font-sans text-[#0b0b0c] antialiased">
 
-<div class="flex h-screen w-full">
+<div class="min-h-screen flex flex-col lg:flex-row w-full">
 
     {{-- ============================================================
-         KIRI — BRANDING PANEL (versi lama dipertahankan)
+         LEFT PANEL — DUAL SCREEN POLMAN BANDUNG BRANDING
     ============================================================ --}}
-    <div class="w-1/2 relative hidden lg:flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-[#004d4d]"></div>
-        <div class="absolute -top-[10%] -right-[10%] w-[80%] h-[80%] bg-[#7fffd4]/20 rounded-full blur-[120px]"></div>
-        <div class="absolute top-[20%] left-[10%] w-[60%] h-[60%] bg-[#008080]/40 rounded-full blur-[100px]"></div>
-        <div class="absolute -bottom-[20%] -left-[10%] w-[70%] h-[70%] bg-[#40e0d0]/20 rounded-full blur-[110px]"></div>
-        <div class="absolute inset-0 opacity-[0.07] dot-grid-left"></div>
-
-        <div class="relative z-10 w-full max-w-lg px-12">
-            <div class="relative mb-10 inline-block">
-    <div class="absolute -inset-1 bg-gradient-to-r from-[#7fffd4] to-[#008080] rounded-[2rem] blur opacity-30"></div>
-    <!-- Ubah p-8 menjadi p-4 atau p-5 agar kotaknya tidak terlalu lebar -->
-    <div class="relative bg-white/5 backdrop-blur-3xl p-4 rounded-[2rem] border border-white/10 shadow-2xl">
-        <!-- Sesuaikan ukuran logo (misal: w-32 h-32 atau w-40 h-40) -->
-        <img src="{{ asset('images/logo.png') }}" alt="AE Polman" class="w-32 h-32 object-contain"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <span class="text-[#7fffd4] font-black text-2xl hidden">AE</span>
+    <div class="hidden lg:flex lg:w-1/2 akasia-left-panel flex-col justify-center p-12 xl:p-16 text-white">
+        <div class="relative z-10 space-y-5 max-w-lg">
+            <div class="inline-flex items-center gap-2 text-xs font-bold text-emerald-300 bg-emerald-400/15 border border-emerald-400/30 px-3.5 py-1.5 rounded-full uppercase tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Jurusan Automation Engineering</span>
+            </div>
+            <h1 class="text-4xl font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
+                Registrasi Sivitas Akademika
+            </h1>
+            <p class="text-base text-white/85 leading-relaxed font-medium">
+                Daftarkan akun mahasiswa atau dosen untuk mengakses pencatatan logbook, supervisi mata kuliah, dan penilaian terintegrasi.
+            </p>
+        </div>
     </div>
-</div>
 
-            <div class="space-y-6">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="h-px w-8 bg-[#7fffd4]"></div>
-                        <span class="text-[#7fffd4] font-mono text-[10px] tracking-[0.4em] uppercase">Next-Gen Automation</span>
-                    </div>
-                    <h1 class="text-6xl font-black text-white leading-none tracking-tighter">
-                        Assessment <br>
-                        <span class="text-transparent bg-clip-text"
-                              style="background: linear-gradient(135deg, #7fffd4, #40e0d0, #008080); -webkit-background-clip: text;">
-                            System.
-                        </span>
-                    </h1>
+    {{-- ============================================================
+         RIGHT PANEL — REGISTER CARD
+    ============================================================ --}}
+    <div class="flex-1 flex flex-col justify-center p-6 sm:p-10 lg:p-12 relative min-h-screen overflow-y-auto">
+
+        <div class="flex items-center justify-between lg:justify-end gap-3.5 mb-6">
+            <a href="{{ url('/') }}" class="inline-flex items-center gap-3.5">
+                <img src="{{ asset('images/logo-polman-teks.webp') }}" alt="Polman Bandung" class="h-8 w-auto object-contain">
+                <img src="{{ asset('images/logo-blu-speed.png') }}" alt="BLU Speed" class="h-9 w-auto object-contain">
+            </a>
+        </div>
+
+        <div class="w-full max-w-md mx-auto">
+            <div class="w-full border border-slate-200/80 shadow-2xl shadow-slate-200/50 bg-white/95 backdrop-blur-xl rounded-3xl p-7 sm:p-8">
+                <div class="space-y-1 pb-5">
+                    <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Buat Akun Baru</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">Lengkapi data kredensial PBL &amp; PPI Anda.</p>
                 </div>
-                <p class="text-[#7fffd4]/60 text-lg leading-relaxed max-w-sm font-light italic">
-                    Streamlining <span class="text-white not-italic font-medium">industrial excellence</span>
-                    through smart project-based evaluation.
-                </p>
-                <div class="flex flex-wrap gap-2 pt-4">
-                    @foreach(['Smart','Efficient','Integrated'] as $tag)
-                    <div class="px-5 py-1.5 rounded-full border border-[#7fffd4]/20 bg-[#7fffd4]/5 text-[#7fffd4] text-[10px] uppercase tracking-widest font-bold">
-                        {{ $tag }}
+
+                @if($errors->any())
+                <div class="mb-4 flex items-start gap-2.5 p-3.5 bg-red-50 border border-red-200 rounded-xl">
+                    <span class="material-symbols-outlined text-[#b91c1c] shrink-0 mt-0.5 text-[18px]">error</span>
+                    <div>
+                        @foreach($errors->all() as $error)
+                        <p class="text-[#b91c1c] text-xs font-semibold">{{ $error }}</p>
+                        @endforeach
                     </div>
-                    @endforeach
+                </div>
+                @endif
+
+                <form method="POST" action="{{ route('register') }}" id="registerForm" class="space-y-3.5">
+                    @csrf
+
+                    {{-- ROLE --}}
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Daftar Sebagai</label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button type="button" onclick="setRole('mahasiswa')" id="role-mahasiswa" class="role-btn active">
+                                <span class="material-symbols-outlined text-[18px]">school</span>
+                                <span class="font-bold text-xs">Mahasiswa</span>
+                            </button>
+                            <button type="button" onclick="setRole('dosen')" id="role-dosen" class="role-btn">
+                                <span class="material-symbols-outlined text-[18px]">co_present</span>
+                                <span class="font-bold text-xs">Dosen</span>
+                            </button>
+                        </div>
+                        <input type="hidden" name="role" id="roleInput" value="mahasiswa">
+                    </div>
+
+                    {{-- INFO DOSEN --}}
+                    <div id="dosenInfo" class="hidden flex items-start gap-2.5 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                        <span class="material-symbols-outlined text-[#b45309] shrink-0 text-[16px]">info</span>
+                        <p class="text-[#b45309] text-xs font-medium">Akun dosen memerlukan <strong>persetujuan Admin</strong> sebelum dapat digunakan.</p>
+                    </div>
+
+                    {{-- NAMA --}}
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Lengkap</label>
+                        <input type="text" name="name" value="{{ old('name') }}" required
+                               placeholder="Masukkan nama lengkap"
+                               class="input-field">
+                    </div>
+
+                    {{-- EMAIL & NIM/NIDN --}}
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Alamat Email</label>
+                            <input type="email" name="email" value="{{ old('email') }}" required
+                                   placeholder="nama@polman.ac.id"
+                                   class="input-field-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5" id="nimLabel">NIM</label>
+                            <input type="text" name="nim" value="{{ old('nim') }}" required
+                                   placeholder="23010xxx" id="nimInput"
+                                   class="input-field-sm">
+                        </div>
+                    </div>
+
+                    {{-- PRODI --}}
+                    <div id="prodiSection">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Program Studi</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            @php
+                            $prodis = [
+                                ['id' => 'informatika', 'label' => 'Informatika', 'icon' => 'terminal'],
+                                ['id' => 'otomasi',     'label' => 'Otomasi',     'icon' => 'settings_suggest'],
+                                ['id' => 'mekatronika', 'label' => 'Mekatronika', 'icon' => 'precision_manufacturing'],
+                            ];
+                            @endphp
+                            @foreach($prodis as $p)
+                            <button type="button" onclick="setProdi('{{ $p['id'] }}')"
+                                    id="prodi-{{ $p['id'] }}" class="prodi-btn">
+                                <span class="material-symbols-outlined text-[18px]">{{ $p['icon'] }}</span>
+                                <span class="font-bold text-[11px]">{{ $p['label'] }}</span>
+                            </button>
+                            @endforeach
+                        </div>
+                        <input type="hidden" name="prodi" id="prodiInput" value="{{ old('prodi') }}">
+                    </div>
+
+                    {{-- KELAS --}}
+                    <div id="kelasSection" class="hidden">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Pilih Kelas</label>
+                        <div class="grid grid-cols-4 gap-2" id="kelasGrid"></div>
+                        <input type="hidden" name="kelas_register" id="kelasInput" value="{{ old('kelas_register') }}">
+                    </div>
+
+                    {{-- PASSWORD --}}
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kata Sandi</label>
+                            <input type="password" name="password" required autocomplete="new-password"
+                                   placeholder="••••••••" id="pw1"
+                                   class="input-field-sm"
+                                   oninput="checkStrength(this.value)">
+                            <div id="strength-bar" class="hidden mt-1.5">
+                                <div class="flex gap-1">
+                                    <div id="s1" class="h-1 flex-1 rounded-full bg-slate-200 transition-all duration-300"></div>
+                                    <div id="s2" class="h-1 flex-1 rounded-full bg-slate-200 transition-all duration-300"></div>
+                                    <div id="s3" class="h-1 flex-1 rounded-full bg-slate-200 transition-all duration-300"></div>
+                                    <div id="s4" class="h-1 flex-1 rounded-full bg-slate-200 transition-all duration-300"></div>
+                                </div>
+                                <p id="strength-label" class="text-[10px] font-semibold mt-0.5"></p>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Konfirmasi</label>
+                            <input type="password" name="password_confirmation" required autocomplete="new-password"
+                                   placeholder="••••••••" id="pw2"
+                                   class="input-field-sm"
+                                   oninput="checkMatch()">
+                            <p id="match-label" class="text-[10px] font-semibold mt-1.5 hidden"></p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="submit-btn"
+                                class="w-full h-11 flex items-center justify-center gap-2 bg-[#013981] hover:bg-[#012b63] text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+                            <span>Daftar Akun</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center text-sm text-slate-500 font-medium mt-5 pt-4 border-t border-slate-100">
+                    Sudah memiliki akun?
+                    <a href="{{ route('login') }}" class="font-bold text-[#013981] hover:underline ml-1">
+                        Masuk Sekarang
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-12 left-12 right-12 h-px bg-gradient-to-r from-transparent via-[#7fffd4]/20 to-transparent"></div>
-    </div>
 
-    {{-- ============================================================
-         KANAN — FORM REGISTER
-    ============================================================ --}}
-    <div class="w-full lg:w-1/2 bg-gray-50 flex items-start justify-center overflow-y-auto">
-        <div class="w-full max-w-md px-10 py-10 animate-fadeUp">
-
-            {{-- Mobile logo --}}
-            <div class="lg:hidden flex items-center gap-3 mb-8">
-                <div class="h-10 w-10 rounded-xl bg-aqua-800 flex items-center justify-center overflow-hidden">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-7 w-7 object-contain"
-                         onerror="this.style.display='none';">
-                </div>
-                <p class="font-black text-aqua-800 text-sm">PBL Portal</p>
-            </div>
-
-            {{-- Header --}}
-            <div class="mb-7">
-                <span class="inline-block text-[10px] font-bold tracking-[0.3em] uppercase text-aqua-600 bg-aqua-100 border border-aqua-200 px-3.5 py-1.5 rounded-full mb-4">
-                    Buat Akun Baru
-                </span>
-                <h2 class="text-3xl font-black text-aqua-900 tracking-tight">Daftar Akun</h2>
-                <p class="text-gray-500 mt-1 text-sm font-medium">Lengkapi data kredensial PBL Anda.</p>
-            </div>
-
-            {{-- Error --}}
-            @if($errors->any())
-            <div class="mb-5 flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                <span class="material-symbols-outlined text-red-500 shrink-0 mt-0.5" style="font-size:18px;">error</span>
-                <div>
-                    @foreach($errors->all() as $error)
-                    <p class="text-red-600 text-sm font-semibold">{{ $error }}</p>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            <form method="POST" action="{{ route('register') }}" id="registerForm" class="space-y-5">
-                @csrf
-
-                {{-- ROLE --}}
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Daftar Sebagai</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button type="button" onclick="setRole('mahasiswa')" id="role-mahasiswa" class="role-btn active">
-                            <span class="material-symbols-outlined" style="font-size:22px;">school</span>
-                            <span class="font-black text-xs">Mahasiswa</span>
-                        </button>
-                        <button type="button" onclick="setRole('dosen')" id="role-dosen" class="role-btn">
-                            <span class="material-symbols-outlined" style="font-size:22px;">co_present</span>
-                            <span class="font-black text-xs">Dosen</span>
-                        </button>
-                    </div>
-                    <input type="hidden" name="role" id="roleInput" value="mahasiswa">
-                </div>
-
-                {{-- INFO DOSEN --}}
-                <div id="dosenInfo" class="hidden flex items-start gap-3 p-3.5 bg-amber-50 border border-amber-200 rounded-2xl">
-                    <span class="material-symbols-outlined text-amber-500 shrink-0" style="font-size:16px;">info</span>
-                    <p class="text-amber-700 text-xs font-semibold">Akun dosen memerlukan <strong>persetujuan Admin</strong> sebelum bisa digunakan.</p>
-                </div>
-
-                {{-- NAMA --}}
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Nama Lengkap</label>
-                    <div class="input-group relative">
-                        <input type="text" name="name" value="{{ old('name') }}" required
-                               placeholder="Masukkan nama lengkap"
-                               class="input-field pr-4">
-                        <span class="material-symbols-outlined input-icon">badge</span>
-                    </div>
-                </div>
-
-                {{-- EMAIL & NIM/NIDN --}}
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Email</label>
-                        <div class="input-group relative">
-                            <input type="email" name="email" value="{{ old('email') }}" required
-                                   placeholder="email@example.com"
-                                   class="input-field-sm pr-2">
-                            <span class="material-symbols-outlined input-icon">mail</span>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5" id="nimLabel">NIM</label>
-                        <div class="input-group relative">
-                            <input type="text" name="nim" value="{{ old('nim') }}" required
-                                   placeholder="23010xxx" id="nimInput"
-                                   class="input-field-sm pr-2" style="font-family: monospace;">
-                            <span class="material-symbols-outlined input-icon">tag</span>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- PRODI --}}
-                <div id="prodiSection">
-                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Program Studi</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        @php
-                        $prodis = [
-                            ['id' => 'informatika', 'label' => 'Informatika', 'icon' => 'terminal'],
-                            ['id' => 'otomasi',     'label' => 'Otomasi',     'icon' => 'settings_suggest'],
-                            ['id' => 'mekatronika', 'label' => 'Mekatronika', 'icon' => 'precision_manufacturing'],
-                        ];
-                        @endphp
-                        @foreach($prodis as $p)
-                        <button type="button" onclick="setProdi('{{ $p['id'] }}')"
-                                id="prodi-{{ $p['id'] }}" class="prodi-btn">
-                            <span class="material-symbols-outlined" style="font-size:20px;">{{ $p['icon'] }}</span>
-                            <span class="font-black uppercase text-[10px]">{{ $p['label'] }}</span>
-                        </button>
-                        @endforeach
-                    </div>
-                    <input type="hidden" name="prodi" id="prodiInput" value="{{ old('prodi') }}">
-                </div>
-
-                {{-- KELAS --}}
-                <div id="kelasSection" class="hidden">
-                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Pilih Kelas</label>
-                    <div class="grid grid-cols-4 gap-2" id="kelasGrid"></div>
-                    <input type="hidden" name="kelas_register" id="kelasInput" value="{{ old('kelas_register') }}">
-                </div>
-
-                {{-- PASSWORD --}}
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Kata Sandi</label>
-                        <div class="input-group relative">
-                            <input type="password" name="password" required autocomplete="new-password"
-                                   placeholder="••••••••" id="pw1"
-                                   class="input-field-sm pr-2"
-                                   oninput="checkStrength(this.value)">
-                            <span class="material-symbols-outlined input-icon">lock</span>
-                        </div>
-                        <div id="strength-bar" class="hidden mt-1.5">
-                            <div class="flex gap-1">
-                                <div id="s1" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                                <div id="s2" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                                <div id="s3" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                                <div id="s4" class="h-1 flex-1 rounded-full bg-gray-200 transition-all duration-300"></div>
-                            </div>
-                            <p id="strength-label" class="text-[10px] font-bold mt-0.5"></p>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Konfirmasi</label>
-                        <div class="input-group relative">
-                            <input type="password" name="password_confirmation" required autocomplete="new-password"
-                                   placeholder="••••••••" id="pw2"
-                                   class="input-field-sm pr-2"
-                                   oninput="checkMatch()">
-                            <span class="material-symbols-outlined input-icon">lock</span>
-                        </div>
-                        <p id="match-label" class="text-[10px] font-bold mt-1.5 hidden"></p>
-                    </div>
-                </div>
-
-                {{-- SUBMIT --}}
-                <div class="pt-2 pb-6">
-                    <button type="submit" id="submit-btn"
-                            class="w-full flex items-center justify-center gap-2.5 font-black text-sm py-4 rounded-2xl transition-all duration-200 active:scale-[0.98] text-white"
-                            style="background: linear-gradient(135deg, #004d4d 0%, #008080 50%, #40e0d0 100%); box-shadow: 0 8px 32px -8px rgba(0,128,128,0.5);">
-                        <span class="material-symbols-outlined" style="font-size:16px;">how_to_reg</span>
-                        Daftar Sekarang
-                    </button>
-
-                    <p class="text-center mt-5 text-sm text-gray-500 font-medium">
-                        Sudah punya akun?
-                        <a href="{{ route('login') }}" class="font-black text-aqua-700 hover:text-aqua-800 hover:underline underline-offset-4 decoration-2 transition-colors ml-1">
-                            Masuk sekarang
-                        </a>
-                    </p>
-                </div>
-            </form>
+        <div class="mt-6 text-center text-xs text-slate-400 font-medium">
+            &copy; {{ date('Y') }} Politeknik Manufaktur Bandung. All rights reserved.
         </div>
     </div>
 </div>
@@ -402,16 +276,16 @@ function setRole(role) {
     document.getElementById('prodiSection').classList.toggle('hidden', !isMhs);
     document.getElementById('kelasSection').classList.add('hidden');
     document.getElementById('dosenInfo').classList.toggle('hidden', isMhs);
-    document.getElementById('nimLabel').textContent    = isMhs ? 'NIM' : 'NIDN';
-    document.getElementById('nimInput').placeholder    = isMhs ? '23010xxx' : '19880xxx';
+    document.getElementById('nimLabel').textContent = isMhs ? 'NIM' : 'NIDN';
+    document.getElementById('nimInput').placeholder = isMhs ? '23010xxx' : '19880xxx';
     document.getElementById('prodiInput').value = '';
-    document.getElementById('kelasInput').value  = '';
+    document.getElementById('kelasInput').value = '';
     document.querySelectorAll('.prodi-btn').forEach(b => b.classList.remove('active'));
 }
 
 function setProdi(prodi) {
     document.getElementById('prodiInput').value = prodi;
-    document.getElementById('kelasInput').value  = '';
+    document.getElementById('kelasInput').value = '';
     document.querySelectorAll('.prodi-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('prodi-' + prodi).classList.add('active');
     const grid = document.getElementById('kelasGrid');
@@ -444,14 +318,14 @@ function checkStrength(val) {
     if (/[A-Z]/.test(val))        score++;
     if (/[0-9]/.test(val))        score++;
     if (/[^A-Za-z0-9]/.test(val)) score++;
-    const colors = ['bg-red-400','bg-orange-400','bg-yellow-400','bg-teal-500'];
+    const colors = ['bg-red-500','bg-amber-500','bg-amber-600','bg-emerald-600'];
     const labels = ['Sangat lemah','Lemah','Cukup','Kuat'];
     ['s1','s2','s3','s4'].forEach((id, i) => {
-        document.getElementById(id).className = 'h-1 flex-1 rounded-full transition-all duration-300 ' + (i < score ? colors[score-1] : 'bg-gray-200');
+        document.getElementById(id).className = 'h-1 flex-1 rounded-full transition-all duration-300 ' + (i < score ? colors[score-1] : 'bg-slate-200');
     });
     label.textContent = labels[score-1] ?? '';
-    label.className = 'text-[10px] font-bold mt-0.5 ' +
-        (score <= 1 ? 'text-red-400' : score === 2 ? 'text-orange-400' : score === 3 ? 'text-yellow-500' : 'text-teal-600');
+    label.className = 'text-[10px] font-semibold mt-0.5 ' +
+        (score <= 1 ? 'text-[#b91c1c]' : score <= 3 ? 'text-[#b45309]' : 'text-[#15803d]');
 }
 
 function checkMatch() {
@@ -462,25 +336,18 @@ function checkMatch() {
     label.classList.remove('hidden');
     if (pw1 === pw2) {
         label.textContent = '✓ Kata sandi cocok';
-        label.className = 'text-[10px] font-bold mt-1.5 text-teal-600';
+        label.className = 'text-[10px] font-semibold mt-1.5 text-[#15803d]';
     } else {
         label.textContent = '✗ Tidak cocok';
-        label.className = 'text-[10px] font-bold mt-1.5 text-red-500';
+        label.className = 'text-[10px] font-semibold mt-1.5 text-[#b91c1c]';
     }
 }
 
 document.getElementById('registerForm').addEventListener('submit', function() {
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
-    btn.innerHTML = `
-        <svg class="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-        </svg>
-        Mendaftarkan...
-    `;
-    btn.style.opacity = '0.8';
-    btn.style.cursor  = 'not-allowed';
+    btn.innerHTML = '<span>Mendaftarkan...</span>';
+    btn.style.opacity = '0.75';
 });
 </script>
 
