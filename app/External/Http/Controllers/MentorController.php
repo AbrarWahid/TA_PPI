@@ -7,6 +7,7 @@ use App\External\Models\PembimbingIndustri;
 use App\External\Models\Mahasiswa;
 use App\External\Models\Approval; // TAMBAHAN: Jangan lupa import model Approval
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class MentorController extends \App\Http\Controllers\Controller
 {
@@ -47,7 +48,7 @@ class MentorController extends \App\Http\Controllers\Controller
         $parameterKuisioner = \App\External\Models\ParameterPenilaian::where('jenis', 'kuisioner_mentor')->get();
         
         // Mengirim notifikasiTTD ke view
-        return view('external.mentor.dashboard', compact('mentor', 'mahasiswas', 'parameterSaranMentor', 'parameterDisiplin', 'parameterKuisioner', 'notifikasiTTD'));
+        return Inertia::render('External/Mentor/Dashboard', compact('mentor', 'mahasiswas', 'parameterSaranMentor', 'parameterDisiplin', 'parameterKuisioner', 'notifikasiTTD'));
     }
 
     public function storeSaran(Request $request)
@@ -134,7 +135,7 @@ class MentorController extends \App\Http\Controllers\Controller
                 ->orderBy('updated_at', 'desc')
                 ->paginate(15);
 
-    return view('external.mentor.riwayat_ttd', compact('riwayat'));
+    return Inertia::render('External/Mentor/RiwayatTtd', compact('riwayat'));
     }
 
     public function storeLogbook(Request $request)

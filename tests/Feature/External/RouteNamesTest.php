@@ -11,10 +11,13 @@ class RouteNamesTest extends TestCase
     public function test_semua_nama_route_di_view_dan_controller_external_terdaftar(): void
     {
         $files = array_merge(
-            File::allFiles(resource_path('views/external')),
+            File::exists(resource_path('views/external')) ? File::allFiles(resource_path('views/external')) : [],
+            File::exists(resource_path('js/Pages/External')) ? File::allFiles(resource_path('js/Pages/External')) : [],
             File::allFiles(app_path('External')),
         );
-        $files[] = new \SplFileInfo(resource_path('views/layouts/app.blade.php'));
+        if (File::exists(resource_path('js/Layouts/AppLayout.jsx'))) {
+            $files[] = new \SplFileInfo(resource_path('js/Layouts/AppLayout.jsx'));
+        }
 
         $hilang = [];
         foreach ($files as $file) {
@@ -37,10 +40,10 @@ class RouteNamesTest extends TestCase
 
     public function test_semua_route_di_menu_sidebar_external_terdaftar(): void
     {
-        $isi = file_get_contents(resource_path('views/layouts/partials/external-menu.blade.php'));
+        $isi = file_get_contents(resource_path('js/Layouts/AppLayout.jsx'));
         preg_match_all("/'(external\.[a-z_.]+)'/", $isi, $m);
 
-        $this->assertNotEmpty($m[1], 'Tidak ada route di external-menu.blade.php');
+        $this->assertNotEmpty($m[1], 'Tidak ada route external di AppLayout.jsx');
         foreach (array_unique($m[1]) as $nama) {
             $this->assertTrue(Route::has($nama), "Route menu '{$nama}' tidak terdaftar");
         }

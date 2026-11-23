@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ApprovalDosenController extends Controller
 {
@@ -21,7 +22,7 @@ class ApprovalDosenController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.approval_akun', compact('pendingDosen', 'approvedDosen'));
+        return Inertia::render('Admin/ApprovalAkun', compact('pendingDosen', 'approvedDosen'));
     }
 
     public function approve(User $user)

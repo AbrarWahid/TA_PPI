@@ -7,6 +7,7 @@ use App\Models\PeriodePbl;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class PeriodePblController extends Controller
 {
@@ -18,7 +19,7 @@ class PeriodePblController extends Controller
             ->get();
         $periodeAktif = PeriodePbl::getAktif();
 
-        return view('admin.periode_pbl.index', compact('periodeList', 'periodeAktif'));
+        return Inertia::render('Admin/PeriodePbl/Index', compact('periodeList', 'periodeAktif'));
     }
 
     public function create()
@@ -26,7 +27,7 @@ class PeriodePblController extends Controller
         $dosenList       = User::where('role', 'dosen')->where('status', 'active')->get();
         $tahunAjaranList = $this->generateTahunAjaran();
 
-        return view('admin.periode_pbl.create', compact('dosenList', 'tahunAjaranList'));
+        return Inertia::render('Admin/PeriodePbl/Create', compact('dosenList', 'tahunAjaranList'));
     }
 
     public function store(Request $request)
@@ -80,7 +81,7 @@ class PeriodePblController extends Controller
         $dosenList       = User::where('role', 'dosen')->where('status', 'active')->get();
         $tahunAjaranList = $this->generateTahunAjaran();
 
-        return view('admin.periode_pbl.edit', compact('periode_pbl', 'dosenList', 'tahunAjaranList'));
+        return Inertia::render('Admin/PeriodePbl/Edit', compact('periode_pbl', 'dosenList', 'tahunAjaranList'));
     }
 
     public function update(Request $request, PeriodePbl $periode_pbl)

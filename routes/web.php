@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KelasController;
-use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PengajuanProyekController;
@@ -21,7 +21,7 @@ use App\Http\Controllers\SupervisiHarianController;
 use App\Http\Controllers\SupervisiMingguanController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome');
 })->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
             return redirect('/dashboard');
         }
 
-        return view('auth.pilih_role');
+        return Inertia::render('Auth/PilihRole');
     })->name('pilih.role');
 
     Route::post('/pilih-role', function (\Illuminate\Http\Request $request) {
@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:admin')->group(function () {
 
         Route::get('admin/prodi', function () {
-            return view('admin.data_prodi');
+            return Inertia::render('Admin/DataProdi');
         })->name('admin.prodi.index');
 
         Route::get('rubrik-penilaian', [PenilaianController::class, 'rubrik'])->name('rubrik.index');
@@ -113,7 +113,6 @@ Route::middleware(['auth'])->group(function () {
 
     // ── Manager Proyek only ─────────────────────────────────────────────────
     Route::middleware('role:manager_proyek,dosen')->group(function () {
-        Route::patch('logbook/{logbook}/verifikasi',  [LogbookController::class, 'verifikasi'])->name('logbook.verifikasi');
         Route::get('pengajuan-proyek/create',         [PengajuanProyekController::class, 'create'])->name('pengajuan_proyek.create');
         Route::post('pengajuan-proyek',               [PengajuanProyekController::class, 'store'])->name('pengajuan_proyek.store');
         Route::get('logbook-mingguan/verifikasi',     [LogbookMingguanController::class, 'daftarVerifikasi'])->name('logbook_mingguan.daftar_verifikasi');
@@ -170,12 +169,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // ── Semua role ──────────────────────────────────────────────────────────
-    Route::resource('logbook', LogbookController::class);
     Route::resource('laporan', LaporanController::class);
 
     // ── Logbook Harian — Mahasiswa ──────────────────────────────────────────
     Route::middleware('role:mahasiswa')->group(function () {
         Route::get('logbook-harian',                       [LogbookHarianController::class, 'index'])->name('logbook_harian.index');
+        Route::post('logbook-harian/daily',                [LogbookHarianController::class, 'storeDaily'])->name('logbook_harian.store_daily');
+        Route::delete('logbook-harian/foto/{id}',          [LogbookHarianController::class, 'deleteFoto'])->name('logbook_harian.delete_foto');
         Route::get('logbook-harian/create',                [LogbookHarianController::class, 'create'])->name('logbook_harian.create');
         Route::post('logbook-harian',                      [LogbookHarianController::class, 'store'])->name('logbook_harian.store');
         Route::get('logbook-harian/{logbook_harian}',      [LogbookHarianController::class, 'show'])->name('logbook_harian.show');

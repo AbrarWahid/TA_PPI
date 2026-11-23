@@ -1,2 +1,415 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/forms";
+
+/* =======================================================================
+   TAILWIND CSS v4 THEME CONFIGURATION
+   (100% Visual & Token Compatibility with Polman v3 Design System)
+======================================================================= */
+@theme {
+    --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Text Ink Tokens */
+    --color-ink: #0b0b0c;
+    --color-ink-soft: #18181b;
+    --color-ink-muted: #6a6f7c;
+    --color-ink-subtle: #a1a1aa;
+
+    /* Brand / Button / Accent Tokens (#013981) */
+    --color-brand: #013981;
+    --color-brand-hover: #012b63;
+    --color-brand-light: #eef4fc;
+    --color-brand-border: #d8e6f8;
+
+    /* Canvas Tokens */
+    --color-canvas: #ffffff;
+    --color-canvas-subtle: #fafafa;
+    --color-canvas-muted: #f4f4f5;
+    --color-canvas-border: #e4e4e7;
+
+    /* Semantic Compatibility Tokens */
+    --color-primary: #013981;
+    --color-primary-container: #eef4fc;
+    --color-on-primary: #ffffff;
+    --color-secondary: #012b63;
+    --color-surface: #fafafa;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #fafafa;
+    --color-surface-container-DEFAULT: #f4f4f5;
+    --color-surface-container: #f4f4f5;
+    --color-surface-container-high: #e4e4e7;
+    --color-surface-container-highest: #d4d4d8;
+    --color-on-surface: #0b0b0c;
+    --color-on-surface-variant: #52525b;
+    --color-outline: #6a6f7c;
+    --color-outline-variant: #e4e4e7;
+
+    /* Aqua Tokens */
+    --color-aqua-50: #f5f8fd;
+    --color-aqua-100: #eef4fc;
+    --color-aqua-200: #d8e6f8;
+    --color-aqua-300: #b3cef1;
+    --color-aqua-400: #7aa8e5;
+    --color-aqua-500: #3f7fd4;
+    --color-aqua-600: #1c5db6;
+    --color-aqua-700: #0a489c;
+    --color-aqua-800: #013981;
+    --color-aqua-900: #012b63;
+
+    /* Blue Tokens (Polman Royal Blue Harmonized) */
+    --color-blue-50: #f5f8fd;
+    --color-blue-100: #eef4fc;
+    --color-blue-200: #d8e6f8;
+    --color-blue-300: #b3cef1;
+    --color-blue-400: #7aa8e5;
+    --color-blue-500: #3f7fd4;
+    --color-blue-600: #013981;
+    --color-blue-700: #012b63;
+    --color-blue-800: #013981;
+    --color-blue-900: #0b0b0c;
+    --color-blue-950: #0b0b0c;
+
+    /* Surface Shadows */
+    --shadow-surface: 0 1px 2px rgba(11, 11, 12, 0.04);
+    --shadow-surface-md: 0 1px 2px rgba(11, 11, 12, 0.04), 0 8px 24px -8px rgba(11, 11, 12, 0.07);
+    --shadow-surface-lg: 0 1px 2px rgba(11, 11, 12, 0.05), 0 18px 40px -16px rgba(11, 11, 12, 0.10);
+}
+
+/* In Tailwind v4, default border-color is currentColor unless set to gray-200 like Tailwind v3 */
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    --ps-bg: #ffffff;
+    --ps-bg-subtle: #fafafa;
+    --ps-surface: #f4f4f5;
+    --ps-border: #e4e4e7;
+    --ps-border-strong: #d4d4d8;
+    --ps-ink: #0b0b0c;
+    --ps-brand: #013981;
+    --ps-brand-hover: #012b63;
+    --ps-muted: #6a6f7c;
+    --ps-success: #15803d;
+    --ps-warning: #b45309;
+    --ps-danger: #b91c1c;
+}
+
+html,
+body,
+.font-mono {
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+html {
+    color: #0b0b0c;
+    background-color: var(--ps-bg-subtle);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+}
+
+::selection {
+    background: #013981;
+    color: #ffffff;
+}
+
+/* Minimal Scrollbars */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Material Symbols Refinement */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 20;
+    user-select: none;
+}
+
+/* =====================================================================
+   AUTHENTICATED DASHBOARD HARMONIZATION (Scoped to main.app-main
+   so Landing Page / Welcome.jsx and Login / Register are untouched)
+===================================================================== */
+main.app-main h1,
+main.app-main h2,
+main.app-main h3,
+main.app-main h4,
+main.app-main .font-black,
+main.app-main .font-extrabold {
+    font-style: normal !important;
+    letter-spacing: -0.025em;
+}
+main.app-main h1,
+main.app-main h2 {
+    font-weight: 600 !important;
+    letter-spacing: -0.03em !important;
+}
+main.app-main h3,
+main.app-main h4 {
+    font-weight: 600 !important;
+}
+main.app-main .italic {
+    font-style: normal !important;
+}
+main.app-main .font-black,
+main.app-main .font-extrabold {
+    font-weight: 600 !important;
+}
+
+/* Restrained Border Radii inside Dashboard (Framer 10px–12px) */
+main.app-main .rounded-\[1\.5rem\],
+main.app-main .rounded-\[2rem\],
+main.app-main .rounded-\[2\.5rem\],
+main.app-main .rounded-\[2\.6rem\],
+main.app-main .rounded-\[3rem\],
+main.app-main .rounded-3xl {
+    border-radius: 0.75rem !important;
+}
+main.app-main .rounded-2xl {
+    border-radius: 0.625rem !important;
+}
+
+/* Understated Shadows & Crisp 1px Hairline Borders inside Dashboard */
+main.app-main .shadow-xl,
+main.app-main .shadow-2xl,
+main.app-main .shadow-lg,
+main.app-main .shadow-md,
+main.app-main .shadow-sm,
+main.app-main [class*="shadow-["] {
+    box-shadow: 0 1px 2px rgba(11, 11, 12, 0.03), 0 4px 12px -4px rgba(11, 11, 12, 0.04) !important;
+}
+main.app-main .border-4,
+main.app-main .border-2 {
+    border-width: 1px !important;
+}
+main.app-main .border-b-4,
+main.app-main .border-b-2 {
+    border-bottom-width: 1px !important;
+}
+main.app-main .border-t-4,
+main.app-main .border-t-2 {
+    border-top-width: 1px !important;
+}
+main.app-main .border-r-2 {
+    border-right-width: 1px !important;
+}
+main.app-main .border-l-2 {
+    border-left-width: 1px !important;
+}
+main.app-main .hover\:translate-y-1:hover,
+main.app-main .hover\:translate-x-1:hover,
+main.app-main .hover\:translate-y-px:hover,
+main.app-main .hover\:translate-x-px:hover,
+main.app-main .hover\:-translate-y-1:hover,
+main.app-main .hover\:-translate-y-0\.5:hover {
+    transform: none !important;
+}
+
+/* Text Color Stays Black (#0b0b0c), Buttons/Accents Use #013981 */
+.text-\[\#004d4d\],
+.text-\[\#003d3d\],
+.text-\[\#00695c\],
+.text-\[\#00897b\],
+.text-blue-900 {
+    color: #0b0b0c !important;
+}
+.text-\[\#2dce89\] {
+    color: #013981 !important;
+}
+.bg-\[\#004d4d\],
+.bg-\[\#003d3d\],
+.bg-\[\#00695c\],
+.bg-\[\#013981\],
+.hover\:bg-\[\#004d4d\]:hover,
+.hover\:bg-\[\#003d3d\]:hover,
+.hover\:bg-\[\#012b63\]:hover,
+main.app-main .bg-gradient-to-br {
+    background-image: none !important;
+    background-color: #013981 !important;
+    color: #ffffff !important;
+}
+.bg-\[\#004d4d\] .text-\[\#7fffd4\],
+.bg-\[\#013981\] .text-\[\#7fffd4\],
+a.bg-\[\#004d4d\].text-\[\#7fffd4\],
+button.bg-\[\#004d4d\].text-\[\#7fffd4\] {
+    color: #ffffff !important;
+}
+.bg-\[\#7fffd4\] {
+    background-color: #013981 !important;
+    color: #ffffff !important;
+}
+.bg-\[\#2dce89\] {
+    background-color: #013981 !important;
+    color: #ffffff !important;
+}
+.bg-\[\#f4f7f6\],
+.bg-\[\#f0faf8\] {
+    background-color: #fafafa !important;
+}
+.bg-teal-50,
+.bg-\[\#e8f5f3\],
+.bg-\[\#cfe9e5\] {
+    background-color: #eef4fc !important;
+    color: #013981 !important;
+}
+.border-\[\#2dce89\],
+.border-\[\#013981\],
+.hover\:border-\[\#2dce89\]:hover,
+.hover\:border-\[\#013981\]:hover {
+    border-color: #013981 !important;
+}
+main.app-main .bg-\[\#FFB347\] {
+    background-color: #ffffff !important;
+    border-color: #e4e4e7 !important;
+}
+
+/* Override inline background:#004d4d or #2dce89 on stat cards & buttons */
+main.app-main [style*="background:#004d4d"],
+main.app-main [style*="background: #004d4d"],
+main.app-main [style*="background: rgb(0, 77, 77)"] {
+    background: #013981 !important;
+    color: #ffffff !important;
+    border: 1px solid #012b63;
+}
+main.app-main [style*="background:#2dce89"],
+main.app-main [style*="background: #2dce89"],
+main.app-main [style*="background: rgb(45, 206, 137)"] {
+    background: #ffffff !important;
+    color: #0b0b0c !important;
+    border: 1px solid #e4e4e7 !important;
+}
+main.app-main [style*="background:#2dce89"] p,
+main.app-main [style*="background:#2dce89"] h2,
+main.app-main [style*="background:#2dce89"] span {
+    color: #0b0b0c !important;
+}
+
+/* Forms, Inputs, Selects & Textareas inside Dashboard */
+main.app-main input[type="text"],
+main.app-main input[type="email"],
+main.app-main input[type="password"],
+main.app-main input[type="number"],
+main.app-main input[type="date"],
+main.app-main input[type="time"],
+main.app-main select,
+main.app-main textarea {
+    border-radius: 0.5rem !important;
+    border-width: 1px !important;
+    border-color: #e4e4e7 !important;
+    color: #0b0b0c;
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.75rem;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+main.app-main input[type="text"]:focus,
+main.app-main input[type="email"]:focus,
+main.app-main input[type="password"]:focus,
+main.app-main input[type="number"]:focus,
+main.app-main input[type="date"]:focus,
+main.app-main input[type="time"]:focus,
+main.app-main select:focus,
+main.app-main textarea:focus {
+    border-color: #013981 !important;
+    box-shadow: 0 0 0 3px rgba(1, 57, 129, 0.10) !important;
+    outline: none !important;
+}
+
+/* Tables — Uniform Clean Data Grid Look across Internal & External */
+main.app-main table thead,
+main.app-main table thead tr,
+main.app-main table thead tr.bg-\[\#004d4d\],
+main.app-main table thead tr.bg-slate-800 {
+    background-color: #fafafa !important;
+    color: #6a6f7c !important;
+    border-bottom: 1px solid #e4e4e7 !important;
+}
+main.app-main table thead th {
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    font-style: normal !important;
+    letter-spacing: 0.04em !important;
+    color: #6a6f7c !important;
+    background-color: #fafafa !important;
+    text-transform: uppercase;
+}
+main.app-main table tbody tr {
+    border-bottom: 1px solid #f4f4f5;
+    transition: background-color 0.12s ease;
+}
+main.app-main table tbody tr:hover {
+    background-color: #fafafa !important;
+}
+
+/* Reusable Public Surface Helper Classes */
+.ps-card {
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(11, 11, 12, 0.03);
+}
+.ps-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.1875rem 0.625rem;
+    border-radius: 9999px;
+    border: 1px solid #d8e6f8;
+    background: #eef4fc;
+    color: #013981;
+}
+.ps-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #013981;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    padding: 0.5625rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #013981;
+    transition: background-color 0.15s ease;
+}
+.ps-btn-primary:hover {
+    background: #012b63;
+}
+.ps-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #ffffff;
+    color: #0b0b0c;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    padding: 0.5625rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e4e4e7;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.ps-btn-secondary:hover {
+    background: #f4f4f5;
+    border-color: #d4d4d8;
+}

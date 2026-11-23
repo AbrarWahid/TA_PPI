@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class KelasController extends Controller
 {
@@ -25,12 +26,12 @@ class KelasController extends Controller
         $kelas = $query->get();
         $periodeAktif = \App\Models\PeriodePbl::where('is_aktif', true)->first();
         
-        return view('kelas.index', compact('kelas', 'periodeAktif'));
+        return Inertia::render('Kelas/Index', compact('kelas', 'periodeAktif'));
     }
 
     public function create()
     {
-        return view('kelas.create');
+        return Inertia::render('Kelas/Create');
     }
 
     public function store(Request $request)
@@ -51,12 +52,12 @@ class KelasController extends Controller
     public function show(Kelas $kelas)
     {
         $kelas->load('mahasiswa.user');
-        return view('kelas.show', compact('kelas'));
+        return Inertia::render('Kelas/Show', compact('kelas'));
     }
 
     public function edit(Kelas $kelas)
     {
-        return view('kelas.edit', compact('kelas'));
+        return Inertia::render('Kelas/Edit', compact('kelas'));
     }
 
     public function update(Request $request, Kelas $kelas)

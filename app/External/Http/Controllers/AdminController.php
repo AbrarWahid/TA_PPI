@@ -12,6 +12,7 @@ use App\External\Models\MataKuliah;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\External\Models\JadwalMonitoring;
+use Inertia\Inertia;
 
 class AdminController extends \App\Http\Controllers\Controller
 {
@@ -26,7 +27,8 @@ class AdminController extends \App\Http\Controllers\Controller
         $mentors = PembimbingIndustri::all();
         $mahasiswas = Mahasiswa::with(['programStudi', 'pembimbingIndustri'])->get();
         $jadwals = JadwalMonitoring::all();
-        return view('external.admin.dashboard', compact('dosens', 'perusahaans', 'prodis', 'mentors', 'mahasiswas', 'jadwals'));
+        view()->share('prodis', $prodis);
+        return Inertia::render('External/Admin/Dashboard', compact('dosens', 'perusahaans', 'prodis', 'mentors', 'mahasiswas', 'jadwals'));
     }
 
     public function storeMatkul(Request $request)
@@ -132,12 +134,12 @@ class AdminController extends \App\Http\Controllers\Controller
         $dosens = Dosen::all(['nidn', 'nama_dosen']);
         $mentors = PembimbingIndustri::all(['id_pem', 'nama_pem', 'perusahaan']);
 
-        return view('external.admin.users', [
-            'mappedUsers' => json_encode($mappedUsers),
-            'companies' => json_encode($companies),
-            'perusahaans' => json_encode($perusahaanList),
-            'dosens' => json_encode($dosens),
-            'mentors' => json_encode($mentors),
+        return Inertia::render('External/Admin/Users', [
+            'mappedUsers' => $mappedUsers,
+            'companies' => $companies,
+            'perusahaans' => $perusahaanList,
+            'dosens' => $dosens,
+            'mentors' => $mentors,
         ]);
     }
 

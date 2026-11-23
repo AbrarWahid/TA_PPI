@@ -8,6 +8,7 @@ use App\Models\PengajuanProyek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class LogbookMingguanController extends Controller
 {
@@ -22,7 +23,7 @@ class LogbookMingguanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $mingguBelumRekap = [];
-        return view('logbook_mingguan.index', compact('rekapList', 'mingguBelumRekap'));
+        return Inertia::render('LogbookMingguan/Index', compact('rekapList', 'mingguBelumRekap'));
     }
 
     // ── Manager / Dosen: lihat logbook dari proyek yang dikelola ──
@@ -33,7 +34,7 @@ class LogbookMingguanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $mingguBelumRekap = [];
-        return view('logbook_mingguan.index', compact('rekapList', 'mingguBelumRekap'));
+        return Inertia::render('LogbookMingguan/Index', compact('rekapList', 'mingguBelumRekap'));
     }
 
     // ── Mahasiswa: logbook milik sendiri ──
@@ -71,7 +72,7 @@ class LogbookMingguanController extends Controller
         }
     }
 
-    return view('logbook_mingguan.index', compact('rekapList', 'mingguBelumRekap'));
+    return Inertia::render('LogbookMingguan/Index', compact('rekapList', 'mingguBelumRekap'));
 }
 
     // Generate PDF rekap mingguan
@@ -174,11 +175,11 @@ public function batal(LogbookMingguan $logbookMingguan)
         $rekapList = LogbookMingguan::with(['mahasiswa.user', 'proyek'])
             ->whereIn('pengajuan_proyek_id', $proyekIds)
             ->where('status', '!=', 'draft')
-            ->orderByRaw("FIELD(status, 'diajukan', 'ditolak', 'disetujui')")
+            ->orderByRaw("CASE status WHEN 'diajukan' THEN 1 WHEN 'ditolak' THEN 2 WHEN 'disetujui' THEN 3 ELSE 4 END")
             ->orderBy('diajukan_at', 'desc')
             ->get();
 
-        return view('logbook_mingguan.verifikasi', compact('rekapList'));
+        return Inertia::render('LogbookMingguan/Verifikasi', compact('rekapList'));
     }
 
     // Verifikasi oleh Dosen (ACC / Tolak)

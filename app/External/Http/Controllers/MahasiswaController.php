@@ -13,6 +13,7 @@ use App\External\Models\Approval;
 use App\External\Models\User;
 use Illuminate\Support\Str;
 use App\External\Notifications\PengajuanTTDNotification;
+use Inertia\Inertia;
 
 class MahasiswaController extends \App\Http\Controllers\Controller
 {
@@ -66,7 +67,7 @@ class MahasiswaController extends \App\Http\Controllers\Controller
         }
 
         // TAMBAHAN: Masukkan 'approval' ke dalam compact
-        return view('external.mahasiswa.dashboard', compact('mahasiswa', 'logbooks', 'fotosByDate', 'perusahaan', 'sarans', 'saranDariMentor', 'parameterSaran', 'approval'));
+        return Inertia::render('External/Mahasiswa/Dashboard', compact('mahasiswa', 'logbooks', 'fotosByDate', 'perusahaan', 'sarans', 'saranDariMentor', 'parameterSaran', 'approval'));
     }
 
     public function storeLogbook(Request $request)
@@ -233,7 +234,7 @@ class MahasiswaController extends \App\Http\Controllers\Controller
         $parameters = \App\External\Models\ParameterPenilaian::all();
 
         // TAMBAHAN: Masukkan variabel 'approvals' ke compact
-        return view('external.mahasiswa.nilai', compact('mahasiswa', 'penilaianDosen', 'penilaianMentor', 'logbooks', 'disiplin', 'kuisioner', 'parameters', 'approvals'));
+        return Inertia::render('External/Mahasiswa/Nilai', compact('mahasiswa', 'penilaianDosen', 'penilaianMentor', 'logbooks', 'disiplin', 'kuisioner', 'parameters', 'approvals'));
     }
 
     public function transkrip($nim) {
@@ -274,7 +275,7 @@ class MahasiswaController extends \App\Http\Controllers\Controller
         $parameters = \App\External\Models\ParameterPenilaian::all();
 
         // TAMBAHAN: Masukkan variabel 'approvals' ke compact
-        return view('external.mahasiswa.nilai', compact('mahasiswa', 'penilaianDosen', 'penilaianMentor', 'logbooks', 'disiplin', 'kuisioner', 'parameters', 'approvals'));
+        return Inertia::render('External/Mahasiswa/Nilai', compact('mahasiswa', 'penilaianDosen', 'penilaianMentor', 'logbooks', 'disiplin', 'kuisioner', 'parameters', 'approvals'));
     }
 
     public function apiNilaiLogbook()

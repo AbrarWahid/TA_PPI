@@ -6,6 +6,7 @@ use App\Models\MataKuliah;
 use App\Imports\MatkulImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MatkulController extends Controller
@@ -13,7 +14,7 @@ class MatkulController extends Controller
     public function index()
     {
         $matkuls = MataKuliah::orderBy('semester')->orderBy('nama_matkul')->get();
-        return view('admin.matkul.index', compact('matkuls'));
+        return Inertia::render('Admin/Matkul/Index', compact('matkuls'));
     }
 
     public function store(Request $request)
@@ -56,7 +57,7 @@ class MatkulController extends Controller
 
     public function batchCreate()
     {
-        return view('admin.matkul.batch_create');
+        return Inertia::render('Admin/Matkul/BatchCreate');
     }
 
     public function batchStore(Request $request)

@@ -1,6 +1,13 @@
 {
+  "_AppLayout-C1kyGMGE.js": {
+    "file": "assets/AppLayout-C1kyGMGE.js",
+    "name": "AppLayout",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-CpIxhVBz.css",
+    "file": "assets/app-BVbuBB8O.css",
     "name": "app",
     "names": [
       "app.css"
@@ -8,10 +15,887 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
-  "resources/js/app.js": {
-    "file": "assets/app-jUjcjSdN.js",
+  "resources/js/Pages/Admin/ApprovalAkun.jsx": {
+    "file": "assets/ApprovalAkun-dQ9c_inf.js",
+    "name": "ApprovalAkun",
+    "src": "resources/js/Pages/Admin/ApprovalAkun.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/DataProdi.jsx": {
+    "file": "assets/DataProdi-BJq0DFLo.js",
+    "name": "DataProdi",
+    "src": "resources/js/Pages/Admin/DataProdi.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/Kps/Index.jsx": {
+    "file": "assets/Index-DgE14CbK.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Admin/Kps/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/Matkul/BatchCreate.jsx": {
+    "file": "assets/BatchCreate-B634VVUe.js",
+    "name": "BatchCreate",
+    "src": "resources/js/Pages/Admin/Matkul/BatchCreate.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/Matkul/Index.jsx": {
+    "file": "assets/Index-DV4uc084.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Admin/Matkul/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/PeriodePbl/Create.jsx": {
+    "file": "assets/Create-C4X2Biex.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Admin/PeriodePbl/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/PeriodePbl/Edit.jsx": {
+    "file": "assets/Edit-Bs3TnjPs.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Admin/PeriodePbl/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/PeriodePbl/Index.jsx": {
+    "file": "assets/Index-BYGGEkuc.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Admin/PeriodePbl/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/SupervisiMatkul/Create.jsx": {
+    "file": "assets/Create-Dn0Q5_Tl.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Admin/SupervisiMatkul/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Admin/SupervisiMatkul/Index.jsx": {
+    "file": "assets/Index-HWdgDx3z.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Admin/SupervisiMatkul/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Auth/ConfirmPassword.jsx": {
+    "file": "assets/ConfirmPassword-CRg-c3aP.js",
+    "name": "ConfirmPassword",
+    "src": "resources/js/Pages/Auth/ConfirmPassword.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/ForgotPassword.jsx": {
+    "file": "assets/ForgotPassword-D1jfjUPN.js",
+    "name": "ForgotPassword",
+    "src": "resources/js/Pages/Auth/ForgotPassword.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Login.jsx": {
+    "file": "assets/Login-ht3W2Gxu.js",
+    "name": "Login",
+    "src": "resources/js/Pages/Auth/Login.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/PilihRole.jsx": {
+    "file": "assets/PilihRole-Ds1e3QVl.js",
+    "name": "PilihRole",
+    "src": "resources/js/Pages/Auth/PilihRole.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Register.jsx": {
+    "file": "assets/Register-4MFzQj45.js",
+    "name": "Register",
+    "src": "resources/js/Pages/Auth/Register.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/ResetPassword.jsx": {
+    "file": "assets/ResetPassword-CJYkYbtk.js",
+    "name": "ResetPassword",
+    "src": "resources/js/Pages/Auth/ResetPassword.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/VerifyEmail.jsx": {
+    "file": "assets/VerifyEmail-eqa5KTTO.js",
+    "name": "VerifyEmail",
+    "src": "resources/js/Pages/Auth/VerifyEmail.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Pages/Dashboard/Admin.jsx": {
+    "file": "assets/Admin-BRaZBLmx.js",
+    "name": "Admin",
+    "src": "resources/js/Pages/Dashboard/Admin.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dashboard/Dosen.jsx": {
+    "file": "assets/Dosen-BVmzHohs.js",
+    "name": "Dosen",
+    "src": "resources/js/Pages/Dashboard/Dosen.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dashboard/Mahasiswa.jsx": {
+    "file": "assets/Mahasiswa-C9uELGS_.js",
+    "name": "Mahasiswa",
+    "src": "resources/js/Pages/Dashboard/Mahasiswa.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dashboard/Manager.jsx": {
+    "file": "assets/Manager-CQn_rGpN.js",
+    "name": "Manager",
+    "src": "resources/js/Pages/Dashboard/Manager.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dosen/BatchCreate.jsx": {
+    "file": "assets/BatchCreate-0-NwrPjO.js",
+    "name": "BatchCreate",
+    "src": "resources/js/Pages/Dosen/BatchCreate.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dosen/Create.jsx": {
+    "file": "assets/Create-BlHWUtjp.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Dosen/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dosen/Edit.jsx": {
+    "file": "assets/Edit-DTxFSB0y.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Dosen/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Dosen/Index.jsx": {
+    "file": "assets/Index-BPedjYHb.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Dosen/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Admin/Dashboard.jsx": {
+    "file": "assets/Dashboard-B26l9QGm.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/External/Admin/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Admin/Users.jsx": {
+    "file": "assets/Users-Chm0W9_q.js",
+    "name": "Users",
+    "src": "resources/js/Pages/External/Admin/Users.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Approval/Show.jsx": {
+    "file": "assets/Show-DAqQ7f4i.js",
+    "name": "Show",
+    "src": "resources/js/Pages/External/Approval/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Dosen/Dashboard.jsx": {
+    "file": "assets/Dashboard-CHhdSq4M.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/External/Dosen/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Dosen/RiwayatTtd.jsx": {
+    "file": "assets/RiwayatTtd-DeLp_S-4.js",
+    "name": "RiwayatTtd",
+    "src": "resources/js/Pages/External/Dosen/RiwayatTtd.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Kaprodi/Dashboard.jsx": {
+    "file": "assets/Dashboard-BN0c4ZBz.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/External/Kaprodi/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Kaprodi/Export.jsx": {
+    "file": "assets/Export-BxAzAYmc.js",
+    "name": "Export",
+    "src": "resources/js/Pages/External/Kaprodi/Export.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Kaprodi/Parameter.jsx": {
+    "file": "assets/Parameter-BTfUiRhM.js",
+    "name": "Parameter",
+    "src": "resources/js/Pages/External/Kaprodi/Parameter.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Kaprodi/Transkrip.jsx": {
+    "file": "assets/Transkrip-BZy7kpSZ.js",
+    "name": "Transkrip",
+    "src": "resources/js/Pages/External/Kaprodi/Transkrip.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Mahasiswa/Dashboard.jsx": {
+    "file": "assets/Dashboard-BsUsiqUs.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/External/Mahasiswa/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Mahasiswa/Nilai.jsx": {
+    "file": "assets/Nilai-64KhrEFw.js",
+    "name": "Nilai",
+    "src": "resources/js/Pages/External/Mahasiswa/Nilai.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Mentor/Dashboard.jsx": {
+    "file": "assets/Dashboard-D3RFWdw6.js",
+    "name": "Dashboard",
+    "src": "resources/js/Pages/External/Mentor/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/External/Mentor/RiwayatTtd.jsx": {
+    "file": "assets/RiwayatTtd-C5zx9h5P.js",
+    "name": "RiwayatTtd",
+    "src": "resources/js/Pages/External/Mentor/RiwayatTtd.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Kelas/Create.jsx": {
+    "file": "assets/Create-CfUB3HhG.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Kelas/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Kelas/Edit.jsx": {
+    "file": "assets/Edit-CRI8ybib.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Kelas/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Kelas/Index.jsx": {
+    "file": "assets/Index-DJFaqjA2.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Kelas/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Kelas/Show.jsx": {
+    "file": "assets/Show-99L3Sc-i.js",
+    "name": "Show",
+    "src": "resources/js/Pages/Kelas/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Laporan/Admin.jsx": {
+    "file": "assets/Admin-DUKgarPi.js",
+    "name": "Admin",
+    "src": "resources/js/Pages/Laporan/Admin.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Laporan/Create.jsx": {
+    "file": "assets/Create-CB90YdAk.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Laporan/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Laporan/Index.jsx": {
+    "file": "assets/Index-Cls65ZQH.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Laporan/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Laporan/Show.jsx": {
+    "file": "assets/Show-CB90YdAk.js",
+    "name": "Show",
+    "src": "resources/js/Pages/Laporan/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookHarian/Create.jsx": {
+    "file": "assets/Create-BXd7dgiM.js",
+    "name": "Create",
+    "src": "resources/js/Pages/LogbookHarian/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookHarian/Edit.jsx": {
+    "file": "assets/Edit-Ct-xzfZ1.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/LogbookHarian/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookHarian/Index.jsx": {
+    "file": "assets/Index-Bi2fsBv_.js",
+    "name": "Index",
+    "src": "resources/js/Pages/LogbookHarian/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookHarian/Rekap.jsx": {
+    "file": "assets/Rekap-DmnjxRLX.js",
+    "name": "Rekap",
+    "src": "resources/js/Pages/LogbookHarian/Rekap.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookHarian/Show.jsx": {
+    "file": "assets/Show-ilKUMPt6.js",
+    "name": "Show",
+    "src": "resources/js/Pages/LogbookHarian/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookMingguan/Index.jsx": {
+    "file": "assets/Index-BlhXg6kg.js",
+    "name": "Index",
+    "src": "resources/js/Pages/LogbookMingguan/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/LogbookMingguan/Verifikasi.jsx": {
+    "file": "assets/Verifikasi-DuhErd_x.js",
+    "name": "Verifikasi",
+    "src": "resources/js/Pages/LogbookMingguan/Verifikasi.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/BatchCreate.jsx": {
+    "file": "assets/BatchCreate-7IgMRt22.js",
+    "name": "BatchCreate",
+    "src": "resources/js/Pages/Mahasiswa/BatchCreate.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/Create.jsx": {
+    "file": "assets/Create-BbYJ4RKF.js",
+    "name": "Create",
+    "src": "resources/js/Pages/Mahasiswa/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/Edit.jsx": {
+    "file": "assets/Edit-C5I2npPs.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Mahasiswa/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/Feedback.jsx": {
+    "file": "assets/Feedback-DuNvkEJN.js",
+    "name": "Feedback",
+    "src": "resources/js/Pages/Mahasiswa/Feedback.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/Index.jsx": {
+    "file": "assets/Index-DNmis88Q.js",
+    "name": "Index",
+    "src": "resources/js/Pages/Mahasiswa/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Mahasiswa/Nilai.jsx": {
+    "file": "assets/Nilai-Bv4RS6tC.js",
+    "name": "Nilai",
+    "src": "resources/js/Pages/Mahasiswa/Nilai.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/PengajuanProyek/Assign.jsx": {
+    "file": "assets/Assign-CzqvzrSB.js",
+    "name": "Assign",
+    "src": "resources/js/Pages/PengajuanProyek/Assign.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/PengajuanProyek/Create.jsx": {
+    "file": "assets/Create-Xne9O4LW.js",
+    "name": "Create",
+    "src": "resources/js/Pages/PengajuanProyek/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/PengajuanProyek/Index.jsx": {
+    "file": "assets/Index-BekmPuHk.js",
+    "name": "Index",
+    "src": "resources/js/Pages/PengajuanProyek/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/PengajuanProyek/Show.jsx": {
+    "file": "assets/Show-fji3wmLb.js",
+    "name": "Show",
+    "src": "resources/js/Pages/PengajuanProyek/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/Bobot.jsx": {
+    "file": "assets/Bobot-Bbd0r4ay.js",
+    "name": "Bobot",
+    "src": "resources/js/Pages/Penilaian/Bobot.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/CreateDosen.jsx": {
+    "file": "assets/CreateDosen-Bs0tuNRC.js",
+    "name": "CreateDosen",
+    "src": "resources/js/Pages/Penilaian/CreateDosen.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/CreateManager.jsx": {
+    "file": "assets/CreateManager-Cf6795xo.js",
+    "name": "CreateManager",
+    "src": "resources/js/Pages/Penilaian/CreateManager.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/IndexAdmin.jsx": {
+    "file": "assets/IndexAdmin-iAgtzLUo.js",
+    "name": "IndexAdmin",
+    "src": "resources/js/Pages/Penilaian/IndexAdmin.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/IndexDosen.jsx": {
+    "file": "assets/IndexDosen-D57ecXTC.js",
+    "name": "IndexDosen",
+    "src": "resources/js/Pages/Penilaian/IndexDosen.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/IndexManager.jsx": {
+    "file": "assets/IndexManager-CIbv4pmr.js",
+    "name": "IndexManager",
+    "src": "resources/js/Pages/Penilaian/IndexManager.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Penilaian/Rubrik.jsx": {
+    "file": "assets/Rubrik-DTZMF3t5.js",
+    "name": "Rubrik",
+    "src": "resources/js/Pages/Penilaian/Rubrik.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Profile/Edit.jsx": {
+    "file": "assets/Edit-ChGTa1nh.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/Profile/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/ProyekPbl/Index.jsx": {
+    "file": "assets/Index-yGv4lyiA.js",
+    "name": "Index",
+    "src": "resources/js/Pages/ProyekPbl/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiHarian/Create.jsx": {
+    "file": "assets/Create-BSLSoE9m.js",
+    "name": "Create",
+    "src": "resources/js/Pages/SupervisiHarian/Create.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiHarian/Edit.jsx": {
+    "file": "assets/Edit-B-iZvQV-.js",
+    "name": "Edit",
+    "src": "resources/js/Pages/SupervisiHarian/Edit.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiHarian/Index.jsx": {
+    "file": "assets/Index-BAmztlfU.js",
+    "name": "Index",
+    "src": "resources/js/Pages/SupervisiHarian/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiHarian/Show.jsx": {
+    "file": "assets/Show-CgCdtFMN.js",
+    "name": "Show",
+    "src": "resources/js/Pages/SupervisiHarian/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiMingguan/DaftarVerifikasi.jsx": {
+    "file": "assets/DaftarVerifikasi-CXSoGTiH.js",
+    "name": "DaftarVerifikasi",
+    "src": "resources/js/Pages/SupervisiMingguan/DaftarVerifikasi.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiMingguan/Index.jsx": {
+    "file": "assets/Index-D3yotYGB.js",
+    "name": "Index",
+    "src": "resources/js/Pages/SupervisiMingguan/Index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/SupervisiMingguan/Show.jsx": {
+    "file": "assets/Show-COdkLOLR.js",
+    "name": "Show",
+    "src": "resources/js/Pages/SupervisiMingguan/Show.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_AppLayout-C1kyGMGE.js"
+    ]
+  },
+  "resources/js/Pages/Welcome.jsx": {
+    "file": "assets/Welcome-BszcKirk.js",
+    "name": "Welcome",
+    "src": "resources/js/Pages/Welcome.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-CJhSdBz5.js",
     "name": "app",
-    "src": "resources/js/app.js",
-    "isEntry": true
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Admin/ApprovalAkun.jsx",
+      "resources/js/Pages/Admin/DataProdi.jsx",
+      "resources/js/Pages/Admin/Kps/Index.jsx",
+      "resources/js/Pages/Admin/Matkul/BatchCreate.jsx",
+      "resources/js/Pages/Admin/Matkul/Index.jsx",
+      "resources/js/Pages/Admin/PeriodePbl/Create.jsx",
+      "resources/js/Pages/Admin/PeriodePbl/Edit.jsx",
+      "resources/js/Pages/Admin/PeriodePbl/Index.jsx",
+      "resources/js/Pages/Admin/SupervisiMatkul/Create.jsx",
+      "resources/js/Pages/Admin/SupervisiMatkul/Index.jsx",
+      "resources/js/Pages/Auth/ConfirmPassword.jsx",
+      "resources/js/Pages/Auth/ForgotPassword.jsx",
+      "resources/js/Pages/Auth/Login.jsx",
+      "resources/js/Pages/Auth/PilihRole.jsx",
+      "resources/js/Pages/Auth/Register.jsx",
+      "resources/js/Pages/Auth/ResetPassword.jsx",
+      "resources/js/Pages/Auth/VerifyEmail.jsx",
+      "resources/js/Pages/Dashboard/Admin.jsx",
+      "resources/js/Pages/Dashboard/Dosen.jsx",
+      "resources/js/Pages/Dashboard/Mahasiswa.jsx",
+      "resources/js/Pages/Dashboard/Manager.jsx",
+      "resources/js/Pages/Dosen/BatchCreate.jsx",
+      "resources/js/Pages/Dosen/Create.jsx",
+      "resources/js/Pages/Dosen/Edit.jsx",
+      "resources/js/Pages/Dosen/Index.jsx",
+      "resources/js/Pages/External/Admin/Dashboard.jsx",
+      "resources/js/Pages/External/Admin/Users.jsx",
+      "resources/js/Pages/External/Approval/Show.jsx",
+      "resources/js/Pages/External/Dosen/Dashboard.jsx",
+      "resources/js/Pages/External/Dosen/RiwayatTtd.jsx",
+      "resources/js/Pages/External/Kaprodi/Dashboard.jsx",
+      "resources/js/Pages/External/Kaprodi/Export.jsx",
+      "resources/js/Pages/External/Kaprodi/Parameter.jsx",
+      "resources/js/Pages/External/Kaprodi/Transkrip.jsx",
+      "resources/js/Pages/External/Mahasiswa/Dashboard.jsx",
+      "resources/js/Pages/External/Mahasiswa/Nilai.jsx",
+      "resources/js/Pages/External/Mentor/Dashboard.jsx",
+      "resources/js/Pages/External/Mentor/RiwayatTtd.jsx",
+      "resources/js/Pages/Kelas/Create.jsx",
+      "resources/js/Pages/Kelas/Edit.jsx",
+      "resources/js/Pages/Kelas/Index.jsx",
+      "resources/js/Pages/Kelas/Show.jsx",
+      "resources/js/Pages/Laporan/Admin.jsx",
+      "resources/js/Pages/Laporan/Create.jsx",
+      "resources/js/Pages/Laporan/Index.jsx",
+      "resources/js/Pages/Laporan/Show.jsx",
+      "resources/js/Pages/LogbookHarian/Create.jsx",
+      "resources/js/Pages/LogbookHarian/Edit.jsx",
+      "resources/js/Pages/LogbookHarian/Index.jsx",
+      "resources/js/Pages/LogbookHarian/Rekap.jsx",
+      "resources/js/Pages/LogbookHarian/Show.jsx",
+      "resources/js/Pages/LogbookMingguan/Index.jsx",
+      "resources/js/Pages/LogbookMingguan/Verifikasi.jsx",
+      "resources/js/Pages/Mahasiswa/BatchCreate.jsx",
+      "resources/js/Pages/Mahasiswa/Create.jsx",
+      "resources/js/Pages/Mahasiswa/Edit.jsx",
+      "resources/js/Pages/Mahasiswa/Feedback.jsx",
+      "resources/js/Pages/Mahasiswa/Index.jsx",
+      "resources/js/Pages/Mahasiswa/Nilai.jsx",
+      "resources/js/Pages/PengajuanProyek/Assign.jsx",
+      "resources/js/Pages/PengajuanProyek/Create.jsx",
+      "resources/js/Pages/PengajuanProyek/Index.jsx",
+      "resources/js/Pages/PengajuanProyek/Show.jsx",
+      "resources/js/Pages/Penilaian/Bobot.jsx",
+      "resources/js/Pages/Penilaian/CreateDosen.jsx",
+      "resources/js/Pages/Penilaian/CreateManager.jsx",
+      "resources/js/Pages/Penilaian/IndexAdmin.jsx",
+      "resources/js/Pages/Penilaian/IndexDosen.jsx",
+      "resources/js/Pages/Penilaian/IndexManager.jsx",
+      "resources/js/Pages/Penilaian/Rubrik.jsx",
+      "resources/js/Pages/Profile/Edit.jsx",
+      "resources/js/Pages/ProyekPbl/Index.jsx",
+      "resources/js/Pages/SupervisiHarian/Create.jsx",
+      "resources/js/Pages/SupervisiHarian/Edit.jsx",
+      "resources/js/Pages/SupervisiHarian/Index.jsx",
+      "resources/js/Pages/SupervisiHarian/Show.jsx",
+      "resources/js/Pages/SupervisiMingguan/DaftarVerifikasi.jsx",
+      "resources/js/Pages/SupervisiMingguan/Index.jsx",
+      "resources/js/Pages/SupervisiMingguan/Show.jsx",
+      "resources/js/Pages/Welcome.jsx"
+    ],
+    "css": [
+      "assets/app-BVbuBB8O.css"
+    ]
   }
 }

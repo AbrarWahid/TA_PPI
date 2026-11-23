@@ -8,6 +8,7 @@ use App\External\Models\Mahasiswa;
 use App\External\Models\Penilaian;
 use App\External\Models\Approval; 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class DosenController extends \App\Http\Controllers\Controller
 {
@@ -45,7 +46,7 @@ class DosenController extends \App\Http\Controllers\Controller
         $parameters = \App\External\Models\ParameterPenilaian::all();
 
         // Mengirim notifikasiTTD ke view
-        return view('external.dosen.dashboard', compact('dosen', 'mahasiswas', 'jadwals', 'parameters', 'notifikasiTTD'));
+        return Inertia::render('External/Dosen/Dashboard', compact('dosen', 'mahasiswas', 'jadwals', 'parameters', 'notifikasiTTD'));
     }
 
     public function riwayatTtd()
@@ -58,7 +59,7 @@ class DosenController extends \App\Http\Controllers\Controller
                 ->orderBy('updated_at', 'desc')
                 ->paginate(15);
 
-    return view('external.dosen.riwayat_ttd', compact('riwayat'));
+    return Inertia::render('External/Dosen/RiwayatTtd', compact('riwayat'));
     }
 
     public function storePenilaian(Request $request)

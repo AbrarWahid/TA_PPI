@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class KpsController extends Controller
 {
@@ -23,7 +24,7 @@ class KpsController extends Controller
             'mekatronika' => 'D4 TRMO – Teknologi Rekayasa Mekatronika',
         ];
 
-        return view('admin.kps.index', compact('kpsList', 'dosen', 'prodiMap'));
+        return Inertia::render('Admin/Kps/Index', compact('kpsList', 'dosen', 'prodiMap'));
     }
 
     public function store(Request $request)

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Inertia\Inertia;
 
 class SupervisiMingguanController extends Controller
 {
@@ -49,7 +50,7 @@ class SupervisiMingguanController extends Controller
             ->filter(fn($item) => !is_null($item['supervisiMatkul']))
             ->values();
 
-        return view('supervisi_mingguan.index', compact(
+        return Inertia::render('SupervisiMingguan/Index', compact(
             'rekapList', 'mingguBelumRekap', 'mahasiswa', 'supervisiMatkulList'
         ));
     }
@@ -153,7 +154,7 @@ $pdf = Pdf::loadHtml($html)->setPaper('a4', 'portrait');
             ->orderBy('tanggal')
             ->get();
 
-        return view('supervisi_mingguan.show', compact('supervisiMingguan', 'logs'));
+        return Inertia::render('SupervisiMingguan/Show', compact('supervisiMingguan', 'logs'));
     }
 
     public function batal(SupervisiMingguan $supervisiMingguan)
@@ -188,11 +189,11 @@ $pdf = Pdf::loadHtml($html)->setPaper('a4', 'portrait');
 
         $laporans = SupervisiMingguan::with(['mahasiswa.user', 'matkul', 'supervisiMatkul.mataKuliah'])
             ->where('dosen_id', $dosen->id)
-            ->orderByRaw("FIELD(status, 'diajukan', 'ditolak', 'disetujui')")
+            ->orderByRaw("CASE status WHEN 'diajukan' THEN 1 WHEN 'ditolak' THEN 2 WHEN 'disetujui' THEN 3 ELSE 4 END")
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('supervisi_mingguan.daftar_verifikasi', compact('laporans', 'dosen'));
+        return Inertia::render('SupervisiMingguan/DaftarVerifikasi', compact('laporans', 'dosen'));
     }
 
     public function verifikasi(Request $request, SupervisiMingguan $supervisiMingguan)

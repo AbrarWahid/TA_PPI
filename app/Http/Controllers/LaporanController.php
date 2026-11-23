@@ -7,6 +7,7 @@ use App\Models\PengajuanProyek;
 use App\Models\SupervisiMatkul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class LaporanController extends Controller
 {
@@ -60,7 +61,7 @@ class LaporanController extends Controller
             ->get();
     }
 
-    return view('laporan.index', compact('laporan'));
+    return Inertia::render('Laporan/Index', compact('laporan'));
 }
 
     public function create()
@@ -74,7 +75,7 @@ class LaporanController extends Controller
                 ->get();
         }
 
-        return view('laporan.create', compact('supervisiList'));
+        return Inertia::render('Laporan/Create', compact('supervisiList'));
     }
 
     public function store(Request $request)
@@ -107,7 +108,7 @@ class LaporanController extends Controller
 
     public function show(LaporanMkPpi $laporan)
     {
-        return view('laporan.show', compact('laporan'));
+        return Inertia::render('Laporan/Show', compact('laporan'));
     }
 
     public function verifikasi(Request $request, LaporanMkPpi $laporan)

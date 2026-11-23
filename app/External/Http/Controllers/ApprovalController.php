@@ -4,6 +4,7 @@ namespace App\External\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\External\Models\Approval; // Pastikan model ini sudah Anda buat
+use Inertia\Inertia;
 
 class ApprovalController extends \App\Http\Controllers\Controller
 {
@@ -24,7 +25,7 @@ class ApprovalController extends \App\Http\Controllers\Controller
         }
 
         // Mengirimkan variabel $approval yang sudah ada datanya ke view
-        return view('external.approval.show', compact('approval'));
+        return Inertia::render('External/Approval/Show', compact('approval'));
     }
 
     public function process(Request $request, $token)

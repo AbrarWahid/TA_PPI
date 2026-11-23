@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Imports\MahasiswaImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
@@ -56,7 +57,7 @@ class MahasiswaController extends Controller
         }
         $allMhs = $allMhsQuery->get();
 
-        return view('mahasiswa.index', compact(
+        return Inertia::render('Mahasiswa/Index', compact(
             'mahasiswas', 'kelasList', 'allMhs',
             'search', 'prodi', 'kelas', 'perPage'
         ));
@@ -64,7 +65,7 @@ class MahasiswaController extends Controller
 
     public function create()
     {
-        return view('mahasiswa.create');
+        return Inertia::render('Mahasiswa/Create');
     }
 
     public function store(Request $request)
@@ -96,7 +97,7 @@ class MahasiswaController extends Controller
 
     public function batchCreate()
     {
-        return view('mahasiswa.batch_create');
+        return Inertia::render('Mahasiswa/BatchCreate');
     }
 
     public function batchStore(Request $request)
@@ -144,7 +145,8 @@ class MahasiswaController extends Controller
 
     public function edit(Mahasiswa $mahasiswa)
     {
-        return view('mahasiswa.edit', compact('mahasiswa'));
+        $mahasiswa->load('user');
+        return Inertia::render('Mahasiswa/Edit', compact('mahasiswa'));
     }
 
     public function update(Request $request, Mahasiswa $mahasiswa)

@@ -8,6 +8,7 @@ use App\Models\PengajuanProyek;
 use App\Models\PengajuanProyekKebutuhan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PengajuanProyekController extends Controller
 {
@@ -26,12 +27,12 @@ class PengajuanProyekController extends Controller
                 ->get();
         }
 
-        return view('pengajuan_proyek.index', compact('pengajuan'));
+        return Inertia::render('PengajuanProyek/Index', compact('pengajuan'));
     }
 
     public function create()
     {
-        return view('pengajuan_proyek.create');
+        return Inertia::render('PengajuanProyek/Create');
     }
 
     public function store(Request $request)
@@ -90,7 +91,8 @@ class PengajuanProyekController extends Controller
         }
 
         $pengajuan_proyek->load(['manager', 'kebutuhan', 'mahasiswa', 'diprosesOleh', 'dosenPengampu.user']);
-        return view('pengajuan_proyek.show', compact('pengajuan_proyek'));
+        $mahasiswaLoginId = $user->mahasiswa?->id;
+        return Inertia::render('PengajuanProyek/Show', compact('pengajuan_proyek', 'mahasiswaLoginId'));
     }
 
     public function approve(Request $request, PengajuanProyek $pengajuan_proyek)
@@ -142,7 +144,7 @@ class PengajuanProyekController extends Controller
         })->get();
     }
 
-    return view('pengajuan_proyek.assign', compact('pengajuan_proyek', 'mahasiswaPerProdi'));
+    return Inertia::render('PengajuanProyek/Assign', compact('pengajuan_proyek', 'mahasiswaPerProdi'));
 }
 
     // Simpan pilihan mahasiswa
@@ -184,7 +186,7 @@ class PengajuanProyekController extends Controller
             ->latest('diproses_at')
             ->get();
 
-        return view('proyek_pbl.index', compact('proyek'));
+        return Inertia::render('ProyekPbl/Index', compact('proyek'));
     }
     public function destroy(PengajuanProyek $pengajuan_proyek)
 {

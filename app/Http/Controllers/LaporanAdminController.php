@@ -6,6 +6,7 @@ use App\Models\Mahasiswa;
 use App\Models\PengajuanProyek;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LaporanAdminController extends Controller
 {
@@ -131,7 +132,7 @@ class LaporanAdminController extends Controller
             return $this->exportCsv($mahasiswaProgress);
         }
 
-        return view('laporan.admin', compact(
+        return Inertia::render('Laporan/Admin', compact(
             'mahasiswaProgress',
             'proyekList',
             'proyekId',

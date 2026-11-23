@@ -8,6 +8,7 @@ use App\Models\SupervisiMatkul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class SupervisiHarianController extends Controller
 {
@@ -16,20 +17,20 @@ class SupervisiHarianController extends Controller
         $user = Auth::user();
 
         if ($user->isAdmin()) {
-            $supervisiList    = SupervisiHarian::with(['mahasiswa.user'])->orderBy('tanggal', 'desc')->get();
+            $supervisiList    = SupervisiHarian::with(['mahasiswa.user', 'supervisiMatkul.mataKuliah', 'supervisiMatkul.dosen.user'])->orderBy('tanggal', 'desc')->get();
             $mingguBelumRekap = collect();
             $statusRekap      = collect();
-            return view('supervisi_harian.index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
+            return Inertia::render('SupervisiHarian/Index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
         }
 
         if (in_array($user->role_aktif ?? $user->role, ['dosen_pengampu', 'dosen'])) {
             $matkulIds     = SupervisiMatkul::where('dosen_id', $user->dosen->id)->pluck('id');
-            $supervisiList = SupervisiHarian::with(['mahasiswa.user'])
+            $supervisiList = SupervisiHarian::with(['mahasiswa.user', 'supervisiMatkul.mataKuliah', 'supervisiMatkul.dosen.user'])
                 ->whereIn('supervisi_matkul_id', $matkulIds)
                 ->orderBy('tanggal', 'desc')->get();
             $mingguBelumRekap = collect();
             $statusRekap      = collect();
-            return view('supervisi_harian.index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
+            return Inertia::render('SupervisiHarian/Index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
         }
 
         // Mahasiswa
@@ -62,7 +63,7 @@ class SupervisiHarianController extends Controller
                 $r->supervisi_matkul_id . '-' . $r->minggu_ke => $r->status
             ]);
 
-        return view('supervisi_harian.index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
+        return Inertia::render('SupervisiHarian/Index', compact('supervisiList', 'mingguBelumRekap', 'statusRekap'));
     }
 
     public function create()
@@ -71,7 +72,7 @@ class SupervisiHarianController extends Controller
         $supervisiMatkulList = SupervisiMatkul::with(['mataKuliah', 'dosen.user'])
             ->where('mahasiswa_id', $mahasiswa->id)->get();
 
-        return view('supervisi_harian.create', compact('supervisiMatkulList'));
+        return Inertia::render('SupervisiHarian/Create', compact('supervisiMatkulList'));
     }
 
     public function store(Request $request)
@@ -129,7 +130,7 @@ class SupervisiHarianController extends Controller
     {
         $this->authorizeAccess($supervisiHarian);
         $supervisiHarian->load(['supervisiMatkul.mataKuliah', 'supervisiMatkul.dosen.user', 'mahasiswa.user']);
-        return view('supervisi_harian.show', compact('supervisiHarian'));
+        return Inertia::render('SupervisiHarian/Show', compact('supervisiHarian'));
     }
 
     public function edit(SupervisiHarian $supervisiHarian)
@@ -149,7 +150,7 @@ class SupervisiHarianController extends Controller
         $supervisiMatkulList = SupervisiMatkul::with(['mataKuliah', 'dosen.user'])
             ->where('mahasiswa_id', $mahasiswa->id)->get();
 
-        return view('supervisi_harian.edit', compact('supervisiHarian', 'supervisiMatkulList'));
+        return Inertia::render('SupervisiHarian/Edit', compact('supervisiHarian', 'supervisiMatkulList'));
     }
 
     public function update(Request $request, SupervisiHarian $supervisiHarian)

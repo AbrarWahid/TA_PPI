@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
 use App\Models\LogbookMingguan;
@@ -66,7 +67,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'logbookPending', 'laporanPending'));
+        return Inertia::render('Dashboard/Admin', compact('stats', 'logbookPending', 'laporanPending'));
     }
 
     private function managerDashboard()
@@ -90,7 +91,7 @@ class DashboardController extends Controller
             'total_mahasiswa'  => $totalMahasiswa,
         ];
 
-        return view('manager.dashboard', compact(
+        return Inertia::render('Dashboard/Manager', compact(
             'proyekList', 'stats',
             'totalProyek', 'proyekDisetujui',
             'proyekPending', 'totalMahasiswa'
@@ -103,7 +104,7 @@ class DashboardController extends Controller
         $dosen = $user->dosen;
 
         $supervisiList = \App\Models\SupervisiMatkul::where('dosen_id', $dosen->id)
-            ->with('mahasiswa')
+            ->with(['mahasiswa', 'mataKuliah'])
             ->get();
 
         $mahasiswaIds = $supervisiList->pluck('mahasiswa_id')->unique();
@@ -133,7 +134,7 @@ class DashboardController extends Controller
         $proyekList = collect();
         $totalProyek = 0;
 
-        return view('dosen.dashboard', compact(
+        return Inertia::render('Dashboard/Dosen', compact(
             'proyekList', 'stats',
             'totalProyek', 'totalMahasiswa',
             'laporanMenunggu', 'penilaianSelesai',
@@ -218,7 +219,7 @@ class DashboardController extends Controller
             ->take(4)
             ->get();
 
-        return view('mahasiswa.dashboard', compact(
+        return Inertia::render('Dashboard/Mahasiswa', compact(
             'mhs', 'nilaiAkhir', 'grade', 
             'logbookTerbaru', 'proyekDitugaskan', 'supervisiList',
             'lbStats', 'svStats'

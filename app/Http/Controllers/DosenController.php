@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Imports\DosenImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
@@ -14,12 +15,12 @@ class DosenController extends Controller
     public function index()
     {
         $dosens = Dosen::with('user')->get();
-        return view('dosen.index', compact('dosens'));
+        return Inertia::render('Dosen/Index', compact('dosens'));
     }
 
     public function create()
     {
-        return view('dosen.create');
+        return Inertia::render('Dosen/Create');
     }
 
     public function store(Request $request)
@@ -59,7 +60,7 @@ class DosenController extends Controller
 
     public function batchCreate()
     {
-        return view('dosen.batch_create');
+        return Inertia::render('Dosen/BatchCreate');
     }
 
     public function batchStore(Request $request)
@@ -106,7 +107,8 @@ class DosenController extends Controller
 
     public function edit(Dosen $dosen)
     {
-        return view('dosen.edit', compact('dosen'));
+        $dosen->load('user');
+        return Inertia::render('Dosen/Edit', compact('dosen'));
     }
 
     public function update(Request $request, Dosen $dosen)

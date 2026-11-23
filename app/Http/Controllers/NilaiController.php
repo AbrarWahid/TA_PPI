@@ -6,7 +6,9 @@ use App\Models\PenilaianManager;
 use App\Models\PenilaianDosen;
 use App\Models\LogbookMingguan;
 use App\Models\LaporanMkPpi;
+use App\Models\PeriodePbl;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class NilaiController extends Controller
 {
@@ -14,12 +16,17 @@ class NilaiController extends Controller
     {
         $user = auth()->user();
         $mahasiswa = $user->mahasiswa;
+        $periode = PeriodePbl::getAktif();
+        $bobotManager = $periode ? $periode->bobot_manager : 55;
+        $bobotDosen   = $periode ? $periode->bobot_dosen   : 45;
 
         if (!$mahasiswa) {
-            return view('mahasiswa.nilai', [
+            return Inertia::render('Mahasiswa/Nilai', [
                 'nilaiManager' => null,
-                'nilaiDosen'   => collect(),
+                'nilaiDosen'   => [],
                 'mahasiswa'    => null,
+                'bobotManager' => $bobotManager,
+                'bobotDosen'   => $bobotDosen,
             ]);
         }
 
@@ -31,7 +38,7 @@ class NilaiController extends Controller
             ->with('supervisiMatkul.mataKuliah')
             ->get();
 
-        return view('mahasiswa.nilai', compact('nilaiManager', 'nilaiDosen', 'mahasiswa'));
+        return Inertia::render('Mahasiswa/Nilai', compact('nilaiManager', 'nilaiDosen', 'mahasiswa', 'bobotManager', 'bobotDosen'));
     }
 
     public function feedbackHub()
@@ -40,11 +47,11 @@ class NilaiController extends Controller
         $mahasiswa = $user->mahasiswa;
 
         if (!$mahasiswa) {
-            return view('mahasiswa.feedback', [
-                'mahasiswa'     => null,
-                'feedbackList'  => collect(),
-                'totalFeedback' => 0,
-                'feedbackPerTipe' => [],
+            return Inertia::render('Mahasiswa/Feedback', [
+                'mahasiswa'       => null,
+                'feedbackList'    => [],
+                'totalFeedback'   => 0,
+                'feedbackPerTipe' => ['penilaian' => 0, 'logbook' => 0, 'laporan' => 0],
             ]);
         }
 
@@ -142,7 +149,7 @@ class NilaiController extends Controller
             'laporan'   => $feedbackList->where('tipe', 'laporan')->count(),
         ];
 
-        return view('mahasiswa.feedback', compact(
+        return Inertia::render('Mahasiswa/Feedback', compact(
             'mahasiswa',
             'feedbackList',
             'totalFeedback',

@@ -9,6 +9,7 @@ use App\External\Models\MataKuliah;
 use App\External\Models\Logbook;
 use App\External\Models\Penilaian;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Inertia\Inertia;
 
 class KaprodiController extends \App\Http\Controllers\Controller
 {
@@ -72,20 +73,21 @@ class KaprodiController extends \App\Http\Controllers\Controller
             })
             ->orderBy('tanggal', 'desc')->get();
 
-        return view('external.kaprodi.dashboard', compact('sarans', 'disiplins', 'kuisioners', 'saranMentors', 'user', 'kelasAktif', 'mahasiswas'));
+        return Inertia::render('External/Kaprodi/Dashboard', compact('sarans', 'disiplins', 'kuisioners', 'saranMentors', 'user', 'kelasAktif', 'mahasiswas'));
     }
 
     public function parameter()
     {
         $parameters = \App\External\Models\ParameterPenilaian::all();
-        return view('external.kaprodi.parameter', compact('parameters'));
+        return Inertia::render('External/Kaprodi/Parameter', compact('parameters'));
     }
 
     public function exportIndex()
     {
         $mahasiswas = Mahasiswa::with('programStudi')->when($this->prodiId(), fn ($q, $id) => $q->where('id_prodi', $id))->orderBy('kelas')->orderBy('nama_mhs')->get();
         $mahasiswas->each(fn ($m) => $m->nilai_logbook_lengkap = $this->transkripLengkap($m->nim));
-        return view('external.kaprodi.export', compact('mahasiswas'));
+        view()->share('mahasiswas', $mahasiswas);
+        return Inertia::render('External/Kaprodi/Export', compact('mahasiswas'));
     }
 
     public function transkrip(Request $request, $nim)
@@ -127,7 +129,7 @@ class KaprodiController extends \App\Http\Controllers\Controller
             return $pdf->download("Transkrip_PPI_{$mahasiswa->nim}_{$mahasiswa->nama_mhs}.pdf");
         }
 
-        return view('external.kaprodi.transkrip', compact('mahasiswa', 'pm', 'ps', 'courses'));
+        return Inertia::render('External/Kaprodi/Transkrip', compact('mahasiswa', 'pm', 'ps', 'courses'));
     }
 
     private function transkripLengkap($nim): bool

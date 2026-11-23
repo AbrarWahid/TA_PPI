@@ -9,6 +9,7 @@ use App\Models\SupervisiMatkul;
 use App\Models\Mahasiswa;
 use App\Models\PeriodePbl;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PenilaianController extends Controller
 {
@@ -20,24 +21,31 @@ class PenilaianController extends Controller
         $user = auth()->user();
 
         if ($user->isManager()) {
+            $periode = PeriodePbl::getAktif();
+            $bobotManager = $periode ? $periode->bobot_manager : 55;
             $proyekIds = PengajuanProyek::where('manager_id', $user->id)->pluck('id');
             $penilaian = PenilaianManager::with(['mahasiswa', 'pengajuanProyek'])
                 ->whereIn('pengajuan_proyek_id', $proyekIds)
                 ->get();
-            return view('penilaian.index_manager', compact('penilaian'));
+            return Inertia::render('Penilaian/IndexManager', compact('penilaian', 'bobotManager'));
 
         } elseif ($user->roleAktifDosen()) {
+            $periode = PeriodePbl::getAktif();
+            $bobotDosen = $periode ? $periode->bobot_dosen : 45;
             $penilaian = PenilaianDosen::with(['mahasiswa', 'supervisiMatkul.mataKuliah'])
                 ->where('dosen_id', $user->dosen->id)
                 ->get();
-            return view('penilaian.index_dosen', compact('penilaian'));
+            return Inertia::render('Penilaian/IndexDosen', compact('penilaian', 'bobotDosen'));
 
         } elseif ($user->isMahasiswa()) {
             $mahasiswa    = $user->mahasiswa;
+            $periode      = PeriodePbl::getAktif();
+            $bobotManager = $periode ? $periode->bobot_manager : 55;
+            $bobotDosen   = $periode ? $periode->bobot_dosen   : 45;
             $nilaiManager = PenilaianManager::where('mahasiswa_id', $mahasiswa->id)->first();
             $nilaiDosen   = PenilaianDosen::with('supervisiMatkul.mataKuliah')
                 ->where('mahasiswa_id', $mahasiswa->id)->get();
-            return view('mahasiswa.nilai', compact('nilaiManager', 'nilaiDosen', 'mahasiswa'));
+            return Inertia::render('Mahasiswa/Nilai', compact('nilaiManager', 'nilaiDosen', 'mahasiswa', 'bobotManager', 'bobotDosen'));
 
         } else {
             // Admin & KPS — gabungkan per mahasiswa
@@ -62,7 +70,7 @@ class PenilaianController extends Controller
             // Ambil daftar kelas unik dari mahasiswa yang didapat untuk dropdown filter
             $kelasList = $mahasiswaList->pluck('kelas')->filter()->unique()->sort()->values();
 
-            return view('penilaian.index_admin', compact('mahasiswaList', 'isKps', 'kelasList'));
+            return Inertia::render('Penilaian/IndexAdmin', compact('mahasiswaList', 'isKps', 'kelasList'));
         }
     }
 
@@ -82,7 +90,7 @@ class PenilaianController extends Controller
             ->with(['mahasiswa'])
             ->get();
 
-        return view('penilaian.create_manager', compact('proyekList'));
+        return Inertia::render('Penilaian/CreateManager', compact('proyekList'));
     }
 
     // =====================================================================
@@ -168,7 +176,7 @@ class PenilaianController extends Controller
             ->with(['mahasiswa', 'mataKuliah'])
             ->get();
 
-        return view('penilaian.create_dosen', compact('supervisiList'));
+        return Inertia::render('Penilaian/CreateDosen', compact('supervisiList'));
     }
 
     // =====================================================================
@@ -284,6 +292,6 @@ class PenilaianController extends Controller
     // =====================================================================
     // MISC
     // =====================================================================
-    public function rubrik() { return view('penilaian.rubrik'); }
-    public function bobot()  { return view('penilaian.bobot'); }
+    public function rubrik() { return Inertia::render('Penilaian/Rubrik'); }
+    public function bobot()  { return Inertia::render('Penilaian/Bobot'); }
 }

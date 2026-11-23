@@ -8,6 +8,7 @@ use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
 use App\Models\SupervisiMatkul;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SupervisiMatkulController extends Controller
 {
@@ -17,13 +18,9 @@ class SupervisiMatkulController extends Controller
             ->latest()
             ->get();
 
-        $grouped = $supervisi->groupBy(function($s) {
-            return $s->mata_kuliah_id . '_' . $s->dosen_id . '_' . $s->tahun_ajaran . '_' . $s->semester;
-        });
-
         $totalSupervisi = $supervisi->count();
 
-        return view('admin.supervisi_matkul.index', compact('grouped', 'totalSupervisi'));
+        return Inertia::render('Admin/SupervisiMatkul/Index', compact('supervisi', 'totalSupervisi'));
     }
 
     public function create()
@@ -41,7 +38,7 @@ class SupervisiMatkulController extends Controller
                     ->sort()
                     ->values();
 
-    return view('admin.supervisi_matkul.create', compact(
+    return Inertia::render('Admin/SupervisiMatkul/Create', compact(
         'mahasiswaList', 'matkulList', 'dosenList', 'prodiList', 'periode'
     ));
 }
